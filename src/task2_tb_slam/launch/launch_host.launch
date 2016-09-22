@@ -1,0 +1,8 @@
+<launch>
+  <include file = "$(find turtlebot_rviz_launchers)/launch/view_navigation.launch"/>
+  <node name  = "tb_rviz_interaction" pkg = "task2_tb_slam" type = "tb_rviz_interaction.py" output="screen"/>
+  <node name = "tp_path_publisher" pkg = "task2_tb_slam" type = "tb_path_publisher.py" output="screen"/>
+  <node name = "PCL_ground_removal" pkg = "task3_pcl" type = "PCL_ground_removal" />
+  <node name = "PCL_object_clustering" pkg = "task3_pcl" type = "PCL_object_clustering" />
+  <node name = "object_list" pkg = "object_list" type = "object_list.py" output="screen" />
+</launch>
