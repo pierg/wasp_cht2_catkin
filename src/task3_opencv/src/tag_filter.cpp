@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	//Declaring and setting the subscriber
 	ros::Subscriber sub = nh.subscribe("object_location/", 1, &filterTag);
 	//Setting the publisher
-	pub = nh.advertise<std_msgs::Float64>("state/data", 1);
+	pub = nh.advertise<std_msgs::Float64>("state/", 1);
 	
 
 

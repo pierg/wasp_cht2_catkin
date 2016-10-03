@@ -12,12 +12,11 @@ void filterTag(const wasp_custom_msgs::object_loc &msg)
 	int id = msg.ID;
 	if(id == id_ref)
 	{
-
+		std_msgs::Float64 dist_x;
+		dist_x.data = msg.point.x;
+		pub.publish(dist_x);
+		std::cout << "ID "<< id << ", distance x: " << dist_x<<std::endl;
 	}
-	std_msgs::Float64 dist_x;
-	dist_x.data = msg.point.x;
-	pub.publish(dist_x);
-	std::cout << "ID "<< id << ", distance x: " << dist_x<<std::endl;
 }
 
 int main(int argc, char **argv) 
