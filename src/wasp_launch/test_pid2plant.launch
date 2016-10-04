@@ -1,0 +1,7 @@
+<launch>
+	<!-- DRONE 2 - IP: 192.168.1.11 with namespace drone1 -->
+	<group ns="drone2">		
+		<!-- Converting control effort to the drone itself -->
+		<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>
+	</group>
+</launch>
