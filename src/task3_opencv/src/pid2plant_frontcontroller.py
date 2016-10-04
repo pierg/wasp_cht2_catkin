@@ -8,50 +8,49 @@
 # Import the ROS libraries, and load the manifest file which through <depend package=... /> will give us access to the project dependencies
 import roslib
 import rospy
+roslib.load_manifest('task3_opencv')
 
 # Import the messages we're interested in sending and receiving
 from geometry_msgs.msg import Twist  	 # for sending commands to the drone
 from std_msgs.msg import Float64	 # for the control_effort
 
 
-# Some Constants
-COMMAND_PERIOD = 100 #ms
+# Allow the controller to publish to the /cmd_vel topic and thus control the drone
+#global variable so we can use it inside the callback
+pubCommand = rospy.Publisher('cmd_vel',Twist,queue_size=1)
+pubCommand2 = rospy.Publisher('setpoint',Float64,queue_size=1)
 
 
-class BasicPitchController(object):
-	def __init__(self):
-		
-		#subscribe to the PID control effort
-		self.controlEffort = rospy.Subscriber('control_effort/',Float64,self.ApplyControlEffort)		
-				
-		# Allow the controller to publish to the /cmd_vel topic and thus control the drone
-		self.pubCommand = rospy.Publisher('cmd_vel',Twist,queue_size=1)
-
-		# Setup regular publishing of control packets
-		self.command = Twist()
-
-	def SetCommand(self,roll=0,pitch=0,yaw_velocity=0,z_velocity=0):
-		# Called by the main program to set the current command
-		self.command.linear.x  = pitch
-		self.command.linear.y  = roll
-		self.command.linear.z  = z_velocity
-		self.command.angular.z = yaw_velocity
-
+def ApplyControlEffort(controlEffort):
+	roll=0
+	z_velocity=0
+	yaw_velocity=0
+	pitch =  controlEffort.data
+	print('Control effort being applied')
+	print('Control effort: ')
+	print(pitch)
 	
-	def ApplyControlEffort(self):
-		self.SetCommand(0,self.controlEffort,0,0)
-		self.pubCommand.publish(self.command)
+	command = Twist()
+	#need the minus pitch so it goes the right way
+	command.linear.x  = -pitch
+	command.linear.y  = roll
+	command.linear.z  = z_velocity
+	command.angular.z = yaw_velocity
+
+	pubCommand.publish(command)
+	#Temporary setpoint
+	setpoint = Float64(1)	
+	pubCommand2.publish(setpoint)
 
 # Setup the application
 if __name__=='__main__':
 	import sys
 	# Firstly we setup a ros node, so that we can communicate with the other packages
 	rospy.init_node('pid2plant_frontcontroller')
+	
+	#subscribe to the PID control effort
+	rospy.Subscriber('control_effort/',Float64,ApplyControlEffort)		
+			
 
-	#Temporary setpoint
-	pubCommand2 = rospy.Publisher('setpoint',Float64,queue_size=1)
-	pubCommand2.publish(1.0)
-	controller = BasicPitchController()
-	controller.ApplyControlEffort()	
 	#This keeps the function active till node are shurdown.
 	rospy.spin()
