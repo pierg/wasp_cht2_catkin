@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   apriltags
   image_transport
   roscpp
+  rospy
   sensor_msgs
   geometry_msgs
   tf
@@ -34,7 +35,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS
   LIBRARIES apriltag_detector
-  CATKIN_DEPENDS image_transport roscpp sensor_msgs geometry_msgs tf cv_bridge message_runtime std_msgs nodelet apriltags wasp_custom_msgs
+  CATKIN_DEPENDS image_transport roscpp rospy sensor_msgs geometry_msgs tf cv_bridge message_runtime std_msgs nodelet apriltags wasp_custom_msgs
   DEPENDS Eigen
 )
 
@@ -60,6 +61,10 @@ add_dependencies(tag_filter tag_filter)
 ## Install ##
 #############
 
+install(PROGRAMS src/tag_filter.py  
+		 src/pid2plant_frontcontroller.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/apriltags_ros
