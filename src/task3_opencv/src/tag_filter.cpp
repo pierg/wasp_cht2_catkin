@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	if (nh.hasParam("id_ref"))
  	{
  		// Found parameter, can now query it using param_name
-		nh.getParam("id_ref", id_ref);
+		nh.getParam("id_ref", id_ref);git 
 		std::cout<<"Using id_ref  "<<id_ref<<std::endl;
 	}
 	else
