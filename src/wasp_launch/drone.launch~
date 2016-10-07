@@ -16,7 +16,7 @@
 		
 		<!-- Launching the filter tag detection node -->
 		<node name="tag_filter" pkg="task3_opencv" type="tag_filter" launch-prefix="xterm -e">
-			<param name="id" value="0" />
+			<param name="id_ref" value="0" />
 		</node>
 		
 		<!-- Launching the the PID controller with parameter renaming if needed and with the tuning parameters -->
