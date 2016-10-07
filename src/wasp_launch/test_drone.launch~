@@ -1,15 +1,9 @@
 <launch>
 	<!-- DRONE 2 - IP: 192.168.1.11 with namespace drone1 -->
 	<group ns="drone2">		
-		<!-- Launching the Ardrone driver from TUM_ARDRONE package -->
-		<include file="$(find tum_ardrone)/launch/ardrone_driver.launch">
-			<arg name="droneip" value="192.168.1.11" />
-		</include>
-		
-		<!-- Launches the keyboard controller -->
-  		<node name="drone_gui" pkg="tum_ardrone" type="drone_gui"/>			
-
-		<!-- Converting control effort to the drone itself -->
-		<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" />
+		<!-- Launching the filter tag detection node -->
+		<node name="tag_filter" pkg="task3_opencv" type="tag_filter" output="screen">
+			<param name="id_ref" value="0" />
+		</node>
 	</group>
 </launch>
