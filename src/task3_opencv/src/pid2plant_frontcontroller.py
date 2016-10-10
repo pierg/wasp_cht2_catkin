@@ -39,7 +39,7 @@ def ApplyControlEffort(controlEffort):
 
 	pubCommand.publish(command)
 	#Temporary setpoint
-	setpoint = Float64(1)	
+	setpoint = Float64(1)
 	pubCommand2.publish(setpoint)
 
 # Setup the application

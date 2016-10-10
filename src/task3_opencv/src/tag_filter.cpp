@@ -4,7 +4,9 @@
 using namespace std;
 
 //Simple Global variables
-ros::Publisher pub;
+ros::Publisher pub_x;
+ros::Publisher pub_y;
+ros::Publisher pub_phi;
 int id_ref = 0;
 
 void filterTag(const wasp_custom_msgs::object_loc &msg)
@@ -12,10 +14,19 @@ void filterTag(const wasp_custom_msgs::object_loc &msg)
 	int id = msg.ID;
 	if(id == id_ref)
 	{
-		std_msgs::Float64 dist_x;
+		std_msgs::Float64 dist_x; double x;
+		std_msgs::Float64 dist_y; double y;
+		std_msgs::Float64 phi;
 		dist_x.data = msg.point.x;
-		pub.publish(dist_x);
-		std::cout << "ID "<< id << ", distance x: " << dist_x<<std::endl;
+		dist_y.data = msg.point.y;
+		//phi =
+		pub_x.publish(dist_x);
+		pub_y.publish(dist_y);
+		//pub_phi.publish(dist_x);
+
+		std::cout << "ID "<< id << ", distance x: " << dist_x <<std::endl;
+		std::cout << "ID "<< id << ", distance y: " << dist_y <<std::endl;
+
 	}
 }
 
@@ -30,7 +41,7 @@ int main(int argc, char **argv)
 	if (nh.hasParam("id_ref"))
  	{
  		// Found parameter, can now query it using param_name
-		nh.getParam("id_ref", id_ref);git 
+		nh.getParam("id_ref", id_ref);
 		std::cout<<"Using id_ref  "<<id_ref<<std::endl;
 	}
 	else
@@ -43,7 +54,9 @@ int main(int argc, char **argv)
 	//Declaring and setting the subscriber
 	ros::Subscriber sub = nh.subscribe("object_location/", 1, &filterTag);
 	//Setting the publisher
-	pub = nh.advertise<std_msgs::Float64>("state/", 1);
+	pub_x = nh.advertise<std_msgs::Float64>("state_x/", 1);
+	pub_y = nh.advertise<std_msgs::Float64>("state_y/", 1);
+	pub_phi = nh.advertise<std_msgs::Float64>("state_phi/", 1);
 	
 	
 	ros::spin();

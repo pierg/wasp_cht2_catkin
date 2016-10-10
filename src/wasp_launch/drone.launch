@@ -1,9 +1,9 @@
 <launch>
-	<!-- DRONE 1 - IP: 192.168.1.11 with namespace drone1 -->
+	<!-- DRONE 2 - IP: 192.168.1.11 with namespace drone2 -->
 	<group ns="drone2">		
 		<!-- Launching the Ardrone driver from TUM_ARDRONE package -->
 		<include file="$(find tum_ardrone)/launch/ardrone_driver.launch">
-			<arg name="droneip" value="192.168.1.11" />
+			<arg name="droneip" value="192.168.1.10" />
 		</include>
 
 		<!-- Launches the keyboard controller -->
@@ -32,7 +32,7 @@
 			      <param name="diagnostic_period" value="0.25" />
 			      <param name="max_loop_frequency" value="100.0" />
 			      <param name="min_loop_frequency" value="100.0" />
-    		</node>
+    	</node>
 
 		<!-- Converting control effort to the drone itself -->
 		<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>
