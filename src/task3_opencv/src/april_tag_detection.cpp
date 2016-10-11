@@ -210,6 +210,8 @@ public:
     location.angles.x = pitch;
     location.angles.y = yaw;
     location.angles.z = roll;
+
+    //publishing the wasp message
     object_location_pub.publish(location);
 
     cout << "  distance=" << translation.norm()
