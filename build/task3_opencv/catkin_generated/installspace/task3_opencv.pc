@@ -1,8 +1,0 @@
-prefix=/home/davidis/catkin_ws/install
-
-Name: task3_opencv
-Description: Description of task3_opencv
-Version: 0.1.2
-Cflags: -I/usr/include/eigen3
-Libs: -L/home/davidis/catkin_ws/install/lib -lapriltag_detector
-Requires: image_transport roscpp sensor_msgs geometry_msgs tf cv_bridge message_runtime std_msgs nodelet apriltags wasp_custom_msgs

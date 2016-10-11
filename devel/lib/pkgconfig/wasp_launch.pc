@@ -1,8 +1,0 @@
-prefix=/home/davidis/catkin_ws/devel
-
-Name: wasp_launch
-Description: Description of wasp_launch
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/davidis/catkin_ws/devel/lib 
-Requires: 
