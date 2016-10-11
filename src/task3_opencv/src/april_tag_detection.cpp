@@ -23,7 +23,10 @@ using namespace std;
 #include <vector>
 #include <list>
 #include <sys/time.h>
+
+//WASP messages
 #include "wasp_custom_msgs/object_loc.h"
+//#include "wasp_custom_msgs/image_point.h"
 
 // OpenCV library for easy access to USB camera and drawing of images
 // on screen
@@ -204,6 +207,11 @@ public:
     location.point.x = translation(0);
     location.point.y = translation(1);
     location.point.z = translation(2);
+    location.angles.x = pitch;
+    location.angles.y = yaw;
+    location.angles.z = roll;
+
+    //publishing the wasp message
     object_location_pub.publish(location);
 
     cout << "  distance=" << translation.norm()
