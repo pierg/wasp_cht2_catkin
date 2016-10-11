@@ -1,0 +1,2 @@
+apriltags:ardrone_tutorials:beginner_tutorials:task2_tb_slam:task3_opencv:task3_pcl:tum_ardrone:wasp_cth2:wasp_custom_msgs:wasp_launch
+-DCATKIN_DEVEL_PREFIX=/home/davidis/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/davidis/catkin_ws/install -G Unix Makefiles
