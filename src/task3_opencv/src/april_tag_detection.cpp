@@ -23,7 +23,10 @@ using namespace std;
 #include <vector>
 #include <list>
 #include <sys/time.h>
+
+//WASP messages
 #include "wasp_custom_msgs/object_loc.h"
+//#include "wasp_custom_msgs/image_point.h"
 
 // OpenCV library for easy access to USB camera and drawing of images
 // on screen

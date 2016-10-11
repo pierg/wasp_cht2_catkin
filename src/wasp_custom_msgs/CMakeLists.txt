@@ -3,17 +3,20 @@ project(wasp_custom_msgs)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  std_msgs
   message_generation
 )
 
 add_message_files(
   FILES
   object_loc.msg
+  image_point.msg
 )
 
 generate_messages(
   DEPENDENCIES
   geometry_msgs
+  std_msgs
 )
 
 catkin_package(

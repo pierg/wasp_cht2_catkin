@@ -1,5 +1,8 @@
 #include <ros/ros.h>
+
+//ROS Messages
 #include "wasp_custom_msgs/object_loc.h"
+//#include "wasp_custom_msgs/image_point.h"
 #include <std_msgs/Float64.h>
 using namespace std;
 
@@ -31,10 +34,11 @@ void filterTag(const wasp_custom_msgs::object_loc &msg)
 		yaw.data = msg.angles.y;
 		roll.data = msg.angles.z;
 
+		//Publishing data
 		pub_x.publish(dist_x);
 		pub_y.publish(dist_y);
 
-
+		//Debugging
 		//std::cout << "ID "<< id << ", distance x: " << dist_x <<std::endl;
 		//std::cout << "ID "<< id << ", distance y: " << dist_y <<std::endl;
 		//std::cout << "ID "<< id << ", distance z: " << dist_z <<std::endl;
