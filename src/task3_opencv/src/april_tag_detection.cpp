@@ -204,6 +204,9 @@ public:
     location.point.x = translation(0);
     location.point.y = translation(1);
     location.point.z = translation(2);
+    location.angles.x = pitch;
+    location.angles.y = yaw;
+    location.angles.z = roll;
     object_location_pub.publish(location);
 
     cout << "  distance=" << translation.norm()
