@@ -17,26 +17,32 @@ from std_msgs.msg import Float64	 # for the control_effort
 
 # Allow the controller to publish to the /cmd_vel topic and thus control the drone
 #global variable so we can use it inside the callback
-pubCommand = rospy.Publisher('cmd_vel',Twist,queue_size=1)
+pubCommand_drone = rospy.Publisher('cmd_vel', Twist, queue_size=1)
 
 #Publishing setpoints
 pubCommand_x = rospy.Publisher('setpoint_x',Float64,queue_size=1)
 pubCommand_y = rospy.Publisher('setpoint_y',Float64,queue_size=1)
+pubCommand_z = rospy.Publisher('setpoint_z',Float64,queue_size=1)
+
+pubCommand_roll = rospy.Publisher('setpoint_roll',Float64,queue_size=1)
+pubCommand_pitch = rospy.Publisher('setpoint_pitch',Float64,queue_size=1)
 pubCommand_yaw = rospy.Publisher('setpoint_yaw',Float64,queue_size=1)
+
 #global variable because I dont want to reset to zero the previous command in every callback. Otherwise the drone would be stopped position
 
 command = Twist()
 
 def ApplyControlEffort_X(controlEffort):
+
 	pitch =  controlEffort.data
 	#need the minus pitch so it goes the right way
 	command.linear.x  = -pitch
-
-	pubCommand.publish(command)
-	print(command)
+	pubCommand_drone.publish(command)
+	PrintCommands()
 	#Temporary setpoint
 	setpoint = Float64(1)
 	pubCommand_x.publish(setpoint)
+
 
 def ApplyControlEffort_Y(controlEffort):
 	roll=controlEffort.data
@@ -44,7 +50,8 @@ def ApplyControlEffort_Y(controlEffort):
 	#need the minus pitch so it goes the right way
 	command.linear.y  = -roll
 
-	pubCommand.publish(command)
+	pubCommand_drone.publish(command)
+	PrintCommands()
 	#we want zero setpoint for y
 	setpoint = Float64(0)
 	pubCommand_y.publish(setpoint)
@@ -53,12 +60,18 @@ def ApplyControlEffort_Yaw(controlEffort):
 
 	yaw_velocity=controlEffort.data
 	
-	command.angular.z = yaw_velocity
-
-	pubCommand.publish(command)
+	command.angular.z = -yaw_velocity
+	pubCommand_drone.publish(command)
+	PrintCommands()
 	#we want zero setpoint for yaw
 	setpoint = Float64(0)
 	pubCommand_yaw.publish(setpoint)
+
+
+def PrintCommands():
+	print("Applying Control Effort \n\tX \t\tY \t\tYaw")
+	print(str("{:10.4f}".format(command.linear.x)) + " \t" + str("{:10.4f}".format(command.linear.y)) + "\t" + str("{:10.4f}".format(command.angular.z)) + "\n")
+
 
 # Setup the application
 if __name__=='__main__':
@@ -68,7 +81,7 @@ if __name__=='__main__':
 	
 	#subscribe to the PID control effort
 	rospy.Subscriber('control_effort_x/',Float64,ApplyControlEffort_X)
-	rospy.Subscriber('control_effort_y/',Float64,ApplyControlEffort_Y)
+	# rospy.Subscriber('control_effort_y/',Float64,ApplyControlEffort_Y)
 	rospy.Subscriber('control_effort_yaw/',Float64,ApplyControlEffort_Yaw)	
 			
 
