@@ -26,7 +26,7 @@ using namespace std;
 
 //WASP messages
 #include "wasp_custom_msgs/object_loc.h"
-//#include "wasp_custom_msgs/image_point.h"
+#include "wasp_custom_msgs/image_point.h"
 
 // OpenCV library for easy access to USB camera and drawing of images
 // on screen
@@ -51,6 +51,7 @@ cv::Mat image_new;
 cv::Mat image_gray;
 
 ros::Publisher object_location_pub;
+ros::Publisher image_pub;
 
 // utility function to provide current system time (used below in
 // determining frame rate at which images are being processed)
@@ -214,14 +215,14 @@ public:
     //publishing the wasp message
     object_location_pub.publish(location);
 
-    cout << "  distance=" << translation.norm()
+    /*cout << "  distance=" << translation.norm()
          << "m, x=" << translation(0)
          << ", y=" << translation(1)
          << ", z=" << translation(2)
          << ", yaw=" << yaw
          << ", pitch=" << pitch
          << ", roll=" << roll
-         << endl;
+         << endl;*/
 
     // Also note that for SLAM/multi-view application it is better to
     // use reprojection error of corner points, because the noise in
@@ -262,6 +263,16 @@ public:
       for (int i=0; i<detections.size(); i++) {
         // also highlight in the image
         detections[i].draw(image);
+        wasp_custom_msgs::image_point imag_p;
+        imag_p.ID = detections[i].id;
+        imag_p.point.x = detections[i].cxy.first;
+        imag_p.point.y = detections[i].cxy.second;
+        imag_p.width.data = image.size().width;
+        imag_p.height.data = image.size().height;
+        image_pub.publish(imag_p);
+        //cout << imag_p.point.x << " x " << imag_p.point.y<<endl;
+        //cout << imag_p.width.data << " x " << imag_p.height.data<<endl;
+
       }
       imshow(windowName, image); // OpenCV call
       cv::waitKey(1);
@@ -293,6 +304,7 @@ int main(int argc, char* argv[]) {
   cout << "Initial setup executed"<<endl;
   image_transport::Subscriber sub = it.subscribe("ardrone/image_raw", 1, imageCallback);
   object_location_pub = nh.advertise<wasp_custom_msgs::object_loc>("object_location", 1);
+  image_pub = nh.advertise<wasp_custom_msgs::image_point>("tag_location_image", 1);
   cout << "Image Subscriber executed"<<endl;
   ros::spin();
 

@@ -60,11 +60,11 @@ def ApplyControlEffort_Yaw(controlEffort):
 
 	yaw_velocity=controlEffort.data
 	
-	command.angular.z = -yaw_velocity
+	command.angular.z = yaw_velocity
 	pubCommand_drone.publish(command)
 	PrintCommands()
-	#we want zero setpoint for yaw
-	setpoint = Float64(0)
+	#we want the setpoint for yaw in the center of the picture and the picture is 640 pixels wide
+	setpoint = Float64(320)
 	pubCommand_yaw.publish(setpoint)
 
 
