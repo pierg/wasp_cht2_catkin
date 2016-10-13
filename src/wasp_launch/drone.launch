@@ -6,7 +6,8 @@
 		
 		<!-- Launching the Ardrone driver from TUM_ARDRONE package -->
 		<include file="$(find tum_ardrone)/launch/ardrone_driver.launch">
-			<arg name="droneip" value="192.168.1.10" />
+			<!--<arg name="droneip" value="192.168.1.10" />-->
+			<arg name="droneip" value="192.168.5.200" />
 		</include>
 
 		<!-- Launches the keyboard controller -->

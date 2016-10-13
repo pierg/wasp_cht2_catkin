@@ -72,11 +72,11 @@ void filterTag_object_location(const wasp_custom_msgs::object_loc &msg)
 
 		std::cout << std::setprecision(3) << std::fixed;
 
-		//std::cout << "ID \t\t Roll \t\t Pitch \t\t Yaw" << std::endl;
-		//std::cout << id << "\t\t" << roll_deg.data << "\t\t" << pitch_deg.data << "\t\t" << yaw_deg.data << std::endl << std::endl;
+		std::cout << "ID \t\t Roll \t\t Pitch \t\t Yaw" << std::endl;
+		std::cout << id << "\t\t" << roll_deg.data << "\t\t" << pitch_deg.data << "\t\t" << yaw_deg.data << std::endl << std::endl;
 
-		//std::cout << "ID \t\t X_d \t\t Y_d \t\t Z_d" << std::endl;
-	    //std::cout << id << "\t\t" << dist_x.data << "\t\t" << dist_y.data << "\t\t" << dist_z.data << std::endl << std::endl << std::endl;
+		std::cout << "ID \t\t X_d \t\t Y_d \t\t Z_d" << std::endl;
+	    std::cout << id << "\t\t" << dist_x.data << "\t\t" << dist_y.data << "\t\t" << dist_z.data << std::endl << std::endl << std::endl;
 
 	}
 }
@@ -97,7 +97,8 @@ void filterTag_tag_location_image(const wasp_custom_msgs::image_point &msg)
 		//height = msg.height.data;
 		//width = msg.width.data;
         pub_yaw.publish(center_x);
-		//cout<< center_x<<endl;// <<"   "<< center_y << "   "<< height<< "   "<< width<<endl;
+
+		cout << "CENTER_X : \t" << center_x.data << "\n\n" << endl;// <<"   "<< center_y << "   "<< height<< "   "<< width<<endl;
 	}
 }
 
