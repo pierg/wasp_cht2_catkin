@@ -103,7 +103,7 @@ def completed_cb(data):
     else:
         # If this is printed than there is a problem in tb_path_publisher;
         # it is publishing element index out of range..
-        #print("OUT OF RANGE")
+        print("OUT OF RANGE")
 
 # This Callback function will called everytime a point is placed on RViz
 def click_cb(data):

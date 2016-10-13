@@ -81,6 +81,8 @@ def publish(robot, state):
         msg.posY = position[1];
         msg.angle = 0;
         topic[robot].publish(msg);
+    else:
+        topic[robot].publish(msg);
 
 
 def trim(string):

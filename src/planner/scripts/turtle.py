@@ -40,9 +40,17 @@ import rospy
 import sys
 import getopt
 from std_msgs.msg import String
+from std_msgs.msg import Int16
 from planner.msg import drone_command # NB: turtle uses drone_command as well!
+from geometry_msgs.msg import PoseArray
+from geometry_msgs.msg import PoseStamped
+from actionlib_msgs.msg import GoalStatusArray
 
 
+
+goto_to_publish = PoseStamped()
+goto_to_publish.header.frame_id = "/map"
+goto_to_publish.pose.orientation.z = 1
 
 def goto(x, y, w):
 	global actuatorTopic
@@ -56,11 +64,11 @@ def goto(x, y, w):
 
 
 def takeAction(data):
-    global topic
     if (data.command != 'idle'):
         cdata = data._connection_header
         rospy.loginfo('%s now initiates %s', id, data.command)
-        #TODO:
+        rospy.loginfo('Driving to:', data.posX, data.posY)
+
         goto(data.posX, data.posY, data.angle)
 
 
@@ -76,18 +84,18 @@ def takeAction(data):
 #status = 4 -> failed
 #status = 3 -> completed
 def goal_status_callback(data):
-	global goal_flag
+	global goal_flag, schedulerTopic
 	print(data.status_list[0].status)
 	if data.status_list[0].status == 1:
             goal_flag = false
 	if data.status_list[0].status == 3:
-            if !goal_flag:
-                print "completed goal"
+            if (not goal_flag):
+                print("completed goal");
                 goal_flag = true
 	        msg = drone_command();
                 msg.drone_id = id;
                 msg.command = 'idle';
-                topic.publish(msg)
+                schedulerTopic.publish(msg)
 
 
 
@@ -115,7 +123,7 @@ def turtle(args):
     msg = drone_command();
     msg.drone_id = id;
     msg.command = 'idle';
-    topic.publish(msg)
+    schedulerTopic.publish(msg)
 
     rospy.spin()
 
