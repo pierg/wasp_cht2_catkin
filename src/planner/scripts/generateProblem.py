@@ -1,6 +1,8 @@
 import math
 from planningProperties import *
 
+
+
 # updateProblem(): creates an updated version of problem.pddl based on current state
 def updateProblem():
 	p = ["(define (problem challenge)\n",
@@ -58,7 +60,9 @@ def updateProblem():
 
 	p += [")"];
 	#print ''.join(p);
-	with open('problem.pddl', 'w') as f:
+        problemPath = 'problem.pddl'
+        finalProblemPath = os.path.join(script_dir, problemPath)
+	with open(finalProblemPath, 'w') as f:
 		f.write(''.join(p))
 
 def distance2(l1, l2):
