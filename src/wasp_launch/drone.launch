@@ -16,10 +16,10 @@
   		<node name="drone_gui" pkg="tum_ardrone" type="drone_gui"/>
 
 		<!-- Launching the april tags detection node -->
-		<node name="april_tags" pkg="task3_opencv" type="april_tags"/>
+		<!--<node name="april_tags" pkg="task3_opencv" type="april_tags"/>-->
 				
 		<!-- Launching the filter tag detection node -->
-		<node name="tag_filter" pkg="task3_opencv" type="tag_filter" launch-prefix="xterm -e"/>
+		<!--<node name="tag_filter" pkg="task3_opencv" type="tag_filter" launch-prefix="xterm -e"/>-->
 
 		<!-- Launching the the PID controller with parameter renaming if needed and with the tuning parameters -->
 
@@ -39,40 +39,93 @@
 			      <!--<param name="min_loop_frequency" value="100.0" />-->
     	<!--</node>-->
 
-		<!-- Translation Y axis PID -->
-		<node name="pid_y" pkg="pid" type="controller" >
-			      <remap from="state" to="state_y"/>
-			      <remap from="setpoint" to="setpoint_y"/>
-			      <remap from="control_effort" to="control_effort_y"/>
-			      <param name="Kp" value="0.25" />
-			      <param name="Ki" value="0.0" />
-			      <param name="Kd" value="0.0" />
-			      <param name="upper_limit" value="1" />
-			      <param name="lower_limit" value="-1" />
-			      <param name="windup_limit" value="1" />
-			      <param name="diagnostic_period" value="0.25" />
-			      <param name="max_loop_frequency" value="100.0" />
-			      <param name="min_loop_frequency" value="100.0" />
-    	</node>
+		<!--&lt;!&ndash; Translation Y axis PID &ndash;&gt;-->
+		<!--<node name="pid_y" pkg="pid" type="controller" >-->
+			      <!--<remap from="state" to="state_y"/>-->
+			      <!--<remap from="setpoint" to="setpoint_y"/>-->
+			      <!--<remap from="control_effort" to="control_effort_y"/>-->
+			      <!--<param name="Kp" value="0.25" />-->
+			      <!--<param name="Ki" value="0.0" />-->
+			      <!--<param name="Kd" value="0.0" />-->
+			      <!--<param name="upper_limit" value="1" />-->
+			      <!--<param name="lower_limit" value="-1" />-->
+			      <!--<param name="windup_limit" value="1" />-->
+			      <!--<param name="diagnostic_period" value="0.25" />-->
+			      <!--<param name="max_loop_frequency" value="100.0" />-->
+			      <!--<param name="min_loop_frequency" value="100.0" />-->
+    	<!--</node>-->
 
 
-		 Rotation in Z (Yaw) axis PID
-		<node name="pid_yaw" pkg="pid" type="controller" >
-			      <remap from="state" to="state_yaw"/>
-			      <remap from="setpoint" to="setpoint_yaw"/>
-			      <remap from="control_effort" to="control_effort_yaw"/>
-			      <param name="Kp" value="0.003" />
-			      <param name="Ki" value="0.00" />
-			      <param name="Kd" value="0.00" />
-			      <param name="upper_limit" value="1" />
-			      <param name="lower_limit" value="-1" />
-			      <param name="windup_limit" value="1" />
-			      <param name="diagnostic_period" value="0.25" />
-			      <param name="max_loop_frequency" value="100.0" />
-			      <param name="min_loop_frequency" value="100.0" />
-    	</node>
+		 <!--Rotation in Z (Yaw) axis PID-->
+		<!--<node name="pid_yaw" pkg="pid" type="controller" >-->
+			      <!--<remap from="state" to="state_yaw"/>-->
+			      <!--<remap from="setpoint" to="setpoint_yaw"/>-->
+			      <!--<remap from="control_effort" to="control_effort_yaw"/>-->
+			      <!--<param name="Kp" value="0.003" />-->
+			      <!--<param name="Ki" value="0.00" />-->
+			      <!--<param name="Kd" value="0.00" />-->
+			      <!--<param name="upper_limit" value="1" />-->
+			      <!--<param name="lower_limit" value="-1" />-->
+			      <!--<param name="windup_limit" value="1" />-->
+			      <!--<param name="diagnostic_period" value="0.25" />-->
+			      <!--<param name="max_loop_frequency" value="100.0" />-->
+			      <!--<param name="min_loop_frequency" value="100.0" />-->
+    	<!--</node>-->
 
+
+		<!--Rotation in Z (Yaw) axis PID-->
+		<!--<node name="pid_slam_yaw" pkg="pid" type="controller" >-->
+			<!--<remap from="state" to="state_slam_yaw"/>-->
+			<!--<remap from="setpoint" to="setpoint_slam_yaw"/>-->
+			<!--<remap from="control_effort" to="control_effort_slam_yaw"/>-->
+			<!--<param name="Kp" value="5" />-->
+			<!--<param name="Ki" value="0.00" />-->
+			<!--<param name="Kd" value="0.00" />-->
+			<!--<param name="upper_limit" value="1" />-->
+			<!--<param name="lower_limit" value="-1" />-->
+			<!--<param name="windup_limit" value="1" />-->
+			<!--<param name="diagnostic_period" value="0.25" />-->
+			<!--<param name="max_loop_frequency" value="100.0" />-->
+			<!--<param name="min_loop_frequency" value="100.0" />-->
+		<!--</node>-->
+
+
+		<node name="pid_slam_pitch" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_pitch"/>
+			<remap from="setpoint" to="setpoint_slam_pitch"/>
+			<remap from="control_effort" to="control_effort_slam_pitch"/>
+			<param name="Kp" value="0.05" />
+			<param name="Ki" value="0.0" />
+			<param name="Kd" value="0.0" />
+			<param name="upper_limit" value="0.5" />
+			<param name="lower_limit" value="-0.5" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="100.0" />
+		</node>
+
+
+		<node name="pid_slam_roll" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_roll"/>
+			<remap from="setpoint" to="setpoint_slam_roll"/>
+			<remap from="control_effort" to="control_effort_slam_roll"/>
+			<param name="Kp" value="0.05" />
+			<param name="Ki" value="0.0" />
+			<param name="Kd" value="0.0" />
+			<param name="upper_limit" value="0.5" />
+			<param name="lower_limit" value="-0.5" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="100.0" />
+		</node>
 		<!-- Converting control effort to the drone itself -->
-		<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>
+		<!--<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>-->
+
+		<node name="pid2plant" pkg="drone" type="pid2plant.py" launch-prefix="xterm -e"/>
+		<node name="plant2pid" pkg="drone" type="plant2pid.py" launch-prefix="xterm -e"/>
+
+
 	</group>
 </launch>
