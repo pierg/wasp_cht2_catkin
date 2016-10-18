@@ -7,7 +7,7 @@
 		<!-- Launching the Ardrone driver from TUM_ARDRONE package -->
 		<include file="$(find tum_ardrone)/launch/ardrone_driver.launch">
 			<!--<arg name="droneip" value="192.168.1.10" />-->
-			<arg name="droneip" value="192.168.5.200" />
+			<arg name="droneip" value="192.168.1.1" />
 		</include>
 
 		<!-- Launches the keyboard controller -->
@@ -28,7 +28,7 @@
 			      <!--<remap from="state" to="state_x"/>-->
 			      <!--<remap from="setpoint" to="setpoint_x"/>-->
 			      <!--<remap from="control_effort" to="control_effort_x"/>-->
-			      <!--<param name="Kp" value="0.1" />-->
+			      <!--<param name="Kp" value="0.25" />-->
 			      <!--<param name="Ki" value="0.0" />-->
 			      <!--<param name="Kd" value="0.0" />-->
 			      <!--<param name="upper_limit" value="0.5" />-->
@@ -39,33 +39,33 @@
 			      <!--<param name="min_loop_frequency" value="100.0" />-->
     	<!--</node>-->
 
-		<!--&lt;!&ndash; Translation Y axis PID &ndash;&gt;-->
-		<!--<node name="pid_y" pkg="pid" type="controller" >-->
-			      <!--<remap from="state" to="state_y"/>-->
-			      <!--<remap from="setpoint" to="setpoint_y"/>-->
-			      <!--<remap from="control_effort" to="control_effort_y"/>-->
-			      <!--<param name="Kp" value="0.1" />-->
-			      <!--<param name="Ki" value="0.0" />-->
-			      <!--<param name="Kd" value="0.0" />-->
-			      <!--<param name="upper_limit" value="0.5" />-->
-			      <!--<param name="lower_limit" value="-0.5" />-->
-			      <!--<param name="windup_limit" value="1" />-->
-			      <!--<param name="diagnostic_period" value="0.25" />-->
-			      <!--<param name="max_loop_frequency" value="100.0" />-->
-			      <!--<param name="min_loop_frequency" value="100.0" />-->
-    	<!--</node>-->
+		<!-- Translation Y axis PID -->
+		<node name="pid_y" pkg="pid" type="controller" >
+			      <remap from="state" to="state_y"/>
+			      <remap from="setpoint" to="setpoint_y"/>
+			      <remap from="control_effort" to="control_effort_y"/>
+			      <param name="Kp" value="0.25" />
+			      <param name="Ki" value="0.0" />
+			      <param name="Kd" value="0.0" />
+			      <param name="upper_limit" value="1" />
+			      <param name="lower_limit" value="-1" />
+			      <param name="windup_limit" value="1" />
+			      <param name="diagnostic_period" value="0.25" />
+			      <param name="max_loop_frequency" value="100.0" />
+			      <param name="min_loop_frequency" value="100.0" />
+    	</node>
 
 
-		<!-- Rotation in Z (Yaw) axis PID -->
+		 Rotation in Z (Yaw) axis PID
 		<node name="pid_yaw" pkg="pid" type="controller" >
 			      <remap from="state" to="state_yaw"/>
 			      <remap from="setpoint" to="setpoint_yaw"/>
 			      <remap from="control_effort" to="control_effort_yaw"/>
-			      <param name="Kp" value="0.001" />
-			      <param name="Ki" value="0.001" />
-			      <param name="Kd" value="0.001" />
-			      <param name="upper_limit" value="0.5" />
-			      <param name="lower_limit" value="-0.5" />
+			      <param name="Kp" value="0.003" />
+			      <param name="Ki" value="0.00" />
+			      <param name="Kd" value="0.00" />
+			      <param name="upper_limit" value="1" />
+			      <param name="lower_limit" value="-1" />
 			      <param name="windup_limit" value="1" />
 			      <param name="diagnostic_period" value="0.25" />
 			      <param name="max_loop_frequency" value="100.0" />

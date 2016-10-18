@@ -46,9 +46,8 @@ def ApplyControlEffort_X(controlEffort):
 
 def ApplyControlEffort_Y(controlEffort):
 	roll=controlEffort.data
-	
-	#need the minus pitch so it goes the right way
-	command.linear.y  = -roll
+
+	command.linear.y  = roll
 
 	pubCommand_drone.publish(command)
 	PrintCommands()
@@ -81,7 +80,7 @@ if __name__=='__main__':
 	
 	#subscribe to the PID control effort
 	rospy.Subscriber('control_effort_x/',Float64,ApplyControlEffort_X)
-	# rospy.Subscriber('control_effort_y/',Float64,ApplyControlEffort_Y)
+	rospy.Subscriber('control_effort_y/',Float64,ApplyControlEffort_Y)
 	rospy.Subscriber('control_effort_yaw/',Float64,ApplyControlEffort_Yaw)	
 			
 
