@@ -3,15 +3,16 @@
 import re
 import subprocess;
 import os
+from os.path import expanduser
 from planningProperties import *
 from generateProblem import updateProblem
 
 
 script_dir = os.path.dirname(__file__)
+os.chdir(script_dir)
 
-
-
-finalPlanName = 'bestplan';
+home_dir = expanduser("~");
+finalPlanName = os.path.join(home_dir,'bestplan');
 
 
 # createPlan(): invokes the planner and retrieve the new best plan
@@ -22,6 +23,7 @@ def createPlan():
 
 	# Identify the best plan found by the solver 
 	last = "";
+        
 	for f in sorted([f for f in os.listdir(".") if "output" in f]):
 		if len(last) > 0:
 			os.remove(last);
@@ -33,7 +35,7 @@ def translatePlan():
 	for r in ROBOTS:
 		plan[r] = [] if available[r] or len(plan[r]) == 0 else [plan[r][0]]
 
-        finalPlanPath = os.path.join(script_dir, finalPlanName)
+        finalPlanPath = finalPlanName
 
 	with open(finalPlanPath, 'r') as planFile:
 		for line in planFile:
@@ -89,4 +91,6 @@ def updatePlan():
 	createPlan();
 	translatePlan();
 	print "Plan Updated";
+
+updatePlan();
 

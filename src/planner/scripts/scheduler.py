@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import String
 from planner.msg import drone_command
 from planningProperties import *
-from planning import translatePlan, printPlans
+from planning import updatePlan, printPlans
 
 
 def idleMessage(robot):
@@ -125,7 +125,7 @@ def communicator():
 
 if __name__ == '__main__':
     try:
-        translatePlan();
+        updatePlan();
         printPlans();
         print "###"
         #idleMessage(3)
