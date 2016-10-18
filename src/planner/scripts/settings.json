@@ -17,6 +17,6 @@
 		"drones": ["depot", "depot"],
 		"turtles": ["depot", "depot"],
 		"crates": ["depot", "depot", "depot", "depot"],
-		"persons": ["l1", "l2"]
+		"persons": ["l0", "l1"]
 	}
 }
