@@ -3,3 +3,5 @@ devel
 _src
 *~
 *.pyc
+install
+src/planner/scripts/problem.pddl
