@@ -71,12 +71,18 @@ def publish(robot, state):
     rospy.loginfo("state to be published: "); 
     rospy.loginfo(state);
     msg = drone_command();
-    msg.drone_id = idByRobot[robot]; #not the actual id
+    msg.drone_id = idByRobot[robot];
+    #TODO: split case to handle drones as well; currently only turtles
     msg.command = state[0];
-    msg.posX = 0;
-    msg.posY = 0;
-    msg.posZ = 0;
-    topic[robot].publish(msg);
+    if msg.command == 'drive':
+        location = state[1];
+        position = positions[location];
+        msg.posX = position[0];
+        msg.posY = position[1];
+        msg.angle = 0;
+        topic[robot].publish(msg);
+    else:
+        topic[robot].publish(msg);
 
 
 def trim(string):
