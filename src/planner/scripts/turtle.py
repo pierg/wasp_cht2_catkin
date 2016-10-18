@@ -85,17 +85,18 @@ def takeAction(data):
 #status = 3 -> completed
 def goal_status_callback(data):
 	global goal_flag, schedulerTopic
-	print(data.status_list[0].status)
-	if data.status_list[0].status == 1:
-            goal_flag = false
-	if data.status_list[0].status == 3:
-            if (not goal_flag):
-                print("completed goal");
-                goal_flag = true
-	        msg = drone_command();
-                msg.drone_id = id;
-                msg.command = 'idle';
-                schedulerTopic.publish(msg)
+	#print(data.status_list[0].status)
+	if len(data.status_list)!=0:
+		if data.status_list[0].status == 1:
+		    goal_flag = false
+		if data.status_list[0].status == 3:
+		    if (not goal_flag):
+		        print("completed goal");
+		        goal_flag = true
+			msg = drone_command();
+		        msg.drone_id = id;
+		        msg.command = 'idle';
+		        schedulerTopic.publish(msg)
 
 
 
