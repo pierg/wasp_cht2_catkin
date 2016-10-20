@@ -1,0 +1,130 @@
+Presentation 2016-10-27
+Movie script
+
+
+
+
+
+    NARRATOR:
+This is the Chalmers group of the WASP Automonous Systems course. Today, we'll see how far they've come.
+
+We see a few short clips, accompanied by overlaid text read aloud by the narrator:
+
+Slow pan over a text editor with scheduler.py open. Overlaid text: "Autonomous planning and scheduling"
+
+Turtlebot moving. Overlaid text: "Ground robot moves from A to B, avoiding obstacles"
+
+Drone moving. Overlaid text: "Drone moves from A to B"
+
+Video feed of slam, preferably from drone while in flight. Overlaid text: "Drone uses SLAM."
+
+    TOMASZ:
+Our task is to deliver crates to disaster victims. We have a drone that can pick up the crates, but it can't deliver it far. We have a ground robot that can drive the crates far, but can't pick them up!
+
+A close-up of a computer running the scheduler, getting info back from dummy robots.
+    NARRATOR, VO:
+The solution lies in cooperation. Their system has a centralised node which finds the optimal plan for the available robots, and directs them in real time.
+
+    TOMASZ:
+The robots move independently of one another, each one depends only on the central scheduler. We call this architecture, of course, Skynet.
+
+    NARRATOR:
+Before they show us a full scenario, let's go through the individual parts.
+
+Splash screen: "The ground robots"
+
+    TOMMY:
+This here turtlebot represents the unmanned ground vehicle. It has an internal map, which places the origin at where it was when it was booted up.
+
+    NARRATOR:
+Using this coordinate system, Tommy can set a destination, and the turtlebot will go there, avoiding obstacles along the way.
+
+Splash screen: "The aerial drones"
+
+    IVO (or SOME DRONE GUY):
+This is an ARDrone. It can fly.
+
+The drone flies around for a bit.
+
+    TOMASZ:
+We are truly living in the future.
+
+    IVO:
+So we use PID controllers for pitch and roll, with the objective of keeping the drone still. As long as we have a reliable source telling us the drones position, we can control it hover in place.
+
+    NARRATOR:
+And let's meet the guy tasked with providing that reliable source.
+
+A door opens, entering SAMUEL's room. He is inside, booting up the SLAM feature for a camera he's holding, connected to the computer via cable. He holds up one hand indicating that we should wait. He is otherwise fully focussed on the computer screen.
+
+    SAMUEL, VO: (CUT to SAMUEL talking a few words into the clip)
+We use camera-based SLAM, so the drone controller gets a feed of the drone's position based on what it can see. It loses track if it moves too fast, but usually it's fine.
+
+CUT partway through, SAMUEL continues as VO. We see someone holding a camera, and a monitor showing that it is running SLAM. The operator shakes the SLAM camera.
+
+A drone flies to a point and stops.
+
+    NARRATOR:
+Based on the positioning data from SLAM, the drone crew can tell the drone where to go.
+
+    IVO:
+What we do is we feed the destination into the controller as essentially an error signal, so the drone tries to correct the position, and so it moves to where we want it to be.
+
+    NARRATOR:
+And now it's time to show a live run of the search-and-rescue operation.
+
+We see the robots in a large room, performing the main sequence, with narration at times. An overlay depicts the architecture and the two plans, updated live.
+
+Someone starts the planner.
+
+    NARRATOR:
+The planner reads the input problem, and creates a plan. Then, it waits for the two robots to connect.
+
+Someone starts the turtlebot. It is positioned so that it sees an april tag.
+
+    NARRATOR:
+The team starts the ground robot. Its camera runs the same SLAM routine described before, allowing us to match the turtles internal coordinate system to the position updates from SLAM.
+
+    NARRATOR:
+The ground robot is waiting for its first action, but that action is to drive to the first victim. The scheduler can tell that the global plan includes loading it up with crates before it leaves, so it can't drive off before that has happened. Let's start the drone.
+
+Someone starts the drone. It lifts from the ground; it, too, positioned to see an april tag.
+
+    NARRATOR:
+After the SLAM initialisation, the drone reports to the scheduler that it's ready for its first command. It gets told to go load crates on the ground robot.
+
+    NARRATOR:
+When the drone has finished loading the crates, both robots are cleared for moving. The drone is faster, so it will arrive by the first victim before the ground robot, ready to unload it.
+
+    NARRATOR:
+Once the ground robot arrives, the drone can unload it.
+
+    NARRATOR: (as the drone and turtle move to the second victim)
+This is all done autonomously – the operators have not touched anything since they started the drone.
+
+After last crate is delivered, the text "Plan finished" show up on screen. Fade to black.
+
+    TOMASZ:
+Our system could theoretically handle more than one robot of each type, but there are of course budgetary and logistical constraints. Also, if we had several aerial drones they would probably fly into each other.
+
+Text over black background, appearing line by line:
+Not implemented:
+- Representing crates and victims IRL
+- Mapping area using robots
+    NARRATOR:
+There are other parts of the challenge the Chalmers team has not yet solved. Most importantly, they currently define the locations of crates and victims in a specifications file. Their final solution will hopefully be able to send the drones out to scout for victims, create an initial map, and send that to the planner.
+
+Let's hope they, and their drones, can deliver in time.
+
+
+
+
+
+
+
+
+
+
+
+
+
