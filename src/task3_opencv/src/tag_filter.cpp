@@ -58,7 +58,7 @@ void filterTag_object_location(const wasp_custom_msgs::object_loc &msg)
 		//Publishing data
 		pub_x.publish(dist_x);
 		pub_y.publish(dist_y);
-        pub_y.publish(dist_z);
+        pub_z.publish(dist_z);
 
 		pub_pitch_image.publish(pitch_deg);
 		pub_roll_image.publish(roll_deg);
