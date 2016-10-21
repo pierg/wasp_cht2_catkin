@@ -1,22 +1,21 @@
 {
 	"drones": 1,
 	"turtles": 1,
-	"crates": 2,
-	"persons": 2,
+	"crates": 1,
+	"persons": 1,
 
 	"flyingSpeed": 10,
 	"drivingSpeed": 1,
 
 	"locations": {
 		"depot": [0,0],
-		"l0": [1,1],
-		"l1": [3,0]
+		"l0": [1,1]
 	},
 	
 	"initLocations": {
 		"drones": ["depot"],
 		"turtles": ["depot"],
-		"crates": ["depot", "depot"],
-		"persons": ["l0", "l1"]
+		"crates": ["depot"],
+		"persons": ["l0"]
 	}
 }
