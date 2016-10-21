@@ -27,13 +27,12 @@ pubCmdTo_PID_roll = rospy.Publisher('setpoint_slam_roll',Float64,queue_size=1)
 command = Twist()
 
 def ApplyControlEffort_Yaw(controlEffort):
-
 	yaw_velocity=controlEffort.data
 	command.angular.z = yaw_velocity
 	pubCmdTo_drone.publish(command)
 	PrintCommands()
 	#we want the setpoint for yaw in the center of the picture and the picture is 640 pixels wide
-	setpoint = Float64(0.5)
+	setpoint = Float64(0)
 	pubCmdTo_PID_yaw.publish(setpoint)
 
 
@@ -46,7 +45,7 @@ def ApplyControlEffort_Pitch(controlEffort):
 	pubCmdTo_drone.publish(command)
 	PrintCommands()
 	#Temporary setpoint
-	setpoint = Float64(2)
+	setpoint = Float64(1)
 	pubCmdTo_PID_pitch.publish(setpoint)
 
 def ApplyControlEffort_Roll(controlEffort):
@@ -56,7 +55,7 @@ def ApplyControlEffort_Roll(controlEffort):
 	pubCmdTo_drone.publish(command)
 	PrintCommands()
 	#Temporary setpoint
-	setpoint = Float64(0.5)
+	setpoint = Float64(0)
 	pubCmdTo_PID_roll.publish(setpoint)
 
 

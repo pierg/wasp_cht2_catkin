@@ -7,7 +7,7 @@
 		<!-- Launching the Ardrone driver from TUM_ARDRONE package -->
 		<include file="$(find tum_ardrone)/launch/ardrone_driver.launch">
 			<!--<arg name="droneip" value="192.168.1.10" />-->
-			<arg name="droneip" value="192.168.1.1" />
+			<arg name="droneip" value="192.168.5.10" />
 		</include>
 
 		<!-- Launches the keyboard controller -->
@@ -74,15 +74,31 @@
 
 
 		<!--Rotation in Z (Yaw) axis PID-->
-		<!--<node name="pid_slam_yaw" pkg="pid" type="controller" >-->
-			<!--<remap from="state" to="state_slam_yaw"/>-->
-			<!--<remap from="setpoint" to="setpoint_slam_yaw"/>-->
-			<!--<remap from="control_effort" to="control_effort_slam_yaw"/>-->
-			<!--<param name="Kp" value="5" />-->
-			<!--<param name="Ki" value="0.00" />-->
-			<!--<param name="Kd" value="0.00" />-->
-			<!--<param name="upper_limit" value="1" />-->
-			<!--<param name="lower_limit" value="-1" />-->
+		<node name="pid_slam_yaw" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_yaw"/>
+			<remap from="setpoint" to="setpoint_slam_yaw"/>
+			<remap from="control_effort" to="control_effort_slam_yaw"/>
+			<param name="Kp" value="0.8" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.00" />
+			<param name="upper_limit" value="1" />
+			<param name="lower_limit" value="-1" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="100.0" />
+		</node>
+
+
+		<!--<node name="pid_slam_pitch" pkg="pid" type="controller" >-->
+			<!--<remap from="state" to="state_slam_pitch"/>-->
+			<!--<remap from="setpoint" to="setpoint_slam_pitch"/>-->
+			<!--<remap from="control_effort" to="control_effort_slam_pitch"/>-->
+			<!--<param name="Kp" value="0.025" />-->
+			<!--<param name="Ki" value="0.025" />-->
+			<!--<param name="Kd" value="0.01" />-->
+			<!--<param name="upper_limit" value="0.5" />-->
+			<!--<param name="lower_limit" value="-0.5" />-->
 			<!--<param name="windup_limit" value="1" />-->
 			<!--<param name="diagnostic_period" value="0.25" />-->
 			<!--<param name="max_loop_frequency" value="100.0" />-->
@@ -90,41 +106,24 @@
 		<!--</node>-->
 
 
-		<node name="pid_slam_pitch" pkg="pid" type="controller" >
-			<remap from="state" to="state_slam_pitch"/>
-			<remap from="setpoint" to="setpoint_slam_pitch"/>
-			<remap from="control_effort" to="control_effort_slam_pitch"/>
-			<param name="Kp" value="0.05" />
-			<param name="Ki" value="0.0" />
-			<param name="Kd" value="0.0" />
-			<param name="upper_limit" value="0.5" />
-			<param name="lower_limit" value="-0.5" />
-			<param name="windup_limit" value="1" />
-			<param name="diagnostic_period" value="0.25" />
-			<param name="max_loop_frequency" value="100.0" />
-			<param name="min_loop_frequency" value="100.0" />
-		</node>
-
-
-		<node name="pid_slam_roll" pkg="pid" type="controller" >
-			<remap from="state" to="state_slam_roll"/>
-			<remap from="setpoint" to="setpoint_slam_roll"/>
-			<remap from="control_effort" to="control_effort_slam_roll"/>
-			<param name="Kp" value="0.05" />
-			<param name="Ki" value="0.0" />
-			<param name="Kd" value="0.0" />
-			<param name="upper_limit" value="0.5" />
-			<param name="lower_limit" value="-0.5" />
-			<param name="windup_limit" value="1" />
-			<param name="diagnostic_period" value="0.25" />
-			<param name="max_loop_frequency" value="100.0" />
-			<param name="min_loop_frequency" value="100.0" />
-		</node>
+		<!--<node name="pid_slam_roll" pkg="pid" type="controller" >-->
+			<!--<remap from="state" to="state_slam_roll"/>-->
+			<!--<remap from="setpoint" to="setpoint_slam_roll"/>-->
+			<!--<remap from="control_effort" to="control_effort_slam_roll"/>-->
+			<!--<param name="Kp" value="0.25" />-->
+			<!--<param name="Ki" value="0.025" />-->
+			<!--<param name="Kd" value="0.01" />-->
+			<!--<param name="upper_limit" value="0.5" />-->
+			<!--<param name="lower_limit" value="-0.5" />-->
+			<!--<param name="windup_limit" value="1" />-->
+			<!--<param name="diagnostic_period" value="0.25" />-->
+			<!--<param name="max_loop_frequency" value="100.0" />-->
+			<!--<param name="min_loop_frequency" value="100.0" />-->
+		<!--</node>-->
 		<!-- Converting control effort to the drone itself -->
 		<!--<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>-->
 
 		<node name="pid2plant" pkg="drone" type="pid2plant.py" launch-prefix="xterm -e"/>
-		<node name="plant2pid" pkg="drone" type="plant2pid.py" launch-prefix="xterm -e"/>
 
 
 	</group>
