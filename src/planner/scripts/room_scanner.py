@@ -99,7 +99,7 @@ def start():
 	#This keeps the function active till node are shurdown.
 
 	goto(0, 0, 0)
-	goto(1, 1, 1.57)
+	goto(0.5, 0.5, 1.57)
 
 	print("done")
 	rospy.spin()

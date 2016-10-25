@@ -46,7 +46,7 @@ from geometry_msgs.msg import PoseArray
 from geometry_msgs.msg import PoseStamped
 from actionlib_msgs.msg import GoalStatusArray
 
-
+goal_flag = True
 
 goto_to_publish = PoseStamped()
 goto_to_publish.header.frame_id = "/map"
@@ -66,9 +66,8 @@ def goto(x, y, w):
 def takeAction(data):
     if (data.command != 'idle'):
         cdata = data._connection_header
-        rospy.loginfo('%s now initiates %s', id, data.command)
-        rospy.loginfo('Driving to:', data.posX, data.posY)
-
+        #rospy.loginfo('%s now initiates %s', id, data.command)
+        #rospy.loginfo('Driving to: %f %f', data.posX, data.posY)
         goto(data.posX, data.posY, data.angle)
 
 
@@ -85,18 +84,18 @@ def takeAction(data):
 #status = 3 -> completed
 def goal_status_callback(data):
 	global goal_flag, schedulerTopic
-	#print(data.status_list[0].status)
-	if len(data.status_list)!=0:
+        if len(data.status_list)!=0:
+		#print(data.status_list[0].status)
 		if data.status_list[0].status == 1:
-		    goal_flag = false
-		if data.status_list[0].status == 3:
-		    if (not goal_flag):
-		        print("completed goal");
-		        goal_flag = true
-			msg = drone_command();
-		        msg.drone_id = id;
-		        msg.command = 'idle';
-		        schedulerTopic.publish(msg)
+			goal_flag = False
+			if data.status_list[0].status == 3:
+				if (not goal_flag):
+					print("completed goal");
+					goal_flag = true
+					msg = drone_command();
+					msg.drone_id = id;
+					msg.command = 'idle';
+					schedulerTopic.publish(msg)
 
 
 

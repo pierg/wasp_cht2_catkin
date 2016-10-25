@@ -5,7 +5,7 @@ $def with (page, title=None)
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Your page title here :)</title>
+  <title>.: SKYNET OVERVIEW :.</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -45,6 +45,9 @@ function updateState() {
 		jQuery.each( data, function( key, val ) {
 			jQuery("#agent"+key+" div:nth-of-type("+(val.index+1)+")").addClass(
 				(val.running || val.index+1 == jQuery("#agent"+key+" div").size() ? "running" : "waiting")
+
+			).removeClass(
+				(val.running || val.index+1 == jQuery("#agent"+key+" div").size() ? "waiting" : "")
 			)
 			jQuery("#agent"+key+ " div").not("div:eq("+val.index+")").removeClass("running waiting");
 		});
