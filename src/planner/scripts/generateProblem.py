@@ -10,10 +10,10 @@ def updateProblem():
 	objects = [
 		"	(:objects\n",
 		"		", ' '.join([loc for loc in locations])," - location\n",
-		"		", ' '.join(["d"+`i` for i in DRONES]), " - drone\n"
-		"		", ' '.join(["t"+`i` for i in TURTLES]), " - turtle\n"
-		"		", ' '.join(["c"+`i` for i in CRATES]), " - crate\n"
-		"		", ' '.join(["p"+`i` for i in range(persons)]), " - person\n"
+		"		", ' '.join(["drone"+`i` for i in DRONES]), " - drone\n"
+		"		", ' '.join(["turtle"+`i` for i in TURTLES]), " - turtle\n"
+		"		", ' '.join(["crate"+`i` for i in CRATES]), " - crate\n"
+		"		", ' '.join(["victim"+`i` for i in range(persons)]), " - person\n"
 		"		type0 - type\n"
 		"	)\n"
 	]
@@ -26,21 +26,21 @@ def updateProblem():
 			"		(= (drive-cost " + l1 + ", " + l2 + ") " + `distance2(l1,l2)/settings["drivingSpeed"]` + ")\n" 
 			for l1 in locations for l2 in locations]), "\n",
 		''.join([
-			"		(at d" + `i` + " " + at[i] + ") " + 
-			("(free d" + `i` + ")" if len(holds[i]) == 0 else ' '.join(["(holds d" + `i` + " c" + `j` + ")" for j in holds[i]])) + " \n" 
+			"		(at drone" + `i` + " " + at[i] + ") " + 
+			("(free drone" + `i` + ")" if len(holds[i]) == 0 else ' '.join(["(holds drone" + `i` + " crate" + `j` + ")" for j in holds[i]])) + " \n" 
 			for i in DRONES]), "\n",
 
 		''.join([
-			"		(at t" + `i` + " " + at[getTI(i)] + ") (available t" + `i` + ") " + 
-			("" if len(holds[getTI(i)]) == 0 else ' '.join(["(holds t" + `i` + " c" + `j` + ")" for j in holds[getTI(i)]])) + " \n" 
+			"		(at turtle" + `i` + " " + at[getTI(i)] + ") (available turtle" + `i` + ") " + 
+			("" if len(holds[getTI(i)]) == 0 else ' '.join(["(holds turtle" + `i` + " crate" + `j` + ")" for j in holds[getTI(i)]])) + " \n" 
 			for i in TURTLES]), "\n",
 
 
-		''.join(["		(at c" + `i` + " " + (str(at[getCI(i)]) if at[getCI(i)] == -1 else str(at[getCI(i)])) + ") (type c" + `i` + " type0)\n" for i in CRATES]), "\n",
+		''.join(["		(at crate" + `i` + " " + (str(at[getCI(i)]) if at[getCI(i)] == -1 else str(at[getCI(i)])) + ") (type crate" + `i` + " type0)\n" for i in CRATES]), "\n",
 
 		''.join([
-			"		(at p" + `i` + " " + settings["initLocations"]["persons"][i] + ") " +
-			("" if len(has[i]) == 0 else "(has p" + `i` + " type0)") + " \n" 
+			"		(at victim" + `i` + " " + settings["initLocations"]["persons"][i] + ") " +
+			("" if len(has[i]) == 0 else "(has vectim" + `i` + " type0)") + " \n" 
 			for i in range(persons)]),
 
 
@@ -52,7 +52,7 @@ def updateProblem():
 	goal = [
 		"	(:goal\n",
 		"		(and\n",
-		''.join(["			(has p" + `i` + " type0)\n" for i in range(persons)]),
+		''.join(["			(has victim" + `i` + " type0)\n" for i in range(persons)]),
 		"		)\n",
 		"	)\n"
 	]

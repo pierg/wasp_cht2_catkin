@@ -125,23 +125,22 @@
 	)
 	
 	(:durative-action deliver
-		:parameters (?d - drone 
+		:parameters (?t - turtle 
 					 ?c - crate 
-					 ?t - type 
+					 ?type - type 
 					 ?p - person 
 					 ?l - location)
         :duration (= ?duration 2)
 		:condition (and 
-			(over all (type ?c ?t))
-			(at start (holds ?d ?c))
-			(over all (at ?d ?l))
+			(over all (type ?c ?type))
+			(at start (include ?t ?c))
+			(over all (at ?t ?l))
 			(over all (at ?p ?l))
 			
 		)
 		:effect (and 
-			(at start (not (holds ?d ?c)))
-			(at end (free ?d))
-			(at end (has ?p ?t))
+			(at start (not (include ?t ?c)))
+			(at end (has ?p ?type))
 		)
 	)
 
