@@ -1,0 +1,56 @@
+$def with (page, title=None)
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Your page title here :)</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <style type="text/css">
+  	.running { background: #009900; }
+  	.waiting { background: #ddcc00; }
+  </style>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/skeleton.css">
+
+
+  <script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+
+<script>
+function updateState() {
+	jQuery.getJSON("?current=true", function( data ) {
+		jQuery.each( data, function( key, val ) {
+			jQuery("#agent"+key+" div:nth-of-type("+(val.index+1)+")").addClass(
+				(val.running || val.index+1 == jQuery("#agent"+key+" div").size() ? "running" : "waiting")
+			)
+			jQuery("#agent"+key+ " div").not("div:eq("+val.index+")").removeClass("running waiting");
+		});
+	});
+	setTimeout(function(){ updateState(); }, 1000);
+}
+jQuery(document).ready(function(){
+
+	updateState();
+});
+</script>  
+</head>
+<body>
+<div style="width: 100%; background: #ccccdd; "><br></div>
+<h1 style="margin: 0; padding:10px; font-size: 80px;">SKYNET OVERVIEW</h1>
+<div style="float:left;width: 100%; background: #ccccdd; "><br></div>
+$:page 
+
+</body></html>

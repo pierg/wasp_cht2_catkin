@@ -3,7 +3,7 @@
 
 import os
 script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, 'settings.json')
+file_path = os.path.join(script_dir, 'settings3.json')
 import json
 with open(file_path, 'r') as settingsFile:
 	settings = json.load(settingsFile)
@@ -35,6 +35,7 @@ actions = [[['starting'], False]];
 
 # for each robot, track a list of actions to perform (all should start with the 'starting' task)
 plan = [[0] for i in ROBOTS];
+current = [{'index': 0, 'running': True} for i in ROBOTS];
 
 # for driving commands, track the actions that has to be finished by the drones before driving away
 preceeding = [[] for i in TURTLES]; # track actions that should preceed a drive command

@@ -6,14 +6,23 @@ from std_msgs.msg import String
 from planner.msg import drone_command
 from planningProperties import *
 from planning import updatePlan, printPlans
+from os.path import expanduser 
 
 
 def idleMessage(robot):
-        if (not available[robot]):
-	        finishAction(robot)
+	print actions
+	if (not available[robot]):
+		finishAction(robot)
+		current[robot]['index'] += 1
+		current[robot]['running'] = False
+		print "##", robot, ": ", current[robot]
+		updateWeb(robot)
 	for r in ROBOTS:
-	        if available[r] and len(plan[r]) > 0 and allowedToStart(r, actions[plan[r][0]][0]):
-		        startAction(r);
+			if available[r] and len(plan[r]) > 0 and allowedToStart(r, actions[plan[r][0]][0]):
+				startAction(r)
+				current[r]['running'] = True
+				print "####", r, ": ", current[r]
+				updateWeb(r)
 
 def startAction(r):
 	p = actions[plan[r][0]][0];
@@ -63,77 +72,80 @@ def allowedToStart(r, p):
 
 	return True;
 
+def updateWeb(r):
+	with open(expanduser("~") + '/wasp_challenge_current_state', 'w') as f:
+		json.dump(current, f)
 
 
 def publish(robot, state):
-    global topic
-    global idByRobot
-    rospy.loginfo("state to be published: "); 
-    rospy.loginfo(state);
-    msg = drone_command();
-    msg.drone_id = idByRobot[robot];
-    #TODO: split case to handle drones as well; currently only turtles
-    msg.command = state[0];
-    if msg.command == 'drive':
-        location = state[1];
-        position = positions[location];
-        msg.posX = position[0];
-        msg.posY = position[1];
-        msg.angle = 0;
-        topic[robot].publish(msg);
-    else:
-        topic[robot].publish(msg);
+	global topic
+	global idByRobot
+	rospy.loginfo("state to be published: "); 
+	rospy.loginfo(state);
+	msg = drone_command();
+	msg.drone_id = idByRobot[robot];
+	#TODO: split case to handle drones as well; currently only turtles
+	msg.command = state[0];
+	if msg.command == 'drive':
+		location = state[1];
+		position = positions[location];
+		msg.posX = position[0];
+		msg.posY = position[1];
+		msg.angle = 0;
+		topic[robot].publish(msg);
+	else:
+		topic[robot].publish(msg);
 
 
 def trim(string):
-    if (string[0] == '/'):
-        return string[1:]
-    else:
-        return string
+	if (string[0] == '/'):
+		return string[1:]
+	else:
+		return string
 
 def messageFromUnit(data):
-    if (data.command == 'idle'):
-        unitId = trim(data._connection_header['topic'])
-        unitId2 = data.drone_id
-        if unitId == unitId2:
-            rospy.loginfo('got idle message from %s', unitId)
-            idleMessage(robotById[unitId])
-        else:
-            rospy.loginfo('id/channel mismatch: %s on channel %s', unitId2, unitId)
+	if (data.command == 'idle'):
+		unitId = trim(data._connection_header['topic'])
+		unitId2 = data.drone_id
+		if unitId == unitId2:
+			rospy.loginfo('got idle message from %s', unitId)
+			idleMessage(robotById[unitId])
+		else:
+			rospy.loginfo('id/channel mismatch: %s on channel %s', unitId2, unitId)
 
 
 def communicator():
-    #global rate
-    global topic
-    global robotById
-    global idByRobot
-    topic = {}
-    robotById = {}
-    idByRobot = {}
-    rospy.init_node('scheduler', anonymous=False)
-    #rate = rospy.Rate(2)
-    rospy.loginfo('started scheduler')
+	#global rate
+	global topic
+	global robotById
+	global idByRobot
+	topic = {}
+	robotById = {}
+	idByRobot = {}
+	rospy.init_node('scheduler', anonymous=False)
+	#rate = rospy.Rate(2)
+	rospy.loginfo('started scheduler')
 
-    for r in ROBOTS:
-        id = ('drone' if (r < drones) else 'turtle') + str(r)
-        topic[r] = rospy.Publisher(id, drone_command, queue_size=10)
-        rospy.Subscriber(id, drone_command, messageFromUnit)
-        robotById[id] = r;
-        idByRobot[r] = id;
+	for r in ROBOTS:
+		id = ('drone' if (r < drones) else 'turtle') + str(r)
+		topic[r] = rospy.Publisher(id, drone_command, queue_size=10)
+		rospy.Subscriber(id, drone_command, messageFromUnit)
+		robotById[id] = r;
+		idByRobot[r] = id;
 
-    rospy.spin()
+	rospy.spin()
 
 if __name__ == '__main__':
-    try:
-        updatePlan();
-        printPlans();
-        print "###"
-        #idleMessage(3)
-        #idleMessage(2)
-        #idleMessage(1)
-        #idleMessage(0)
-        #for i in range(len(actions)):
+	try:
+		updatePlan();
+		printPlans();
+		print "###"
+		#idleMessage(3)
+		#idleMessage(2)
+		#idleMessage(1)
+		#idleMessage(0)
+		#for i in range(len(actions)):
 	#        print actions[i][1], "\t", actions[i][0];
-        communicator()
-    except rospy.ROSInterruptException:
-        pass
+		communicator()
+	except rospy.ROSInterruptException:
+		pass
