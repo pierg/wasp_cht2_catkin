@@ -41,115 +41,51 @@ import sys
 import getopt
 from std_msgs.msg import String
 from planner.msg import drone_command
-from nav_msgs.msg import Odometry
-import numpy as np
-
-global publishTargetData
-global publishDroneStatus
-global droneId
-
-targetPoint = Odometry()
-
-def SetTarget(data):
-
-  targetPoint.pose.pose.position.x = data.PosX
-  targetPoint.pose.pose.position.y = data.PosY
-  targetPoint.pose.pose.position.z = data.PosZ
-
-  publishTargetData.publish(targetPoint)
-
-
-def ListenTo(data):
-  currentX = data.pose.pose.position.x
-  currentY = data.pose.pose.position.y
-
-  targetX = targetPoint.pose.pose.position.x
-  targetY = targetPoint.pose.pose.position.y
-
-  distanceToTarget = np.sqrt(np.square(currentX-targetX)+np.square(currentY-targetY))
-  distaneThreshold = 0.5
-
-  droneMessage = drone_command()
-    
-  if distanceToTarget < distanceThreshold:
-    droneMessage.command = 'idle'
-  else :
-    droneMessage.command = 'busy'
-  
-  droneMessage.drone_id = droneId
-  droneMessage.PosX = currentX
-  droneMessage.PosY = currentY
-  droneMessage.PosZ = data.pose.pose.position.z
-  droneMessage.angle = 0
-
-  publishDroneStatus.publish(droneMessage)
 
 
 
 
+def takeAction(data):
+    global topic
+    if (data.command != 'idle'):
+        cdata = data._connection_header
+        rospy.loginfo('%s now initiates %s', id, data.command)
+        rate.sleep()
+        msg = drone_command();
+        msg.drone_id = id;
+        msg.command = 'idle';
+        topic.publish(msg)
 
-#def takeAction(data):
-#    global topic
-#    if (data.command != 'idle'):
-#        cdata = data._connection_header
-#        rospy.loginfo('%s now initiates %s', id, data.command)
-#        rate.sleep()
-#        msg = drone_command();
-#        msg.drone_id = id;
-#        msg.command = 'idle';
-#        topic.publish(msg)
 
+def drone(args):
+    global rate
+    global id
+    global topic
+    #global idRequestTopic
+    #TODO: data validation of arg
 
-#def drone(args):
-#    global rate
-#    global id
-#    global topic
-#    #global idRequestTopic
-#    #TODO: data validation of arg##
+    arg = getopt.getopt(args, '')[1][0]
+    id = 'drone'+arg
+    rospy.init_node(id, anonymous=True)
+    rospy.loginfo('started '+id)
+    topic = rospy.Publisher(id, drone_command, queue_size=10)
+    rospy.Subscriber(id, drone_command, takeAction)
+    rate = rospy.Rate(1)
+    rate.sleep() #has to sleep after subscribing to a new topic
 
-#    arg = getopt.getopt(args, '')[1][0]
-#    id = 'drone'+arg
-#    rospy.init_node(id, anonymous=True)
-#    rospy.loginfo('started '+id)
-#    topic = rospy.Publisher(id, drone_command, queue_size=10)
-#    rospy.Subscriber(id, drone_command, takeAction)
-#    rate = rospy.Rate(1)
-#    rate.sleep() #has to sleep after subscribing to a new topic
-
-#    msg = drone_command();
-#    msg.drone_id = id;
-#    msg.command = 'idle';
-#    topic.publish(msg)
+    msg = drone_command();
+    msg.drone_id = id;
+    msg.command = 'idle';
+    topic.publish(msg)
 
     # spin() simply keeps python from exiting until this node is stopped
-#    rospy.spin()
-
-
-if __name__=='__main__':
-  if len(sys.argv) < 2:
-    print("usage: rosrun planner drone.py <id#>")
-  else:
-    droneId = str(sys.argv[1])
-    # Start drone+id node
-    rospy.init_node('drone'+droneId)
-    
-    # Subscribe to the odometry position from the SLAM est.
-    slamTopic = 'slam/pos' + droneId
-    rospy.Subscriber(slamTopic,Odometry,ExtractOdometry)
-    
-    # Subscribe to the scheduling topic to know target position
-    schedulerTopic = 'drone'+droneID+'/setTarget'
-    rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
-
-    # Publish to drone pid controller the target value
-    targetDataTopic = 'drone'+str(sys.argv[1:])+'/targetPosition'
-    publishTargetData = rospy.Publisher(targetDataTopic, Odometry, queue_size=1)
-
-    # Publish to scheduler the status of the drone
-    droneStatusTopic = 'drone'+droneId+'/status'
-    publishDroneStatus = rospy.Publisher(droneStatusTopic,drone_command,queue_size=1)
-
     rospy.spin()
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("usage: rosrun planner drone.py <id#>")
+    else:
+        drone(sys.argv[1:])
 
 
 
