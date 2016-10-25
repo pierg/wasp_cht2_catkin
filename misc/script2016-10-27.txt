@@ -76,7 +76,7 @@ People working together, testing drones and robots.
 The marriage between SLAM and PID control to complete the task, actually hints to a broader collaboration effort. The Chalmers team actually consists of two teams, who joined forces a few weeks into the project.
 
     TOMASZ:
-It was partly for logistical reasons; we had a limited amount of robots, and had to split them over two campuses. But it was also because, well, it's stupid to do the same work twice, right?
+It was partly for logistical reasons; we had a limited amount of robots, and had to split them over two campuses. But it was also because after all, it would feel stupid to do the same work twice.
 
     NARRATOR:
 And so they didn't. When they decided to join forces, team 1 already had a planner ready to go. Team 2, in turn, brought their work on the turtlebot to the table.

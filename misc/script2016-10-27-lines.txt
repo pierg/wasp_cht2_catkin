@@ -31,10 +31,10 @@ This here turtlebot represents the unmanned ground vehicle. It has an internal m
 This is an ARDrone. It can fly.
 
 2.
-So we use PID controllers for pitch and roll, with the objective of keeping the drone still. As long as we have a reliable source telling us the drones position, we can control it hover in place.
+So we use PID controllers for the position and angle, with the objective of keeping the drone still. As long as we have a reliable source telling us the drone's position, we can make it navigate to any position and hover in place.
 
 3.
-What we do is we feed the destination into the controller as essentially an error signal, so the drone tries to correct the position, and so it moves to where we want it to be.
+What we do is we feed the deviation from the target destination into the controller, and the drone then tries to correct the position, and so it moves to where we want it to be.
 
 
     ==== SAMUEL ====
