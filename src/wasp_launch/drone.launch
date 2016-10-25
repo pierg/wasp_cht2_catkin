@@ -13,6 +13,7 @@
 		<!-- Launches the keyboard controller -->
 		<!--<include file="$(find tum_ardrone)/launch/tum_ardrone.launch" />-->	
 		<!-- Launches the keyboard controller -->
+
   		<node name="drone_gui" pkg="tum_ardrone" type="drone_gui"/>
 
 		<!-- Launching the april tags detection node -->
@@ -74,20 +75,20 @@
 
 
 		<!--Rotation in Z (Yaw) axis PID-->
-		<!--<node name="pid_slam_yaw" pkg="pid" type="controller" >-->
-			<!--<remap from="state" to="state_slam_yaw"/>-->
-			<!--<remap from="setpoint" to="setpoint_slam_yaw"/>-->
-			<!--<remap from="control_effort" to="control_effort_slam_yaw"/>-->
-			<!--<param name="Kp" value="0.1" />-->
-			<!--<param name="Ki" value="0.00" />-->
-			<!--<param name="Kd" value="0.00" />-->
-			<!--<param name="upper_limit" value="2" />-->
-			<!--<param name="lower_limit" value="-2" />-->
-			<!--<param name="windup_limit" value="2" />-->
-			<!--<param name="diagnostic_period" value="0.25" />-->
-			<!--<param name="max_loop_frequency" value="100.0" />-->
-			<!--<param name="min_loop_frequency" value="100.0" />-->
-		<!--</node>-->
+		<node name="pid_slam_yaw" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_yaw"/>
+			<remap from="setpoint" to="setpoint_slam_yaw"/>
+			<remap from="control_effort" to="control_effort_slam_yaw"/>
+			<param name="Kp" value="0.1" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.00" />
+			<param name="upper_limit" value="2" />
+			<param name="lower_limit" value="-2" />
+			<param name="windup_limit" value="2" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="100.0" />
+		</node>
 
 
 		<!--<node name="pid_slam_x" pkg="pid" type="controller" >-->
@@ -123,7 +124,7 @@
 		<!-- Converting control effort to the drone itself -->
 		<!--<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>-->
 
-		<!--<node name="pid2plant" pkg="drone" type="pid2plant.py" launch-prefix="xterm -e"/>-->
+		<node name="pid2plant" pkg="drone" type="pid2plant.py" launch-prefix="xterm -e"/>
 
 	</group>
 </launch>
