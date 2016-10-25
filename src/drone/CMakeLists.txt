@@ -9,6 +9,7 @@ catkin_package()
 
 install(PROGRAMS src/pid2plant.py
 		 src/plant2pid.py
+		 src/uiscript.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
