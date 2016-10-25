@@ -26,6 +26,7 @@ def createPlan():
     last = "";
         
     for f in sorted([f for f in os.listdir(".") if "output" in f]):
+        print f
         if len(last) > 0:
             os.remove(last);
         last = f;
@@ -49,14 +50,14 @@ def translatePlan():
             m = re.findall(r"[\( ](\w+)", line)
             action = m[0];
             if action in ['pickup', 'putdown']:
-                drone = int(m[1].strip('d'));
-                crate = int(m[2].strip('c'));
+                drone = int(m[1].strip('drone'));
+                crate = int(m[2].strip('crate'));
                 location = m[3];
                 p = [action, crate, location];
                 addActionToPlan(drone, p);
-                webplan[drone]['plan'].append(p[0].title() + " Crate" + `crate` + " at location " + location)
+                webplan[drone]['plan'].append(p[0].title() + " Crate" + `crate` + " at " + location)
             elif action in ['fly', 'drive']:
-                agent = int(m[1].strip('d').strip('t'));
+                agent = int(m[1].strip('drone').strip('turtle'));
                 destination = m[3];
                 index = agent if (action == 'fly') else getTI(agent);
                 p = [action, destination]
@@ -64,25 +65,25 @@ def translatePlan():
                 if action == 'drive':
                     actions[len(actions)-1][2] = preceeding[agent]
                     preceeding[agent] = [];
-                webplan[index]['plan'].append(p[0].title() + " to " + location)
+                webplan[index]['plan'].append(p[0].title() + " to " + destination)
             elif action in ['load', 'unload']:
-                drone = int(m[1].strip('d'));
-                crate = int(m[2].strip('c'));
-                turtle = int(m[3].strip('t'));
+                drone = int(m[1].strip('drone'));
+                crate = int(m[2].strip('crate'));
+                turtle = int(m[3].strip('turtle'));
                 location = m[4];
                 p = [action, crate, turtle, location];
                 preceeding[turtle].append(len(actions));
                 addActionToPlan(drone, p);
                 webplan[drone]['plan'].append(p[0].title() + " Crate" + `crate` + " onto Turtle" + `turtle`)
             elif action in ['deliver']:
-                drone = int(m[1].strip('d'));
-                crate = int(m[2].strip('c'));
+                turtle = int(m[1].strip('turtle'));
+                crate = int(m[2].strip('crate'));
                 type = int(m[3].strip('type'));
-                person = int(m[4].strip('p'));
+                person = int(m[4].strip('victim'));
                 location = m[5];
                 p = [action, crate, type, person, location];
-                addActionToPlan(drone, p);
-                webplan[drone]['plan'].append(p[0].title() + " a crate of type " + `type` + " to " + `person`)
+                addActionToPlan(getTI(turtle), p);
+                webplan[getTI(turtle)]['plan'].append(p[0].title() + " a crate of type " + `type` + " to victim" + `person`)
 
     for i in ROBOTS:
         webplan[i]['plan'].append("Finished");
