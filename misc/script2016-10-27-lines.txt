@@ -15,6 +15,9 @@ The robots move independently of one another, each one depends only on the centr
 We are truly living in the future.
 
 4.
+It was partly for logistical reasons; we had a limited amount of robots, and had to split them over two campuses. But it was also because, well, it's stupid to do the same work twice, right?
+
+5.
 Our system could theoretically handle more than one robot of each type, but there are of course budgetary and logistical constraints. Also, if we had several aerial drones they would probably fly into each other.
 
 

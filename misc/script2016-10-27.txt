@@ -6,7 +6,7 @@ Movie script
 
 
     NARRATOR:
-This is the Chalmers group of the WASP Automonous Systems course. Today, we'll see how far they've come.
+These are the Chalmers groups of the WASP Automonous Systems course. Today, we'll see how far they've come.
 
 We see a few short clips, accompanied by overlaid text read aloud by the narrator:
 
@@ -68,7 +68,21 @@ A drone flies to a point and stops.
 Based on the positioning data from SLAM, the drone crew can tell the drone where to go.
 
     IVO:
-What we do is we feed the destination into the controller as essentially an error signal, so the drone tries to correct the position, and so it moves to where we want it to be.
+What we do is we feed the destination into the controller as essentially an error signal, so when the drone tries to correct the position, it moves to where we want it to be.
+
+People working together, testing drones and robots.
+
+    NARRATOR:
+The marriage between SLAM and PID control to complete the task, actually hints to a broader collaboration effort. The Chalmers team actually consists of two teams, who joined forces a few weeks into the project.
+
+    TOMASZ:
+It was partly for logistical reasons; we had a limited amount of robots, and had to split them over two campuses. But it was also because, well, it's stupid to do the same work twice, right?
+
+    NARRATOR:
+And so they didn't. When they decided to join forces, team 1 already had a planner ready to go. Team 2, in turn, brought their work on the turtlebot to the table.
+
+Lingering stills of the two teams, labeled "CTH-1" and "CTH-2". Then a slide showing 'Planning' in the left-hand column, 'Turtlebot' in the right-hand column, and 'Drones', '
+SLAM' and 'Integration'
 
     NARRATOR:
 And now it's time to show a live run of the search-and-rescue operation.
@@ -80,35 +94,35 @@ Someone starts the planner.
     NARRATOR:
 The planner reads the input problem, and creates a plan. Then, it waits for the two robots to connect.
 
-Someone starts the turtlebot. It is positioned so that it sees an april tag.
+Someone starts the turtlebot. It is positioned right beneath the april tag.
 
     NARRATOR:
-The team starts the ground robot. Its camera runs the same SLAM routine described before, allowing us to match the turtles internal coordinate system to the position updates from SLAM.
+The team starts the ground robot. It is positioned precisely beneath the april tag that will serve as the point of origin in the global coordinate system.
 
     NARRATOR:
-The ground robot is waiting for its first action, but that action is to drive to the first victim. The scheduler can tell that the global plan includes loading it up with crates before it leaves, so it can't drive off before that has happened. Let's start the drone.
+The ground robot immediately receives its first order, to move to the depot. But when it gets there, it will have to wait. It can't pick up the crate on its own. So let's start the drone.
 
-Someone starts the drone. It lifts from the ground; it, too, positioned to see an april tag.
-
-    NARRATOR:
-After the SLAM initialisation, the drone reports to the scheduler that it's ready for its first command. It gets told to go load crates on the ground robot.
+Someone starts the drone. It lifts from the ground; it is positioned to see the april tag.
 
     NARRATOR:
-When the drone has finished loading the crates, both robots are cleared for moving. The drone is faster, so it will arrive by the first victim before the ground robot, ready to unload it.
+After the SLAM initialisation, the drone reports to the scheduler that it's ready for its first command. It gets told to go load a crate on the ground robot.
 
     NARRATOR:
-Once the ground robot arrives, the drone can unload it.
+When the drone has finished loading the crate, the ground robot is cleared for moving. It sets off towards the victim.
 
-    NARRATOR: (as the drone and turtle move to the second victim)
+    NARRATOR: (as the turtle moves to the victim)
 This is all done autonomously – the operators have not touched anything since they started the drone.
 
-After last crate is delivered, the text "Plan finished" show up on screen. Fade to black.
+    NARRATOR:
+When the ground robot arrives, the victim can get the crate.
+
+After the crate is delivered, the text "Plan finished" show up on screen. Fade to black.
 
     TOMASZ:
 Our system could theoretically handle more than one robot of each type, but there are of course budgetary and logistical constraints. Also, if we had several aerial drones they would probably fly into each other.
 
 Text over black background, appearing line by line:
-Not implemented:
+Future work:
 - Representing crates and victims IRL
 - Mapping area using robots
     NARRATOR:
