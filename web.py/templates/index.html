@@ -45,6 +45,9 @@ function updateState() {
 		jQuery.each( data, function( key, val ) {
 			jQuery("#agent"+key+" div:nth-of-type("+(val.index+1)+")").addClass(
 				(val.running || val.index+1 == jQuery("#agent"+key+" div").size() ? "running" : "waiting")
+
+			).removeClass(
+				(val.running || val.index+1 == jQuery("#agent"+key+" div").size() ? "waiting" : "")
 			)
 			jQuery("#agent"+key+ " div").not("div:eq("+val.index+")").removeClass("running waiting");
 		});
