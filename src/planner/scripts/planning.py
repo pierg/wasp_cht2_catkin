@@ -6,7 +6,7 @@ import os
 import json
 from os.path import expanduser 
 from planningProperties import *
-from generateProblem import updateProblem
+from generateProblem import updateProblem 
 
 
 script_dir = os.path.dirname(__file__)
@@ -18,18 +18,24 @@ finalPlanName = os.path.join(home_dir,'bestplan');
 
 # createPlan(): invokes the planner and retrieve the new best plan
 def createPlan():
+
+    # update the problem definition
+    updateProblem()
+
     # perform the planning
     FNULL = open(os.devnull, 'w')
     retcode = subprocess.call(["./plan"], stdout=FNULL, stderr=subprocess.STDOUT)
 
     # Identify the best plan found by the solver 
     last = "";
+
+    print [f for f in os.listdir(".") if "output" in f]
         
     for f in sorted([f for f in os.listdir(".") if "output" in f]):
-        print f
         if len(last) > 0:
             os.remove(last);
         last = f;
+
     os.rename(last, finalPlanName)
 
 def translatePlan():
@@ -78,12 +84,19 @@ def translatePlan():
             elif action in ['deliver']:
                 turtle = int(m[1].strip('turtle'));
                 crate = int(m[2].strip('crate'));
-                type = int(m[3].strip('type'));
-                person = int(m[4].strip('victim'));
-                location = m[5];
-                p = [action, crate, type, person, location];
+                victim = int(m[3].strip('victim'));
+                location = m[4];
+                p = [action, crate, type, victim, location];
                 addActionToPlan(getTI(turtle), p);
-                webplan[getTI(turtle)]['plan'].append(p[0].title() + " a crate of type " + `type` + " to victim" + `person`)
+                webplan[getTI(turtle)]['plan'].append(p[0].title() + " med. crate to victim" + `victim`)
+            elif action in ['scan']:
+                drone = int(m[1].strip('drone'));
+                location = int(m[2].strip('area'));
+                p = [action, location];
+                addActionToPlan(drone, p);
+                webplan[drone]['plan'].append(p[0].title() + " emergency area " + `location`)
+
+    cleanUp();
 
     for i in ROBOTS:
         webplan[i]['plan'].append("Finished");

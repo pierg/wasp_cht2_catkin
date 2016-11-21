@@ -56,9 +56,11 @@ def drone(args):
     msg = drone_command();
     msg.drone_id = id;
     msg.command = 'idle';
-    while (True):
+    count = 0
+    while (count < 10):
         raw_input("Press Enter to continue...")
         topic.publish(msg);
+        count += 1
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

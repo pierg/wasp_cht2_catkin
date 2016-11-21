@@ -7,17 +7,72 @@ from planner.msg import drone_command
 from planningProperties import *
 from planning import updatePlan, printPlans
 from os.path import expanduser 
+import generateProblem
 
+def incomingVictim(data):
+	global victims
+	global locations
+	global positions
+	global crates
+	global at
+
+	d = data.data.split( )
+	id = victims
+
+	# Add the new victim
+	victims += 1;
+	name = "victimLocation"+`id`
+	generateProblem.victims += 1; # because I don't have the same instance.....
+	locations.append(name)
+	positions[name] = [int(d[0]), int(d[1])]
+
+	# Add a new crate for the victim
+	crates += 1; 
+	CRATES = range(crates);
+	generateProblem.crates += 1; # because I don't have the same instance.....
+	generateProblem.CRATES = range(crates);
+	at.append('depot')
+	
+
+	print "New victim identified at positions: ", d[0], ",", d[1]
+	print "Initiate re-planning"
+	updatePlan(); # run the planner
+
+
+def incomingCommand(data):
+	global SCHEDULER_ACTIVE
+	global emergency_areas
+	global locations
+	global positions
+	d = data.data.split( )
+	if d[0] == "emergency_area":
+		name = "area"+`emergency_areas`
+		emergency_areas += 1;
+		generateProblem.emergency_areas += 1; # because I don't have the same instance.....
+		locations.append(name)
+		positions[name] = [int(d[1]), int(d[2])]
+		print "Incomming emergency_area"
+		print "Initiate re-planning"
+		updatePlan(); # run the planner
+	elif d[0] == "start":
+		SCHEDULER_ACTIVE = True;
+		print "activate the scheduler"
+		idleMessage(-1)
+	elif d[0] == "cancel":
+		SCHEDULER_ACTIVE = False;
+		print "cancel the scheduler"
+	else:
+		print "Command: ", d[0], " has not been implemented."
 
 def idleMessage(robot):
-	print actions
-	if (not available[robot]):
+	if (robot >= 0 and not available[robot]):
 		finishAction(robot)
 		current[robot]['index'] += 1
 		current[robot]['running'] = False
 		print "##", robot, ": ", current[robot]
 		updateWeb(robot)
-	for r in ROBOTS:
+	if SCHEDULER_ACTIVE:
+		for r in ROBOTS:
 			if available[r] and len(plan[r]) > 0 and allowedToStart(r, actions[plan[r][0]][0]):
 				startAction(r)
 				current[r]['running'] = True
@@ -56,6 +111,10 @@ def finishAction(r):
 		elif p[0] == 'deliver':
 			has[p[3]].append(p[2]);
 			holds[r].remove(p[1]);
+		elif p[0] == 'scan':
+			scanned.append(p[1]);
+
+		print scanned;
 
 		actions[plan[r][0]][1] = True;
 		print "finish: ", r, p, holds, at;
@@ -75,7 +134,6 @@ def allowedToStart(r, p):
 def updateWeb(r):
 	with open(expanduser("~") + '/wasp_challenge_current_state', 'w') as f:
 		json.dump(current, f)
-
 
 def publish(robot, state):
 	global topic
@@ -126,6 +184,12 @@ def communicator():
 	#rate = rospy.Rate(2)
 	rospy.loginfo('started scheduler')
 
+	# subscribe to commands from the operator
+	rospy.Subscriber("wasp_cth_operator", String, incomingCommand)
+	# subscribe to new victims, identified by the drones
+	rospy.Subscriber("wasp_cth_victims", String, incomingVictim)
+
+
 	for r in ROBOTS:
 		id = ('drone' if (r < drones) else 'turtle') + str(r)
 		topic[r] = rospy.Publisher(id, drone_command, queue_size=10)
@@ -140,12 +204,6 @@ if __name__ == '__main__':
 		updatePlan();
 		printPlans();
 		print "###"
-		#idleMessage(3)
-		#idleMessage(2)
-		#idleMessage(1)
-		#idleMessage(0)
-		#for i in range(len(actions)):
-	#        print actions[i][1], "\t", actions[i][0];
 		communicator()
 	except rospy.ROSInterruptException:
 		pass
