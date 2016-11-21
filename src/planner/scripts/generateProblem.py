@@ -57,6 +57,8 @@ def updateProblem():
         "\t\t(and\n",
         ''.join(["\t\t\t(treated victim" + `i` + ")\n" for i in range(victims)]),
         ''.join(["\t\t\t(scanned area" + `i` + ")\n" for i in range(emergency_areas)]),
+        ''.join(["\t\t\t(at drone" + `i` + " "+settings['initLocations']['drones'][i]+")\n" for i in DRONES]),
+        ''.join(["\t\t\t(at turtle" + `i` + " "+settings['initLocations']['turtles'][i]+")\n" for i in TURTLES]),
         "\t\t)\n",
         "\t)\n"
     ]
