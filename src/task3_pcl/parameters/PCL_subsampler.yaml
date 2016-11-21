@@ -1,4 +1,0 @@
-pass_through:
-  filter_limit: {max: 2.0, min: 0.0}
-statistical_outlier_removal: {mean_k: 50, stddev_mult_thresh: 1.0}
-voxel_grid: {leaf_size: 0.1}

@@ -1,0 +1,6 @@
+$def with (state)
+
+$for i in range(len(state))
+	<div id="agent$i" style="float:left; padding:30px; width: 400px;">
+	$:render.agent(state[i])
+	</div>
