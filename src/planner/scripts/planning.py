@@ -2,6 +2,7 @@
 
 import re
 import subprocess;
+import shutil
 import os
 import json
 from os.path import expanduser 
@@ -36,7 +37,7 @@ def createPlan():
             os.remove(last);
         last = f;
 
-    os.rename(last, finalPlanName)
+    shutil.move(last, finalPlanName)
 
 def translatePlan():
     # If robot is currently performing a task, keep this in the plan, else empty the old plan

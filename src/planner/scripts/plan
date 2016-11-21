@@ -1,2 +1,2 @@
 #!/bin/bash
-./yahsp3 -o domain.pddl -f problem.pddl -out output
+./yahsp3 -y 1 -N -o domain.pddl -f problem.pddl -out output
