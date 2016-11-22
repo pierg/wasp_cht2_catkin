@@ -62,7 +62,7 @@ include_directories(
 #install(PROGRAMS pynodes/voice_feedback.py
 #  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-#add_executable(approach_and_go src/approach_and_go.cpp)
-#target_link_libraries(approach_and_go ${catkin_LIBRARIES})
-#add_dependencies(approach_and_go approach_and_go ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_executable(apriltag_tf_broadcaster src/apriltag_tf_broadcaster.cpp)
+target_link_libraries(apriltag_tf_broadcaster ${catkin_LIBRARIES})
+add_dependencies(apriltag_tf_broadcaster apriltag_tf_broadcaster ${${PROJECT_NAME}_EXPORTED_TARGETS})
 

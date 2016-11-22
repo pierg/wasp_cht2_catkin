@@ -1,0 +1,13 @@
+<launch>
+	<!-- Apriltag detection and TF (Transformation between coordinate frames)-->	
+	<node name="april_tags" pkg="task3_opencv" type="april_tags"/>
+	<node name="apriltag_tf_broadcaster_0" pkg="drone_tf" type="apriltag_tf_broadcaster"  launch-prefix="xterm -e">
+		<param name="id" value="0"/>
+	</node>
+	<node name="apriltag_tf_broadcaster_2" pkg="drone_tf" type="apriltag_tf_broadcaster"  launch-prefix="xterm -e">
+		<param name="id" value="2"/>
+	</node>
+
+	<!--<node name="apriltag_tf_listener" pkg="drone_tf" type="apriltag_tf_listener"/>-->	
+	
+</launch>
