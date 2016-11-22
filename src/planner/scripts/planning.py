@@ -2,8 +2,8 @@
 
 import re
 import subprocess;
-import shutil
 import os
+import shutil
 import json
 from os.path import expanduser 
 from planningProperties import *
@@ -37,6 +37,7 @@ def createPlan():
             os.remove(last);
         last = f;
 
+    # os.rename(last, finalPlanName)
     shutil.move(last, finalPlanName)
 
 def translatePlan():

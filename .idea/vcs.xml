@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/devel/ardrone_autonomy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/tum_ardrone" vcs="Git" />
   </component>
 </project>
