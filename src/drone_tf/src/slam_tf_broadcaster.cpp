@@ -1,5 +1,4 @@
-//This node is responsible for converting the apriltag location in respect to the turtlebot.
-// This way we can set up a listener that looks at the apriltag tf and put it into the world coordinate system
+//Connecting SLAM with the global map
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
