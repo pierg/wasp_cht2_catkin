@@ -1,13 +1,42 @@
 <launch>
-	<!-- Apriltag detection and TF (Transformation between coordinate frames)-->	
+
+<!-- Apriltag detection from the task3_opencv package-->	
 	<node name="april_tags" pkg="task3_opencv" type="april_tags"/>
-	<node name="apriltag_tf_broadcaster_0" pkg="drone_tf" type="apriltag_tf_broadcaster"  launch-prefix="xterm -e">
+	
+<!-- TF (Transformation between coordinate frames)-->
+
+<!-- Apriltag with id=0 -->
+	<node name="apriltag_tf_broadcaster_0" pkg="drone_tf" type="apriltag_tf_broadcaster">
 		<param name="id" value="0"/>
 	</node>
-	<node name="apriltag_tf_broadcaster_2" pkg="drone_tf" type="apriltag_tf_broadcaster"  launch-prefix="xterm -e">
+	<node name="apriltag_tf_listener_0" pkg="drone_tf" type="apriltag_tf_listener">
+		<param name="id" value="0"/>
+	</node>
+
+<!-- Apriltag with id=1 -->
+	<node name="apriltag_tf_broadcaster_1" pkg="drone_tf" type="apriltag_tf_broadcaster">
+		<param name="id" value="1"/>
+	</node>
+	<node name="apriltag_tf_listener_1" pkg="drone_tf" type="apriltag_tf_listener">
+		<param name="id" value="1"/>
+	</node>
+
+
+<!-- Apriltag with id=2 -->
+	<node name="apriltag_tf_broadcaster_2" pkg="drone_tf" type="apriltag_tf_broadcaster">
+		<param name="id" value="2"/>
+	</node>
+	<node name="apriltag_tf_listener_2" pkg="drone_tf" type="apriltag_tf_listener">
 		<param name="id" value="2"/>
 	</node>
 
-	<!--<node name="apriltag_tf_listener" pkg="drone_tf" type="apriltag_tf_listener"/>-->	
+<!-- Apriltag with id=3 -->
+	<node name="apriltag_tf_broadcaster_3" pkg="drone_tf" type="apriltag_tf_broadcaster">
+		<param name="id" value="3"/>
+	</node>
+	<node name="apriltag_tf_listener_3" pkg="drone_tf" type="apriltag_tf_listener">
+		<param name="id" value="3"/>
+	</node>
+
 	
 </launch>

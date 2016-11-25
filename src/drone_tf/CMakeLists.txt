@@ -66,3 +66,6 @@ add_executable(apriltag_tf_broadcaster src/apriltag_tf_broadcaster.cpp)
 target_link_libraries(apriltag_tf_broadcaster ${catkin_LIBRARIES})
 add_dependencies(apriltag_tf_broadcaster apriltag_tf_broadcaster ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
+add_executable(apriltag_tf_listener src/apriltag_tf_listener.cpp)
+target_link_libraries(apriltag_tf_listener ${catkin_LIBRARIES})
+add_dependencies(apriltag_tf_listener apriltag_tf_listener ${${PROJECT_NAME}_EXPORTED_TARGETS})
