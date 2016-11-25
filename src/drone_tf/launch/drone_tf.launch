@@ -4,6 +4,11 @@
 	<node name="april_tags" pkg="task3_opencv" type="april_tags"/>
 	
 <!-- TF (Transformation between coordinate frames)-->
+	<node name="slam_tf_broadcaster" pkg="drone_tf" type="slam_tf_broadcaster">
+		<param name="apriltag_initial_x" value="0"/>
+		<param name="apriltag_initial_y" value="0"/>
+	</node>
+	<node name="slam_tf_listener" pkg="drone_tf" type="slam_tf_listener"/>
 
 <!-- Apriltag with id=0 -->
 	<node name="apriltag_tf_broadcaster_0" pkg="drone_tf" type="apriltag_tf_broadcaster">
