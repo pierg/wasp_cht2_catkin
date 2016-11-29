@@ -9,6 +9,16 @@ from planning import updatePlan, printPlans
 from os.path import expanduser 
 import generateProblem
 
+def rePlan():
+	SCHEDULER_ACTIVE = False;
+	updatePlan();
+	#for i in ROBOTS:
+		#current[i] = {'index': 1, 'running': False};
+	SCHEDULER_ACTIVE = True;
+	idleMessage(-1);
+	#updateWeb();
+
+
 def incomingVictim(data):
 	global victims
 	global locations
@@ -36,7 +46,8 @@ def incomingVictim(data):
 
 	print "New victim identified at positions: ", d[0], ",", d[1]
 	print "Initiate re-planning"
-	updatePlan(); # run the planner
+	rePlan(); # run the planner
+
 
 
 def incomingCommand(data):
@@ -53,7 +64,7 @@ def incomingCommand(data):
 		positions[name] = [int(d[1]), int(d[2])]
 		print "Incomming emergency_area"
 		print "Initiate re-planning"
-		updatePlan(); # run the planner
+		rePlan(); # run the planner
 	elif d[0] == "start":
 		SCHEDULER_ACTIVE = True;
 		print "activate the scheduler"
@@ -70,14 +81,14 @@ def idleMessage(robot):
 		current[robot]['index'] += 1
 		current[robot]['running'] = False
 		print "##", robot, ": ", current[robot]
-		updateWeb(robot)
+		updateWeb()
 	if SCHEDULER_ACTIVE:
 		for r in ROBOTS:
 			if available[r] and len(plan[r]) > 0 and allowedToStart(r, actions[plan[r][0]][0]):
 				startAction(r)
 				current[r]['running'] = True
 				print "####", r, ": ", current[r]
-				updateWeb(r)
+				updateWeb()
 
 def startAction(r):
 	p = actions[plan[r][0]][0];
@@ -131,7 +142,7 @@ def allowedToStart(r, p):
 
 	return True;
 
-def updateWeb(r):
+def updateWeb():
 	with open(expanduser("~") + '/wasp_challenge_current_state', 'w') as f:
 		json.dump(current, f)
 
@@ -201,6 +212,7 @@ def communicator():
 
 if __name__ == '__main__':
 	try:
+		updateWeb();
 		updatePlan();
 		printPlans();
 		print "###"

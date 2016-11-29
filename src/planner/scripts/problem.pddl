@@ -2,11 +2,9 @@
 	(:domain challenge-control)
 
 	(:objects
-		turtle_init drone_init depot area0 victimLocation0 - location
+		turtle_init drone_init depot - location
 		drone0 - drone
 		turtle0 - turtle
-		crate0 - crate
-		victim0 - victim
 	)
 	(:init
 		(= (fly-cost turtle_init, turtle_init) 0.0)
@@ -15,64 +13,26 @@
 		(= (drive-cost turtle_init, drone_init) 10.0)
 		(= (fly-cost turtle_init, depot) 28.284271247461902)
 		(= (drive-cost turtle_init, depot) 28.284271247461902)
-		(= (fly-cost turtle_init, area0) 14.142135623730951)
-		(= (drive-cost turtle_init, area0) 14.142135623730951)
-		(= (fly-cost turtle_init, victimLocation0) 14.142135623730951)
-		(= (drive-cost turtle_init, victimLocation0) 14.142135623730951)
 		(= (fly-cost drone_init, turtle_init) 10.0)
 		(= (drive-cost drone_init, turtle_init) 10.0)
 		(= (fly-cost drone_init, drone_init) 0.0)
 		(= (drive-cost drone_init, drone_init) 0.0)
 		(= (fly-cost drone_init, depot) 22.360679774997898)
 		(= (drive-cost drone_init, depot) 22.360679774997898)
-		(= (fly-cost drone_init, area0) 10.0)
-		(= (drive-cost drone_init, area0) 10.0)
-		(= (fly-cost drone_init, victimLocation0) 10.0)
-		(= (drive-cost drone_init, victimLocation0) 10.0)
 		(= (fly-cost depot, turtle_init) 28.284271247461902)
 		(= (drive-cost depot, turtle_init) 28.284271247461902)
 		(= (fly-cost depot, drone_init) 22.360679774997898)
 		(= (drive-cost depot, drone_init) 22.360679774997898)
 		(= (fly-cost depot, depot) 0.0)
 		(= (drive-cost depot, depot) 0.0)
-		(= (fly-cost depot, area0) 14.142135623730951)
-		(= (drive-cost depot, area0) 14.142135623730951)
-		(= (fly-cost depot, victimLocation0) 14.142135623730951)
-		(= (drive-cost depot, victimLocation0) 14.142135623730951)
-		(= (fly-cost area0, turtle_init) 14.142135623730951)
-		(= (drive-cost area0, turtle_init) 14.142135623730951)
-		(= (fly-cost area0, drone_init) 10.0)
-		(= (drive-cost area0, drone_init) 10.0)
-		(= (fly-cost area0, depot) 14.142135623730951)
-		(= (drive-cost area0, depot) 14.142135623730951)
-		(= (fly-cost area0, area0) 0.0)
-		(= (drive-cost area0, area0) 0.0)
-		(= (fly-cost area0, victimLocation0) 0.0)
-		(= (drive-cost area0, victimLocation0) 0.0)
-		(= (fly-cost victimLocation0, turtle_init) 14.142135623730951)
-		(= (drive-cost victimLocation0, turtle_init) 14.142135623730951)
-		(= (fly-cost victimLocation0, drone_init) 10.0)
-		(= (drive-cost victimLocation0, drone_init) 10.0)
-		(= (fly-cost victimLocation0, depot) 14.142135623730951)
-		(= (drive-cost victimLocation0, depot) 14.142135623730951)
-		(= (fly-cost victimLocation0, area0) 0.0)
-		(= (drive-cost victimLocation0, area0) 0.0)
-		(= (fly-cost victimLocation0, victimLocation0) 0.0)
-		(= (drive-cost victimLocation0, victimLocation0) 0.0)
 
 		(at drone0 drone_init) (free drone0) 
 
 		(at turtle0 turtle_init) (available turtle0)  
 
-		(at crate0 depot)
-
-		(at victim0 victimLocation0)
-
 	)
 	(:goal
 		(and
-			(treated victim0)
-			(scanned area0)
 			(at drone0 drone_init)
 			(at turtle0 turtle_init)
 		)
