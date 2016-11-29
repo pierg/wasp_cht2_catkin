@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   message_generation
   std_msgs
+  nav_msgs
   cmake_modules
   nodelet
   move_base_msgs
@@ -44,7 +45,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS
   LIBRARIES apriltag_detector 
-  CATKIN_DEPENDS image_transport roscpp sensor_msgs geometry_msgs tf cv_bridge message_runtime std_msgs nodelet apriltags using_markers visualization_msgs move_base_msgs actionlib 
+  CATKIN_DEPENDS image_transport roscpp sensor_msgs geometry_msgs tf cv_bridge message_runtime std_msgs nav_msgs nodelet apriltags using_markers visualization_msgs move_base_msgs actionlib 
   DEPENDS Eigen OpenCV
 )
 
@@ -77,5 +78,13 @@ add_dependencies(slam_tf_broadcaster slam_tf_broadcaster ${${PROJECT_NAME}_EXPOR
 add_executable(slam_tf_listener src/slam_tf_listener.cpp)
 target_link_libraries(slam_tf_listener ${catkin_LIBRARIES})
 add_dependencies(slam_tf_listener slam_tf_listener ${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+add_executable(drone2slam_tf_broadcaster src/drone2slam_tf_broadcaster.cpp)
+target_link_libraries(drone2slam_tf_broadcaster ${catkin_LIBRARIES})
+add_dependencies(drone2slam_tf_broadcaster drone2slam_tf_broadcaster ${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+add_executable(drone_rviz_markers src/drone_rviz_markers.cpp)
+target_link_libraries(drone_rviz_markers ${catkin_LIBRARIES})
+add_dependencies(drone_rviz_markers drone_rviz_markers ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 

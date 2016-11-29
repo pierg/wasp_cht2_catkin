@@ -34,8 +34,10 @@
   <build_depend>move_base_msgs</build_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>libopencv-dev</build_depend>
+  <build_depend>nav_msgs</build_depend>
 <!-- Run depend packages -->
   <run_depend>move_base_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>using_markers</run_depend>
   <run_depend>visualization_msgs</run_depend>
