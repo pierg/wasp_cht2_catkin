@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+#
+#
+# TOPICS:
+# - wasp_cth_operator
+# 	This is the topic where commands are sent from the web GUI to the scheduler
+# - wasp_cth_victims
+#	This is the topic where the drone reports new victims
+#
+#
+
 
 import re
 import rospy
@@ -34,8 +44,9 @@ def incomingVictim(data):
 	name = "victimLocation"+`id`
 	generateProblem.victims += 1; # because I don't have the same instance.....
 	locations.append(name)
-	positions[name] = [int(d[0]), int(d[1])]
+	positions[name] = [int(round(float(d[0]))), int(round(float(d[1])))]
 
+	print positions[name]
 	# Add a new crate for the victim
 	crates += 1; 
 	CRATES = range(crates);
