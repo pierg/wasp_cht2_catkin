@@ -8,6 +8,7 @@ $def with (page, title=None)
   <title>.: SKYNET OVERVIEW :.</title>
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta http-equiv="refresh" content="5; URL=http://localhost:8080">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -52,11 +53,10 @@ function updateState() {
 			jQuery("#agent"+key+ " div").not("div:eq("+val.index+")").removeClass("running waiting");
 		});
 	});
-	setTimeout(function(){ updateState(); }, 1000);
+  setTimeout(function(){ updateState(); }, 500);
 }
 jQuery(document).ready(function(){
-
-	updateState();
+  updateState();
 });
 </script>  
 </head>

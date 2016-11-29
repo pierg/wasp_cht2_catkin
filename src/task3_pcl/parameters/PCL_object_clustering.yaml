@@ -1,3 +1,0 @@
-cluster_size: {max: 500, min: 20}
-cluster_tolerans: 0.01
-clusters_highest_point: 0.5

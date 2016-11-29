@@ -4,17 +4,15 @@
 		:strips :typing :durative-actions
 	)
 
-	(:types drone person crate turtle type location)
+	(:types drone victim crate turtle location)
 
 	(:predicates
-		; type definition
-		(type ?c - crate ?t - type)!
 
 		; track positions
 		(at ?object ?l - location)
 
-		; status of person
-		(has ?p - person ?ct - type)
+		; status of victims
+		(treated ?v - victim)
 		
 		; status of drone
 		(holds ?d - drone ?c - crate)
@@ -23,10 +21,25 @@
 
 		; status of crates
 		(include ?t - turtle ?c - crate)
+
+		; status of emergency areas
+		(scanned ?l - location)
 	)
 
 	(:functions (fly-cost ?from ?to - location) - number
 				(drive-cost ?from ?to - location) - number)
+
+	(:durative-action scan
+		:parameters (?d - drone ?l - location)
+		:duration (= ?duration 2)
+		:condition (and 
+			(over all(at ?d ?l))
+			(over all(free ?d))
+		)
+		:effect (and
+			(at end (scanned ?l))
+		)
+	)
 
 	(:durative-action fly
 		:parameters (?d - drone ?from - location ?to - location)
@@ -126,21 +139,19 @@
 	
 	(:durative-action deliver
 		:parameters (?t - turtle 
-					 ?c - crate 
-					 ?type - type 
-					 ?p - person 
+					 ?c - crate  
+					 ?v - victim 
 					 ?l - location)
         :duration (= ?duration 2)
 		:condition (and 
-			(over all (type ?c ?type))
 			(at start (include ?t ?c))
 			(over all (at ?t ?l))
-			(over all (at ?p ?l))
+			(over all (at ?v ?l))
 			
 		)
 		:effect (and 
 			(at start (not (include ?t ?c)))
-			(at end (has ?p ?type))
+			(at end (treated ?v))
 		)
 	)
 

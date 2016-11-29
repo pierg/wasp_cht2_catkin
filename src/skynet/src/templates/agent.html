@@ -1,0 +1,6 @@
+$def with (agent)
+<h2>$agent['name']</h2>
+
+$for i in range(len(agent['plan']))
+	<div class="action" id="$i" style="padding: 5px;">$agent['plan'][i]</div>
+

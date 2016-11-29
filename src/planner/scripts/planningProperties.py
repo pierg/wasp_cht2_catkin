@@ -3,18 +3,21 @@
 
 import os
 script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, 'settings3.json')
+file_path = os.path.join(script_dir, 'settings_final_session_predefined areas.json')
 import json
 with open(file_path, 'r') as settingsFile:
 	settings = json.load(settingsFile)
 
 drones = settings['drones'];
 turtles = settings['turtles'];
-crates = settings['crates'];
-persons = settings['persons'];
+crates = settings['victims'];
+victims = settings['victims'];
+emergency_areas = len(settings['emergency_areas']);
 
-locations = [loc for loc,pos in settings['locations'].items()];
-positions = settings['locations'];
+locations = [loc for loc,pos in settings['locations'].items()] + ['area'+`i` for i in range(emergency_areas)];
+positions = settings['locations']
+for i in range(emergency_areas):
+	positions['area'+`i`] = settings['emergency_areas'][i] ;
 
 DRONES = range(drones);
 TURTLES = range(turtles);
@@ -31,7 +34,7 @@ def getCI(crate): return drones + turtles + crate; # index of crate
 #	status 			= boolean to declare if it's finished or not
 #	preconditions 	= other actions that need to be performed before this
 #
-actions = [[['starting'], False]]; 
+actions = [[['starting'], False]];
 
 # for each robot, track a list of actions to perform (all should start with the 'starting' task)
 plan = [[0] for i in ROBOTS];
@@ -44,13 +47,19 @@ preceeding = [[] for i in TURTLES]; # track actions that should preceed a drive 
 # State variables of the system, should be updated as the plan is unrolled
 #
 holds = [[] for i in ROBOTS]; # track the crates held by a drone or turtle
-has = [[] for i in range(persons)]; # track the crates held by a drone or turtle
+treated = []; # track treatment of the victims
+scanned = []; # track the scanning of the emergency areas
 at = [] # track location of drones, turtles and crates
-for type in ['drones', 'turtles', 'crates']:
+for type in ['drones', 'turtles']:
 	for initLoc in settings['initLocations'][type]:
 		at.append(initLoc);
+for c in range(crates):
+	at.append('depot');
 booked = [False for i in TURTLES]; # detect if a turtle has been booked by a drone
 
 
 # Track if the robot is idling or not
 available = [False for i in ROBOTS];
+
+# Use a boolean to track if the scheduler should be active or not.
+SCHEDULER_ACTIVE = False;

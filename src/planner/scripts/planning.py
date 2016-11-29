@@ -3,10 +3,11 @@
 import re
 import subprocess;
 import os
+import shutil
 import json
 from os.path import expanduser 
 from planningProperties import *
-from generateProblem import updateProblem
+from generateProblem import updateProblem 
 
 
 script_dir = os.path.dirname(__file__)
@@ -14,36 +15,50 @@ os.chdir(script_dir)
 
 home_dir = expanduser("~");
 finalPlanName = os.path.join(home_dir,'bestplan');
-
+webplan_backup = [];
+for i in DRONES:
+    webplan_backup.append({'name': 'Drone'+`i`, 'plan': ['Starting up']})
+for i in TURTLES:
+    webplan_backup.append({'name': 'Turtle'+`i`, 'plan': ['Starting up']})
 
 # createPlan(): invokes the planner and retrieve the new best plan
 def createPlan():
+
+    # update the problem definition
+    updateProblem()
+
     # perform the planning
     FNULL = open(os.devnull, 'w')
     retcode = subprocess.call(["./plan"], stdout=FNULL, stderr=subprocess.STDOUT)
 
     # Identify the best plan found by the solver 
     last = "";
+
+    print [f for f in os.listdir(".") if "output" in f]
         
     for f in sorted([f for f in os.listdir(".") if "output" in f]):
-        print f
         if len(last) > 0:
             os.remove(last);
         last = f;
-    os.rename(last, finalPlanName)
+
+    # os.rename(last, finalPlanName)
+    shutil.move(last, finalPlanName)
 
 def translatePlan():
+    global webplan_backup;
     # If robot is currently performing a task, keep this in the plan, else empty the old plan
     for r in ROBOTS:
         plan[r] = [] if available[r] or len(plan[r]) == 0 else [plan[r][0]]
 
-        finalPlanPath = finalPlanName
 
-    webplan = []
+
+    finalPlanPath = finalPlanName
+
+    webplan = webplan_backup
     for i in DRONES:
-        webplan.append({'name': 'Drone'+`i`, 'plan': ['Starting up']})
+        webplan[i]["plan"] = webplan[i]["plan"][0:current[i]["index"]+(not available[i])]
     for i in TURTLES:
-        webplan.append({'name': 'Turtle'+`i`, 'plan': ['Starting up']})
+        webplan[getTI(i)]["plan"] = webplan[getTI(i)]["plan"][0:current[getTI(i)]["index"]+(not available[getTI(i)])]
 
     with open(finalPlanPath, 'r') as planFile:
         for line in planFile:
@@ -78,12 +93,19 @@ def translatePlan():
             elif action in ['deliver']:
                 turtle = int(m[1].strip('turtle'));
                 crate = int(m[2].strip('crate'));
-                type = int(m[3].strip('type'));
-                person = int(m[4].strip('victim'));
-                location = m[5];
-                p = [action, crate, type, person, location];
+                victim = int(m[3].strip('victim'));
+                location = m[4];
+                p = [action, crate, type, victim, location];
                 addActionToPlan(getTI(turtle), p);
-                webplan[getTI(turtle)]['plan'].append(p[0].title() + " a crate of type " + `type` + " to victim" + `person`)
+                webplan[getTI(turtle)]['plan'].append(p[0].title() + " med. crate to victim" + `victim`)
+            elif action in ['scan']:
+                drone = int(m[1].strip('drone'));
+                location = int(m[2].strip('area'));
+                p = [action, location];
+                addActionToPlan(drone, p);
+                webplan[drone]['plan'].append(p[0].title() + " emergency area " + `location`)
+
+    #cleanUp();
 
     for i in ROBOTS:
         webplan[i]['plan'].append("Finished");
@@ -91,6 +113,7 @@ def translatePlan():
             json.dump(current, f)
     with open(home_dir + '/wasp_challenge_planning', 'w') as f:
         json.dump(webplan, f)
+    webplan_backup = webplan;
 
 def addActionToPlan(robot, action):
     plan[robot].append(len(actions));
