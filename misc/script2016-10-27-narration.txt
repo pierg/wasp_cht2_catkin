@@ -1,0 +1,104 @@
+Presentation 2016-10-27
+Movie script
+
+
+
+
+
+1.
+These are the Chalmers groups of the WASP Automonous Systems course. Today, we'll see how far they've come.
+
+
+2.
+The solution lies in cooperation. Their system has a centralised node which finds the optimal plan for the available robots, and directs them in real time.
+
+3.
+Before they show us a full scenario, let's go through the individual parts.
+
+4.
+Using this coordinate system, Tommy can set a destination, and the turtlebot will go there, avoiding obstacles along the way.
+
+5.
+And let's meet the guy tasked with providing that reliable source.
+
+5.1:
+And let's meet the team tasked with providing that reliable source.
+
+6.
+Based on the positioning data from SLAM, the drone crew can tell the drone where to go.
+
+7.
+The marriage between SLAM and PID control to complete the task, actually hints to a broader collaboration effort. The Chalmers team actually consists of two teams, who joined forces a few weeks into the project.
+
+8.
+And so they didn't. When they decided to join forces, team 1 already had a planner ready to go. Team 2, in turn, brought their work on the turtlebot to the table.
+
+9.
+And now it's time to show a live run of the search-and-rescue operation.
+
+10.
+First, the planner reads the input problem, and creates a plan. Then, it waits for the two robots to connect.
+
+11.
+The drone's SLAM initialises by identifying the april tag.
+
+12.
+The team connects to the ground robot. It is positioned close to the april tag, which serves as the origin of the global coordinate system.
+
+13.
+The ground robot immediately receives its first order, to move to the depot. But when it gets there, it will have to wait. It can't pick up the crate on its own. So let's start the drone.
+
+14.
+After takeoff, the drone reports to the scheduler that it's ready for its first command. It gets told to go load a crate on the ground robot.
+
+15.
+When the drone has finished loading the crate, the ground robot is cleared for moving. It sets off towards the victim.
+
+15.1
+When the drone has finished loading the crate, the ground robot is cleared for moving. It sets off towards the victim. The drone returns to its starting point.
+
+16.
+This is all done autonomously – the operators have not touched anything since they started the drone.
+
+17.
+When the ground robot arrives, the victim can get the crate.
+
+18.
+There are other parts of the challenge the Chalmers team has not yet solved. Most importantly, they currently define the locations of crates and victims in a specifications file. Their final solution will hopefully be able to send the drones out to scout for victims, create the map file themselves, and send it to the planner.
+
+19.
+Let's hope they, and their drones, can deliver in time.
+
+
+
+
+
+Pick-ups:
+
+1.
+At that point, team 1 had the planner and scheduler ready to go. Team two, on the other hand, were farther along with the control work. Since that decision, though, it has been a joint effort.
+
+[9]
+
+2.
+Here's the task. In one end of the room, there's a victim in need of medicine. In the other end, a depot with a medicine crate. There is a ground vehicle here, and an aerial drone over here. Finally, there's a ground-level obstacle.
+
+[10.
+First, the planner reads the input problem, and creates a plan. Then, it waits for the two robots to connect.]
+
+3.
+As soon as a robot connects to the scheduler, it receives its first command. In this plan, both the drone and the ground vehicle are set to move to the depot.
+
+4.
+With both units in place, the drone can "load" the virtual crate on the ground robot.
+
+[15.1
+When the drone has finished loading the crate, the ground robot is cleared for moving. It sets off towards the victim. The drone returns to its starting point.]
+
+[16.
+This is all done autonomously – the operators have not touched anything since they started the drone.]
+
+
+
+
+
