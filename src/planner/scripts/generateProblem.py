@@ -39,7 +39,7 @@ def updateProblem():
             for i in TURTLES]), "\n",
 
 
-        ''.join(["\t\t(at crate" + `i` + " " + `at[getCI(i)]` + ")\n" for i in CRATES if at[getCI(i)] != -1]), ("\n" if CRATES else ""),
+        ''.join(["\t\t(at crate" + `i` + " " + at[getCI(i)] + ")\n" for i in CRATES if at[getCI(i)] != -1]), ("\n" if CRATES else ""),
 
         ' '.join(["\t\t(at victim" + `i` + " victimLocation" + `i` + ")\n"
             for i in range(victims)]), ("\n" if victims > 0 else ""),

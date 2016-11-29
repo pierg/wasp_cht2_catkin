@@ -53,7 +53,7 @@ function updateState() {
 			jQuery("#agent"+key+ " div").not("div:eq("+val.index+")").removeClass("running waiting");
 		});
 	});
-  setTimeout(function(){ updateState(); }, 1000);
+  setTimeout(function(){ updateState(); }, 500);
 }
 jQuery(document).ready(function(){
   updateState();

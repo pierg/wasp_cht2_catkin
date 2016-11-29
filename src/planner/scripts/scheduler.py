@@ -41,7 +41,7 @@ def incomingVictim(data):
 	CRATES = range(crates);
 	generateProblem.crates += 1; # because I don't have the same instance.....
 	generateProblem.CRATES = range(crates);
-	at.append('depot')
+	at.append("depot")
 	
 
 	print "New victim identified at positions: ", d[0], ",", d[1]
