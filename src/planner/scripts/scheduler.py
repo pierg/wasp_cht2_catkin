@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+#
+#
+# TOPICS:
+# - wasp_cth_operator
+# 	This is the topic where commands are sent from the web GUI to the scheduler
+# - wasp_cth_victims
+#	This is the topic where the drone reports new victims
+#
+#
+
 
 import re
 import rospy
@@ -8,6 +18,16 @@ from planningProperties import *
 from planning import updatePlan, printPlans
 from os.path import expanduser 
 import generateProblem
+
+def rePlan():
+	SCHEDULER_ACTIVE = False;
+	updatePlan();
+	#for i in ROBOTS:
+		#current[i] = {'index': 1, 'running': False};
+	SCHEDULER_ACTIVE = True;
+	idleMessage(-1);
+	#updateWeb();
+
 
 def incomingVictim(data):
 	global victims
@@ -24,19 +44,21 @@ def incomingVictim(data):
 	name = "victimLocation"+`id`
 	generateProblem.victims += 1; # because I don't have the same instance.....
 	locations.append(name)
-	positions[name] = [int(d[0]), int(d[1])]
+	positions[name] = [int(round(float(d[0]))), int(round(float(d[1])))]
 
+	print positions[name]
 	# Add a new crate for the victim
 	crates += 1; 
 	CRATES = range(crates);
 	generateProblem.crates += 1; # because I don't have the same instance.....
 	generateProblem.CRATES = range(crates);
-	at.append('depot')
+	at.append("depot")
 	
 
 	print "New victim identified at positions: ", d[0], ",", d[1]
 	print "Initiate re-planning"
-	updatePlan(); # run the planner
+	rePlan(); # run the planner
+
 
 
 def incomingCommand(data):
@@ -53,7 +75,7 @@ def incomingCommand(data):
 		positions[name] = [int(d[1]), int(d[2])]
 		print "Incomming emergency_area"
 		print "Initiate re-planning"
-		updatePlan(); # run the planner
+		rePlan(); # run the planner
 	elif d[0] == "start":
 		SCHEDULER_ACTIVE = True;
 		print "activate the scheduler"
@@ -70,14 +92,14 @@ def idleMessage(robot):
 		current[robot]['index'] += 1
 		current[robot]['running'] = False
 		print "##", robot, ": ", current[robot]
-		updateWeb(robot)
+		updateWeb()
 	if SCHEDULER_ACTIVE:
 		for r in ROBOTS:
 			if available[r] and len(plan[r]) > 0 and allowedToStart(r, actions[plan[r][0]][0]):
 				startAction(r)
 				current[r]['running'] = True
 				print "####", r, ": ", current[r]
-				updateWeb(r)
+				updateWeb()
 
 def startAction(r):
 	p = actions[plan[r][0]][0];
@@ -131,7 +153,7 @@ def allowedToStart(r, p):
 
 	return True;
 
-def updateWeb(r):
+def updateWeb():
 	with open(expanduser("~") + '/wasp_challenge_current_state', 'w') as f:
 		json.dump(current, f)
 
@@ -201,6 +223,7 @@ def communicator():
 
 if __name__ == '__main__':
 	try:
+		updateWeb();
 		updatePlan();
 		printPlans();
 		print "###"

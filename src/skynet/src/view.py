@@ -1,3 +1,9 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# WASP Challenge - Chalmers
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Support functions to render a plan
+
 import web
 from generatePlan import readPlan
 import os
@@ -9,7 +15,7 @@ t_globals = dict(
 )
 folderpath = os.path.join(os.path.dirname(__file__),'templates/')
 
-render = web.template.render(folderpath, cache=cache, globals=t_globals, base='index')
+render = web.template.render(folderpath, cache=cache, globals=t_globals)
 render._keywords['globals']['render'] = render
 
 

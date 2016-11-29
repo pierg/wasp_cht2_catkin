@@ -1,3 +1,9 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# WASP Challenge - Chalmers
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Support functions to read from file
+# Assumption: wasp_challenge_planning and wasp_challenge_current_state files must be present in the home folder ~
+
 
 import os
 from os.path import expanduser
