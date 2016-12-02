@@ -32,6 +32,19 @@ void transform_callback(const wasp_custom_msgs::object_loc &msg)
 			br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "ardrone_base_frontcam", "apriltag/"+std::to_string(id)));
 		}
 	}
+
+	// To call the service allowing for Drone camera switch (source: http://wiki.ros.org/roscpp/Overview/Services)
+	// The service is: /drone0/ardrone/togglecam
+	//Cmds below:
+	//ros::ServiceClient serviceClient = nh.serviceClient<my_package::Foo>("/drone0/ardrone/togglecam");
+	//my_package::Foo foo; // where foo is a function returning type Foo of the package mu_package
+	// and call:
+	//if (serviceClient.call(foo))
+	//{
+	//  ...
+	//}
+	// Getting downward facing camera img:
+	// image_transport::Subscriber sub = it.subscribe("ardrone/image_raw", 1, imageCallback);
 }
 
 void scan_callback(const std_msgs::Bool &msg)
