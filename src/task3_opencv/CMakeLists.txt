@@ -57,10 +57,6 @@ add_executable(tag_filter src/tag_filter.cpp)
 target_link_libraries(tag_filter ${catkin_LIBRARIES})
 add_dependencies(tag_filter tag_filter)
 
-add_executable(scanFormVictims src/scanFormVictims.cpp)
-target_link_libraries(scanFormVictims ${catkin_LIBRARIES})
-add_dependencies(scanFormVictims scanFormVictims)
-
 #############
 ## Install ##
 #############
