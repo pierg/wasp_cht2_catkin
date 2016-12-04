@@ -49,24 +49,30 @@ global publishDroneStatus
 global droneId
 global idleBefore
 
-idleBefore = False
 
+# Global variables for initialization and keepin track of when to look for new commands from scheduler 
+idleBefore = False
 targetPoint = Odometry()
 
 
-
+# This method reads data from the scheduler and sets the position as its target position
+# This is where the scheduler orders the drone what to do
 def SetTarget(data):
   global idleBefore
+
+  # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
-    idleBefore = False
     targetPoint.pose.pose.position.x = -2.1#data.posX
     targetPoint.pose.pose.position.y = -5.1#data.posY
     targetPoint.pose.pose.position.z = 0#data.posZ
     publishTargetData.publish(targetPoint)
-
+    idleBefore = False
+  
+  # If the command is pickup - set the drone to "sleep" in the position to simulate pickup time
   elif data.command == 'pickup':
     time.sleep(2)
     idleBefore = False
+
   elif data.command != 'idle':
     time.sleep(2)
     idleBefore = False
@@ -76,25 +82,34 @@ def SetTarget(data):
     targetPoint.pose.pose.position.z = 0#data.posZ
     publishTargetData.publish(targetPoint)
     
-
+# This method listens to the drone position to see if it has reached the target position
+# If it has reached the target position the idleBefore variable is set to true and it sends
+# to the scheduler that it is ready for a new command
 def ListenTo(data):
 
   global idleBefore
+
+  # Current position
   currentX = data.pose.pose.position.x
   currentY = data.pose.pose.position.y
 
+  # Target position
   targetX = targetPoint.pose.pose.position.x
   targetY = targetPoint.pose.pose.position.y
 
+  # Check the norm from the target position to the current position
   distanceToTarget = np.sqrt(np.square(currentX-targetX)+np.square(currentY-targetY))
   distanceThreshold = 0.5
 
-
+  # Drone message container
   droneMessage = drone_command()
   print(distanceToTarget,idleBefore)
+
+  # Check if the distance is within a threshold distance and that the drone is currently performing a task
+  # Publish to the scheduler that the drone is finished and awaiting next task
   if ((distanceToTarget < distanceThreshold) and (idleBefore == False)):
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone0'
+    droneMessage.drone_id = 'drone'+id
     droneMessage.posX = currentX
     droneMessage.posY = currentY
     droneMessage.posZ = data.pose.pose.position.z
@@ -105,27 +120,35 @@ def ListenTo(data):
 
 
 if __name__=='__main__':
+
+  # Need the droneId to be global since we need the variable in the methods above
+  global droneId
+
+  # Make sure an input is given for the drone id
   if len(sys.argv) < 2:
     print("usage: rosrun planner drone.py <id#>")
   else:
 
+    # Default settings
     idleBefore = True
 
+    # Assign drone id
     droneId = str(sys.argv[1])
+
     # Start drone+id node
-    rospy.init_node('drone0')
+    rospy.init_node('plannerDrone'+ droneId)
     
-    # Subscribe to the odometry position from the SLAM est.
-    slamTopic = 'drone2/slam/pos'
-    rospy.Subscriber(slamTopic,Odometry,ListenTo)
+    # Subscribe to the odometry position given by the global transformation of slam
+    odometryTopic = 'drone' + droneId + '/global/pos'
+    rospy.Subscriber(odometryTopic,Odometry,ListenTo)
     
-    # Subscribe to the scheduling topic to know target position
-    schedulerTopic = 'drone0'
+    # Subscribe to the scheduling topic to know the target position
+    schedulerTopic = 'drone'+droneId
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
     publishDroneStatus = rospy.Publisher(schedulerTopic,drone_command,queue_size=1)
 
     # Publish to drone pid controller the target value
-    targetDataTopic = 'drone2/planner/targetPosition'
+    targetDataTopic = 'drone'+droneId+'/planner/targetPosition'
     publishTargetData = rospy.Publisher(targetDataTopic, Odometry, queue_size=1)
 
     # Has to sleep after subscribing to a new topic, before publishing
@@ -134,10 +157,10 @@ if __name__=='__main__':
 
     # Send an 'idle' message to declare that drone is ready
     msg = drone_command();
-    msg.drone_id = 'drone0';
+    msg.drone_id = 'drone'+droneId;
     msg.command = 'idle';
     publishDroneStatus.publish(msg)
-
+    print('Launched Planner Drone for drone'+droneId)
 
     rospy.spin()
 

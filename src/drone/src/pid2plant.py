@@ -68,10 +68,9 @@ if __name__=='__main__':
 		id = '0'
 	else:
 		id = str(sys.argv[1])
-	print id
 
 	# Firstly we setup a ros node, so that we can communicate with the other packages
-	rospy.init_node('pid2plant')
+	rospy.init_node('drone'+id+'pid2plant')
 
 	# Topic that listens to the desired applied yaw signal
 	rospy.Subscriber('/drone'+id+'/control_effort_slam_yaw/',Float64,ApplyControlEffort_Yaw)
@@ -89,6 +88,6 @@ if __name__=='__main__':
 	global pubCmdTo_drone
 	pubCmdTo_drone = rospy.Publisher('drone'+id+'/cmd_vel', Twist, queue_size=1)
 
-	print "Launched pid2plant"
+	print "Launched pid2plant for drone"+id
 	#This keeps the function active till node are shurdown.
 	rospy.spin()

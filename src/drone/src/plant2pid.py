@@ -107,7 +107,7 @@ if __name__=='__main__':
 		id = str(sys.argv[1])
 
 	# Start node 
-	rospy.init_node('plant2pid')
+	rospy.init_node('drone'+id+'plant2pid')
 
 	# Listen to the slam topic to get our position estimates
 	rospy.Subscriber('drone'+id+'/slam/pos',Odometry,ExtractOdometry)
@@ -147,6 +147,6 @@ if __name__=='__main__':
 	global pubSetpointTo_PID_Z
 	pubSetpointTo_PID_Z = rospy.Publisher('drone'+id+'/setpoint_slam_z',Float64,queue_size=1)
 
-	print "Launched plant2pid"
+	print "Launched plant2pid for drone"+id
 	
 	rospy.spin()

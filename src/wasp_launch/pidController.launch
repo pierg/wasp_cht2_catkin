@@ -1,0 +1,70 @@
+<launch>
+	<arg name="droneId" default="0"/>
+	<group ns="drone$(arg droneId)">
+	
+		<param name="id_ref" value="1" />
+	
+		<node name="pid_slam_yaw" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_yaw"/>
+			<remap from="setpoint" to="setpoint_slam_yaw"/>
+			<remap from="control_effort" to="control_effort_slam_yaw"/>
+			<param name="Kp" value="1.0" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.00" />
+			<param name="upper_limit" value="2" />
+			<param name="lower_limit" value="-2" />
+			<param name="windup_limit" value="2" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="20.0" />
+		</node>
+
+		<node name="pid_slam_x" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_x"/>
+			<remap from="setpoint" to="setpoint_slam_x"/>
+			<remap from="control_effort" to="control_effort_slam_x"/>
+			<param name="Kp" value="0.05" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.05" />
+			<param name="upper_limit" value="0.5" />
+			<param name="lower_limit" value="-0.5" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="20.0" />
+		</node>
+
+		<node name="pid_slam_y" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_y"/>
+			<remap from="setpoint" to="setpoint_slam_y"/>
+			<remap from="control_effort" to="control_effort_slam_y"/>
+			<param name="Kp" value="0.05" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.05" />
+			<param name="upper_limit" value="1" />
+			<param name="lower_limit" value="-1" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="20.0" />
+		</node>
+
+		<node name="pid_slam_z" pkg="pid" type="controller" >
+			<remap from="state" to="state_slam_z"/>
+			<remap from="setpoint" to="setpoint_slam_z"/>
+			<remap from="control_effort" to="control_effort_slam_z"/>
+			<param name="Kp" value="0.05" />
+			<param name="Ki" value="0.00" />
+			<param name="Kd" value="0.05" />
+			<param name="upper_limit" value="1" />
+			<param name="lower_limit" value="-1" />
+			<param name="windup_limit" value="1" />
+			<param name="diagnostic_period" value="0.25" />
+			<param name="max_loop_frequency" value="100.0" />
+			<param name="min_loop_frequency" value="20.0" />
+		</node>
+
+	</group>
+
+</launch>
+
