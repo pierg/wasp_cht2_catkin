@@ -6,8 +6,9 @@ import roslib
 import rospy
 import tf
 import PyKDL
-roslib.load_manifest('drone')
 import math
+import sys
+import numpy as np
 
 import numpy as np
 # Import the messages we're interested in sending and receiving
@@ -21,48 +22,46 @@ from geometry_msgs.msg import Quaternion
 
 from tf import transformations
 
+roslib.load_manifest('drone')
 
-import numpy as np
 
-# Allow the controller to publish to the /cmd_vel topic and thus control the drone
-#global variable so we can use it inside the callback
-# publishToPID_yaw = rospy.Publisher('state_slam_yaw', Twist, queue_size=1)
-publishStateToPID_yaw = rospy.Publisher('drone2/state_slam_yaw', Float64, queue_size=1)
-publishStateToPID_x = rospy.Publisher('drone2/state_slam_x', Float64, queue_size=1)
-publishSTateToPID_y = rospy.Publisher('drone2/state_slam_y', Float64, queue_size=1)
-
-pubSetpointTo_PID_yaw = rospy.Publisher('drone2/setpoint_slam_yaw',Float64,queue_size=1)
-pubSetpointTo_PID_X = rospy.Publisher('drone2/setpoint_slam_x',Float64,queue_size=1)
-pubSetpointTo_PID_Y = rospy.Publisher('drone2/setpoint_slam_y',Float64,queue_size=1)
+# Initialize the target position before the planner sends it
 global targetPOS
 targetPOS = Odometry()
-targetPOS.pose.pose.position.x = 9.51
-targetPOS.pose.pose.position.y = -4.15
-# targetPOS.pose.pose.orientation 0
-# targetPOS.pose.pose.orientation.y = -0.5
-# targetPOS.pose.pose.orientation.z = 0
-# targetPOS.pose.pose.orientation.w = 0.866
+targetPOS.pose.pose.position.x = 2.3
+targetPOS.pose.pose.position.y = -3.9
+targetPOS.pose.pose.position.z = 2.5
 
-#global variable because I dont want to reset to zero the previous command in every callback. Otherwise the drone would be stopped position
+# Command holder for publication
 command = Twist()
 
+# Quaternion holders
 Qtarget = Quaternion()
 Qcurrent = Quaternion()
-firstTime = True
 
-
+# This method assigns the target position to the drone (message from planner)
 def SetTarget(data):
+
 	global targetPOS
-	#global targetPOS
 	targetPOS = data
 	targetPOS.pose.pose.position.x = data.pose.pose.position.x
 	targetPOS.pose.pose.position.y = data.pose.pose.position.y
+	targetPOS.pose.pose.position.z = 2.5
 	print(data)
 
-
+# This method extract the position from slam and sends the errors to the PID controller
 def ExtractOdometry(data):
 	global targetPOS
-	# Orientation 2
+	global pubSetpointTo_PID_yaw
+	global pubSetpointTo_PID_X
+	global pubSetpointTo_PID_Y
+	global pubSetpointTo_PID_Z
+
+	global publishStateToPID_yaw
+	global publishStateToPID_x
+	global publishStateToPID_y
+	global publishStateToPID_z
+	
 	# Our current quaternion
 	qC = data.pose.pose.orientation
 
@@ -84,27 +83,70 @@ def ExtractOdometry(data):
 	pubSetpointTo_PID_yaw.publish(0)
 	print("Publishing the YAW Angle (Error): " + str(Float64(relativeEulerAngels[0])))
 
-	# #We want the yaw always pointing to the same direction in the XY plane
-	pubSetpointTo_PID_yaw.publish(0)
-
-	# # X Target Position and state
+	# X target position and state
 	publishStateToPID_x.publish(data.pose.pose.position.x)
 	pubSetpointTo_PID_X.publish(targetPOS.pose.pose.position.x)
-    #
-	# #Y Target Position and state
-	publishSTateToPID_y.publish(data.pose.pose.position.y)
+    
+	# Y target position and state
+	publishStateToPID_y.publish(data.pose.pose.position.y)
 	pubSetpointTo_PID_Y.publish(targetPOS.pose.pose.position.y)
 
-	print(targetPOS.pose.pose.position.x,targetPOS.pose.pose.position.y)
-	# print ("SETPOINT\n STATE")
-	# print (str(data.pose.pose.position.x) + "\n" + str(targetPOS.pose.position.x))
-	# print (str(data.pose.pose.position.y) + "\n" + str(targetPOS.pose.position.y))
+	# Z target position and state
+	publishStateToPID_z.publish(data.pose.pose.position.z)
+	pubSetpointTo_PID_Z.publish(targetPOS.pose.pose.position.z)
 
+	print(targetPOS.pose.pose.position.x,targetPOS.pose.pose.position.y,targetPOS.pose.pose.position.z,relativeEulerAngels[0])
+	print(data.pose.pose.position.x,data.pose.pose.position.y,data.pose.pose.position.z)
 # Setup the application
 if __name__=='__main__':
-	firstTime = True
+
+	# Assign the drone id. Zero by default
+	if (len(sys.argv)<=1):
+		id = '0'
+	else:
+		id = str(sys.argv[1])
+
+	# Start node 
 	rospy.init_node('plant2pid')
-	rospy.Subscriber('drone2/slam/pos',Odometry,ExtractOdometry)
-	rospy.Subscriber('drone2/planner/targetPosition',Odometry,SetTarget)
-	#rospy.Subscriber('ardrone/odometry',Odometry,ExtractOdometry)
+
+	# Listen to the slam topic to get our position estimates
+	rospy.Subscriber('drone'+id+'/slam/pos',Odometry,ExtractOdometry)
+
+	# Listen to the target position topic sent from the planner
+	rospy.Subscriber('drone'+id+'/planner/targetPosition',Odometry,SetTarget)
+	
+	# Global variable for the error estiamte for the yaw
+	global publishStateToPID_yaw
+	publishStateToPID_yaw = rospy.Publisher('drone'+id+'/state_slam_yaw', Float64, queue_size=1)
+	
+	# Global variable for the error estiamte for the pitch
+	global publishStateToPID_x
+	publishStateToPID_x = rospy.Publisher('drone'+id+'/state_slam_x', Float64, queue_size=1)
+	
+	# Global variable for the error estiamte for the roll
+	global publishStateToPID_y
+	publishStateToPID_y = rospy.Publisher('drone'+id+'/state_slam_y', Float64, queue_size=1)
+
+	# Global variable for the error estiamte for the altitude
+	global publishStateToPID_z
+	publishStateToPID_z = rospy.Publisher('drone'+id+'/state_slam_z', Float64, queue_size=1)
+
+	# Global variable for the yaw reference
+	global pubSetpointTo_PID_yaw
+	pubSetpointTo_PID_yaw = rospy.Publisher('drone'+id+'/setpoint_slam_yaw',Float64,queue_size=1)
+	
+	# Global variable for the pitch reference
+	global pubSetpointTo_PID_X
+	pubSetpointTo_PID_X = rospy.Publisher('drone'+id+'/setpoint_slam_x',Float64,queue_size=1)
+	
+	# Global variable for the  roll reference
+	global pubSetpointTo_PID_Y
+	pubSetpointTo_PID_Y = rospy.Publisher('drone'+id+'/setpoint_slam_y',Float64,queue_size=1)
+
+	# Global variable for the  altitude reference
+	global pubSetpointTo_PID_Z
+	pubSetpointTo_PID_Z = rospy.Publisher('drone'+id+'/setpoint_slam_z',Float64,queue_size=1)
+
+	print "Launched plant2pid"
+	
 	rospy.spin()
