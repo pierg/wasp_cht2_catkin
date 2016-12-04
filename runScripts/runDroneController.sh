@@ -8,8 +8,7 @@ trap ctrl_c INT
 function ctrl_c() {
         echo ""
         echo "** Shutting down & forcing drone to land**"
-        echo rostopic pub -1 /ardrone$droneId/land std_msgs/Empty
-        echo $1
+        rostopic pub -1 /ardrone$droneId/land std_msgs/Empty
         exit
 }
 
