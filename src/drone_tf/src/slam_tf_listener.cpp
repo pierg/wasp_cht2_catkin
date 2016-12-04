@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 		tf::StampedTransform transform;
 		try{
 			//We are listening to the topic /droneX/apriltag/id
-			listener.lookupTransform("/SLAM_TF/drone_global_position", "/map", ros::Time(0), transform);
+			listener.lookupTransform("/map", "drone", ros::Time(0), transform);
 			geometry_msgs::Pose2D position;
 			position.x = transform.getOrigin().x();
 			position.y = transform.getOrigin().y();

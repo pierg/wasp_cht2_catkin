@@ -1,5 +1,5 @@
 {
-	"drones": 1,
+	"drones": 2,
 	"turtles": 1,
 	"victims": 0,
 
@@ -9,13 +9,14 @@
 	"locations": {
 		"depot": [2,2],
 		"turtle_init": [0,0],
-		"drone_init": [1,0]
+		"drone0_init": [1,0],
+		"drone1_init": [2,0]
 	},
 
 	"emergency_areas": [],
 	
 	"initLocations": {
-		"drones": ["drone_init"],
+		"drones": ["drone0_init","drone1_init"],
 		"turtles": ["turtle_init"]
 	}
 }

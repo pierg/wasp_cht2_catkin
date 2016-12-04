@@ -12,6 +12,7 @@ int main(int argc, char** argv){
 	ros::NodeHandle nh;
 	double apriltag_initial_x;
 	double apriltag_initial_y;
+	double apriltag_initial_theta;
 
 	if (ros::param::get("~apriltag_initial_x",apriltag_initial_x))
  	{
@@ -29,9 +30,17 @@ int main(int argc, char** argv){
 	else
 	{
 		apriltag_initial_y=0;
-		ROS_INFO("No parameter 'apriltag_initial_t' found. Using apriltag_initial_t 0 for the apriltag_initial_x");
+		ROS_INFO("No parameter 'apriltag_initial_y' found. Using apriltag_initial_y 0 for the apriltag_initial_y");
 	}
-
+	if (ros::param::get("~apriltag_initial_theta",apriltag_initial_theta))
+ 	{
+		std::cout<<"theta initial position  "<<apriltag_initial_theta<<std::endl;
+	}
+	else
+	{
+		apriltag_initial_theta=0;
+		ROS_INFO("No parameter 'apriltag_initial_theta' found. Using apriltag_initial_theta 0 for the apriltag_initial_theta");
+	}
 	ros::Rate rate(10.0);
   	while (nh.ok())
 	{
@@ -41,10 +50,10 @@ int main(int argc, char** argv){
 			transform.setOrigin( tf::Vector3(apriltag_initial_x, apriltag_initial_y, 0));
 			//We dont care about the rotation of the tag	
 			tf::Quaternion qt = tf::Quaternion();
-			qt.setRPY(0,0,0);//pure experimentation with the angles published by the april tag
+			qt.setRPY(0,0,apriltag_initial_theta);//pure experimentation with the angles published by the april tag
 			transform.setRotation(qt);
 
-			br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "SLAM_TF/drone_global_position", "/map"));
+			br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "/map", "slam/map"));
 	
 		rate.sleep();
 	}
