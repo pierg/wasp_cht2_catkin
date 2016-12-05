@@ -8,7 +8,7 @@ trap ctrl_c INT
 function ctrl_c() {
         echo ""
         echo "** Shutting down & forcing drone to land**"
-        rostopic pub -1 /ardrone$droneId/land std_msgs/Empty
+        rostopic pub -1 drone$droneId/ardrone/land std_msgs/Empty
         exit
 }
 
@@ -47,10 +47,10 @@ do
 	if [ "$input" == "takeoff" ]
 	then
 		echo "Pubslishing takeoff"
-		rostopic pub -1 /ardrone$droneId/takeoff std_msgs/Empty
+		rostopic pub -1 /drone$droneId/ardrone/takeoff std_msgs/Empty
 	else
 		echo "Publishing land"
-		rostopic pub -1 /ardrone$droneId/land std_msgs/Empty
+		rostopic pub -1 /drone$droneId/ardrone/land std_msgs/Empty
 	fi
 	clear
 	echo "Write 'takeoff' and press ENTER to takeoff"
