@@ -36,8 +36,9 @@ xterm  -e rosrun planner drone.py $1 &
 #xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 &
 
 clear
-echo "Write 'takeoff' and press ENTER to takeoff"
-echo "or write anything else to land"
+echo "Write 'takeoff' to takeoff"
+echo "Write 'reset' to reset from emergency mode"
+echo "Write anything to land"
 echo "------------------------------------------"
 echo -n ":"
 
@@ -48,8 +49,12 @@ do
 	then
 		echo "Pubslishing takeoff"
 		rostopic pub -1 /drone$droneId/ardrone/takeoff std_msgs/Empty
+	elif [ "$input" == "reset" ]
+	then	
+		echo "Publishing reset"
+		rostopic pub -1 /drone$droneId/ardrone/reset std_msgs/Empty
 	else
-		echo "Publishing land"
+		echo "Publishin<g land"
 		rostopic pub -1 /drone$droneId/ardrone/land std_msgs/Empty
 	fi
 	clear
