@@ -48,6 +48,7 @@ global publishTargetData
 global publishDroneStatus
 global droneId
 global idleBefore
+from std_msgs.msg import Bool
 
 
 # Global variables for initialization and keepin track of when to look for new commands from scheduler 
@@ -67,11 +68,16 @@ def SetTarget(data):
     targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
     idleBefore = False
-  
+
   # If the command is pickup - set the drone to "sleep" in the position to simulate pickup time
   elif data.command == 'pickup':
     time.sleep(2)
     idleBefore = False
+    # send idle command to the scheduler
+    droneMessage = drone_command()
+    droneMessage.command = 'idle'
+    droneMessage.drone_id = 'drone'+id
+    publishDroneStatus.publish(droneMessage)
 
   elif data.command != 'idle':
     time.sleep(2)
@@ -81,7 +87,20 @@ def SetTarget(data):
     targetPoint.pose.pose.position.y = data.posY
     targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
-    
+
+  elif data.command == 'scan':
+    value = Bool()
+    value.data = True
+    publishDroneScan.publish(value)
+    # send idle command to the scheduler after 5 seconds
+    time.sleep(5)
+    droneMessage = drone_command()
+    droneMessage.command = 'idle'
+    droneMessage.drone_id = 'drone'+id
+    publishDroneStatus.publish(droneMessage)
+
+
+
 # This method listens to the drone position to see if it has reached the target position
 # If it has reached the target position the idleBefore variable is set to true and it sends
 # to the scheduler that it is ready for a new command
@@ -137,11 +156,11 @@ if __name__=='__main__':
 
     # Start drone+id node
     rospy.init_node('plannerDrone'+ droneId)
-    
+
     # Subscribe to the odometry position given by the global transformation of slam
     odometryTopic = 'drone' + droneId + '/global/pos'
     rospy.Subscriber(odometryTopic,Odometry,ListenTo)
-    
+
     # Subscribe to the scheduling topic to know the target position
     schedulerTopic = 'drone'+droneId
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
@@ -151,9 +170,14 @@ if __name__=='__main__':
     targetDataTopic = 'drone'+droneId+'/planner/targetPosition'
     publishTargetData = rospy.Publisher(targetDataTopic, Odometry, queue_size=1)
 
+    # Publisher to dronex/scan
+    droneScanTopic = 'drone'+droneId+'/scan'
+    publishDroneScan = rospy.Publisher(droneScanTopic, Bool, queue_size=1)
+
+
     # Has to sleep after subscribing to a new topic, before publishing
     rate = rospy.Rate(1)
-    rate.sleep() 
+    rate.sleep()
 
     # Send an 'idle' message to declare that drone is ready
     msg = drone_command();
