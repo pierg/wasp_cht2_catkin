@@ -1,9 +1,13 @@
 <launch>
 <!-- TF (Transformation between coordinate frames)-->
 	<node name="slam_tf_broadcaster" pkg="drone_tf" type="slam_tf_broadcaster" launch-prefix="xterm -e">
-		<param name="apriltag_initial_x" value="-0.20"/>
-		<param name="apriltag_initial_y" value="-0.8331"/>
-		<param name="apriltag_initial_theta" value="1.571"/>
+		<param name="apriltag_initial_x" value="0.8331"/>
+		<param name="apriltag_initial_y" value="-0.2087"/>
+		<param name="apriltag_initial_z" value="0.0751"/>
+		<param name="apriltag_initial_qw" value="0.6358"/>
+		<param name="apriltag_initial_qx" value="-0.1046"/>
+		<param name="apriltag_initial_qy" value="0.0014"/>
+		<param name="apriltag_initial_qz" value="0.7647"/>
 	</node>
 	<node name="slam_tf_listener" pkg="drone_tf" type="slam_tf_listener" launch-prefix="xterm -e"/>
 	

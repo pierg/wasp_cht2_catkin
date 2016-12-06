@@ -40,12 +40,17 @@ int main(int argc, char** argv) {
 			globpos.pose.pose.position.x = transform.getOrigin().x();
 			globpos.pose.pose.position.y = transform.getOrigin().y();
 			globpos.pose.pose.position.z = transform.getOrigin().z();
-			tf::Quaternion qt = tf::Quaternion();
-			qt.setRPY(0,0,tf::getYaw(transform.getRotation()));
-			globpos.pose.pose.orientation.x = qt.x();
-			globpos.pose.pose.orientation.y = qt.y();
-			globpos.pose.pose.orientation.z = qt.z();
-			globpos.pose.pose.orientation.w = qt.w();
+			//tf::Quaternion qt = tf::Quaternion(transform.getOrigin().);
+			//qt.setRPY(0,0,tf::getYaw(transform.getRotation()));
+			globpos.pose.pose.orientation.x = transform.getRotation().x();
+			globpos.pose.pose.orientation.y = transform.getRotation().y();
+			globpos.pose.pose.orientation.z = transform.getRotation().z();
+			globpos.pose.pose.orientation.w = transform.getRotation().w();
+
+			//globpos.pose.pose.orientation.x = qt.x();
+			//globpos.pose.pose.orientation.y = qt.y();
+			//globpos.pose.pose.orientation.z = qt.z();
+			//globpos.pose.pose.orientation.w = qt.w();
 			pub2.publish(globpos);
 
 			

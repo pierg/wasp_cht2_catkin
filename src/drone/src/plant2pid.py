@@ -120,7 +120,7 @@ if __name__=='__main__':
 	rospy.init_node('drone'+id+'plant2pid')
 
 	# Listen to the GLOBAL topic to get our position estimates
-	rospy.Subscriber('drone'+id+'/slam/pos',Odometry,ExtractOdometry)
+	rospy.Subscriber('drone'+id+'/global/pos',Odometry,ExtractOdometry)
 
 	# Listen to the target position topic sent from the planner
 	rospy.Subscriber('drone'+id+'/planner/targetPosition',Odometry,SetTarget)

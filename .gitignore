@@ -5,3 +5,4 @@ _src
 *.pyc
 src/planner/scripts/problem.pddl
 *DS_Store
+*problem.pddl
