@@ -11,5 +11,5 @@
 		<param name="scale" value="0.7"/>
 	</node>
 
-
 	<node name="drone_rviz_markers" pkg="drone_tf" type="drone_rviz_markers"/>
+</launch>
