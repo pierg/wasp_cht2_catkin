@@ -62,9 +62,9 @@ def SetTarget(data):
 
   # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
-    targetPoint.pose.pose.position.x = -2.1#data.posX
-    targetPoint.pose.pose.position.y = -5.1#data.posY
-    targetPoint.pose.pose.position.z = 0#data.posZ
+    targetPoint.pose.pose.position.x = data.posX
+    targetPoint.pose.pose.position.y = data.posY
+    targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
     idleBefore = False
   
@@ -77,9 +77,9 @@ def SetTarget(data):
     time.sleep(2)
     idleBefore = False
     time.sleep(1)
-    targetPoint.pose.pose.position.x = 9.51#data.posX
-    targetPoint.pose.pose.position.y = -4.15#data.posY
-    targetPoint.pose.pose.position.z = 0#data.posZ
+    targetPoint.pose.pose.position.x = data.posX
+    targetPoint.pose.pose.position.y = data.posY
+    targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
     
 # This method listens to the drone position to see if it has reached the target position

@@ -33,6 +33,8 @@ void transform_callback(const wasp_custom_msgs::object_loc &msg)
 		}
 	}
 
+
+
 	// To call the service allowing for Drone camera switch (source: http://wiki.ros.org/roscpp/Overview/Services)
 	// The service is: /drone0/ardrone/togglecam
 	//Cmds below:
