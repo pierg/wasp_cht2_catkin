@@ -164,7 +164,10 @@ if __name__=='__main__':
     rospy.Subscriber(odometryTopic,Odometry,ListenTo)
 
     # Subscribe to the scheduling topic to know the target position
-    schedulerTopic = 'drone'+(droneId-1) # This is an ugly hack to get Samuels "drone1" to be the scheduler's "drone0"
+    schedulerTopic = 'drone'+droneId
+    
+    # --------------------- THIS NEEDS TO BE REMOVED #
+    schedulerTopic = 'drone0' # This is an ugly hack to get Samuels "drone1" to be the scheduler's "drone0"
 
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
     publishDroneStatus = rospy.Publisher(schedulerTopic,drone_command,queue_size=1)

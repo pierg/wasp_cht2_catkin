@@ -70,7 +70,7 @@ if __name__=='__main__':
 		id = str(sys.argv[1])
 
 	# Firstly we setup a ros node, so that we can communicate with the other packages
-	rospy.init_node('drone'+id+'/pid2plant')
+	rospy.init_node('drone'+id+'pid2plant')
 
 	# Topic that listens to the desired applied yaw signal
 	rospy.Subscriber('/drone'+id+'/control_effort_slam_yaw/',Float64,ApplyControlEffort_Yaw)
