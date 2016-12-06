@@ -60,6 +60,7 @@ targetPoint = Odometry()
 # This is where the scheduler orders the drone what to do
 def SetTarget(data):
   global idleBefore
+  global droneId
 
   # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
@@ -76,7 +77,7 @@ def SetTarget(data):
     # send idle command to the scheduler
     droneMessage = drone_command()
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+id
+    droneMessage.drone_id = 'drone'+droneId
     publishDroneStatus.publish(droneMessage)
 
   elif data.command != 'idle':
@@ -96,7 +97,7 @@ def SetTarget(data):
     time.sleep(5)
     droneMessage = drone_command()
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+id
+    droneMessage.drone_id = 'drone'+droneId
     publishDroneStatus.publish(droneMessage)
 
 
@@ -105,6 +106,7 @@ def SetTarget(data):
 # If it has reached the target position the idleBefore variable is set to true and it sends
 # to the scheduler that it is ready for a new command
 def ListenTo(data):
+  global droneId
 
   global idleBefore
 
@@ -128,7 +130,7 @@ def ListenTo(data):
   # Publish to the scheduler that the drone is finished and awaiting next task
   if ((distanceToTarget < distanceThreshold) and (idleBefore == False)):
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+id
+    droneMessage.drone_id = 'drone'+droneId
     droneMessage.posX = currentX
     droneMessage.posY = currentY
     droneMessage.posZ = data.pose.pose.position.z
@@ -162,7 +164,8 @@ if __name__=='__main__':
     rospy.Subscriber(odometryTopic,Odometry,ListenTo)
 
     # Subscribe to the scheduling topic to know the target position
-    schedulerTopic = 'drone'+droneId
+    schedulerTopic = 'drone'+(droneId-1) # This is an ugly hack to get Samuels "drone1" to be the scheduler's "drone0"
+
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
     publishDroneStatus = rospy.Publisher(schedulerTopic,drone_command,queue_size=1)
 
