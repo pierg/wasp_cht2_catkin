@@ -117,14 +117,17 @@ if __name__=='__main__':
 	global setInitialPosition
 	setInitialPosition = True
 	# Start node 
-	rospy.init_node('drone'+id+'plant2pid')
+	rospy.init_node('drone'+id+'/plant2pid')
 
-	# Listen to the slam topic to get our position estimates
-	rospy.Subscriber('drone'+id+'/slam/pos',Odometry,ExtractOdometry)
+	# Listen to the GLOBAL topic to get our position estimates
+	rospy.Subscriber('drone'+id+'/global/pos',Odometry,ExtractOdometry)
 
 	# Listen to the target position topic sent from the planner
 	rospy.Subscriber('drone'+id+'/planner/targetPosition',Odometry,SetTarget)
 	
+
+
+#### THis is using the slam topic but it using global coordinates -> need to refactor to be more clear
 	# Global variable for the error estiamte for the yaw
 	global publishStateToPID_yaw
 	publishStateToPID_yaw = rospy.Publisher('drone'+id+'/state_slam_yaw', Float64, queue_size=1)

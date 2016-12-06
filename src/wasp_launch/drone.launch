@@ -75,7 +75,7 @@
 
 
 		<!--Rotation in Z (Yaw) axis PID-->
-		<node name="pid_slam_yaw" pkg="pid" type="controller" >
+<!-- 		<node name="pid_slam_yaw" pkg="pid" type="controller" >
 			<remap from="state" to="state_slam_yaw"/>
 			<remap from="setpoint" to="setpoint_slam_yaw"/>
 			<remap from="control_effort" to="control_effort_slam_yaw"/>
@@ -120,7 +120,8 @@
 			<param name="diagnostic_period" value="0.25" />
 			<param name="max_loop_frequency" value="100.0" />
 			<param name="min_loop_frequency" value="100.0" />
-		</node>
+		</node> -->
+
 		<!-- Converting control effort to the drone itself -->
 		<!--<node name="pid2plant_frontcontroller" pkg="task3_opencv" type="pid2plant_frontcontroller.py" launch-prefix="xterm -e"/>-->
 

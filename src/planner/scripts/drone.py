@@ -48,6 +48,7 @@ global publishTargetData
 global publishDroneStatus
 global droneId
 global idleBefore
+from std_msgs.msg import Bool
 
 
 # Global variables for initialization and keepin track of when to look for new commands from scheduler 
@@ -59,33 +60,53 @@ targetPoint = Odometry()
 # This is where the scheduler orders the drone what to do
 def SetTarget(data):
   global idleBefore
+  global droneId
 
   # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
-    targetPoint.pose.pose.position.x = -2.1#data.posX
-    targetPoint.pose.pose.position.y = -5.1#data.posY
-    targetPoint.pose.pose.position.z = 1.5#data.posZ
+    targetPoint.pose.pose.position.x = data.posX
+    targetPoint.pose.pose.position.y = data.posY
+    targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
     idleBefore = False
-  
+
   # If the command is pickup - set the drone to "sleep" in the position to simulate pickup time
   elif data.command == 'pickup':
     time.sleep(2)
     idleBefore = False
+    # send idle command to the scheduler
+    droneMessage = drone_command()
+    droneMessage.command = 'idle'
+    droneMessage.drone_id = 'drone'+droneId
+    publishDroneStatus.publish(droneMessage)
 
   elif data.command != 'idle':
     time.sleep(2)
     idleBefore = False
     time.sleep(1)
-    targetPoint.pose.pose.position.x = 9.51#data.posX
-    targetPoint.pose.pose.position.y = -4.15#data.posY
-    targetPoint.pose.pose.position.z = 0#data.posZ
+    targetPoint.pose.pose.position.x = data.posX
+    targetPoint.pose.pose.position.y = data.posY
+    targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
-    
+
+  elif data.command == 'scan':
+    value = Bool()
+    value.data = True
+    publishDroneScan.publish(value)
+    # send idle command to the scheduler after 5 seconds
+    time.sleep(5)
+    droneMessage = drone_command()
+    droneMessage.command = 'idle'
+    droneMessage.drone_id = 'drone'+droneId
+    publishDroneStatus.publish(droneMessage)
+
+
+
 # This method listens to the drone position to see if it has reached the target position
 # If it has reached the target position the idleBefore variable is set to true and it sends
 # to the scheduler that it is ready for a new command
 def ListenTo(data):
+  global droneId
 
   global idleBefore
 
@@ -109,7 +130,7 @@ def ListenTo(data):
   # Publish to the scheduler that the drone is finished and awaiting next task
   if ((distanceToTarget < distanceThreshold) and (idleBefore == False)):
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+id
+    droneMessage.drone_id = 'drone'+droneId
     droneMessage.posX = currentX
     droneMessage.posY = currentY
     droneMessage.posZ = data.pose.pose.position.z
@@ -137,13 +158,14 @@ if __name__=='__main__':
 
     # Start drone+id node
     rospy.init_node('plannerDrone'+ droneId)
-    
+
     # Subscribe to the odometry position given by the global transformation of slam
     odometryTopic = 'drone' + droneId + '/global/pos'
     rospy.Subscriber(odometryTopic,Odometry,ListenTo)
-    
+
     # Subscribe to the scheduling topic to know the target position
-    schedulerTopic = 'drone'+droneId
+    schedulerTopic = 'drone'+(droneId-1) # This is an ugly hack to get Samuels "drone1" to be the scheduler's "drone0"
+
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
     publishDroneStatus = rospy.Publisher(schedulerTopic,drone_command,queue_size=1)
 
@@ -151,9 +173,14 @@ if __name__=='__main__':
     targetDataTopic = 'drone'+droneId+'/planner/targetPosition'
     publishTargetData = rospy.Publisher(targetDataTopic, Odometry, queue_size=1)
 
+    # Publisher to dronex/scan
+    droneScanTopic = 'drone'+droneId+'/scan'
+    publishDroneScan = rospy.Publisher(droneScanTopic, Bool, queue_size=1)
+
+
     # Has to sleep after subscribing to a new topic, before publishing
     rate = rospy.Rate(1)
-    rate.sleep() 
+    rate.sleep()
 
     # Send an 'idle' message to declare that drone is ready
     msg = drone_command();

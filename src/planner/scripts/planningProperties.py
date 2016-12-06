@@ -12,6 +12,7 @@ drones = settings['drones'];
 turtles = settings['turtles'];
 crates = settings['victims'];
 victims = settings['victims'];
+victim_ids = [];
 emergency_areas = len(settings['emergency_areas']);
 
 locations = [loc for loc,pos in settings['locations'].items()] + ['area'+`i` for i in range(emergency_areas)];
