@@ -23,17 +23,17 @@ xterm  -e roslaunch wasp_launch pidController.launch droneId:=$1 &
 #xterm -geometry 90x40+0+0 -e roslaunch wasp_launch pidController.launch droneId:=$1 &
 
 # Start pid2plant
-xterm  -e rosrun drone pid2plant.py $1 &
-#xterm -geometry 90x40+600+0 -e rosrun drone pid2plant.py $1 &
+#xterm  -e rosrun drone pid2plant.py $1 &
+xterm -geometry 90x40+600+0 -e rosrun drone pid2plant.py $1 &
 
 
 # Start plant2pid
-xterm  -e rosrun drone plant2pid.py $1 &
-#xterm -geometry 90x40+1200+0 -e rosrun drone plant2pid.py $1 &
+#xterm  -e rosrun drone plant2pid.py $1 &
+xterm -geometry 90x40+1200+0 -e rosrun drone plant2pid.py $1 &
 
 # Start the planner for drone
-xterm  -e rosrun planner drone.py $1 &
-#xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 &
+#xterm  -e rosrun planner drone.py $1 &
+xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 &
 
 clear
 echo "Write 'takeoff' to takeoff"

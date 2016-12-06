@@ -30,7 +30,7 @@ global targetPOS
 targetPOS = Odometry()
 targetPOS.pose.pose.position.x = 2.3
 targetPOS.pose.pose.position.y = -3.9
-targetPOS.pose.pose.position.z = 2.5
+targetPOS.pose.pose.position.z = 1.5
 
 # Command holder for publication
 command = Twist()
@@ -46,7 +46,7 @@ def SetTarget(data):
 	targetPOS = data
 	targetPOS.pose.pose.position.x = data.pose.pose.position.x
 	targetPOS.pose.pose.position.y = data.pose.pose.position.y
-	targetPOS.pose.pose.position.z = 2.5
+	targetPOS.pose.pose.position.z = 1.5
 	print(data)
 
 # This method extract the position from slam and sends the errors to the PID controller
@@ -62,6 +62,13 @@ def ExtractOdometry(data):
 	global publishStateToPID_y
 	global publishStateToPID_z
 	
+	global setInitialPosition
+	if setInitialPosition == True:
+		targetPOS.pose.pose.position.x = data.pose.pose.position.x
+		targetPOS.pose.pose.position.y = data.pose.pose.position.y
+		targetPOS.pose.pose.position.z = 1.5
+		setInitialPosition = False
+
 	# Our current quaternion
 	qC = data.pose.pose.orientation
 
@@ -106,6 +113,9 @@ if __name__=='__main__':
 	else:
 		id = str(sys.argv[1])
 
+
+	global setInitialPosition
+	setInitialPosition = True
 	# Start node 
 	rospy.init_node('drone'+id+'plant2pid')
 

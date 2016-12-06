@@ -64,7 +64,7 @@ def SetTarget(data):
   if (data.command == 'fly'):
     targetPoint.pose.pose.position.x = -2.1#data.posX
     targetPoint.pose.pose.position.y = -5.1#data.posY
-    targetPoint.pose.pose.position.z = 0#data.posZ
+    targetPoint.pose.pose.position.z = 1.5#data.posZ
     publishTargetData.publish(targetPoint)
     idleBefore = False
   
