@@ -31,6 +31,7 @@ def rePlan():
 
 def incomingVictim(data):
 	global victims
+	global victim_ids
 	global locations
 	global positions
 	global crates
@@ -38,6 +39,13 @@ def incomingVictim(data):
 
 	d = data.data.split( )
 	id = victims
+	
+	#check if we have discovered a victim with this ID already, return if so
+	for v in victim_ids:
+		if v == d[2]:
+			return
+		
+	victim_ids.append(d[2]);
 
 	# Add the new victim
 	victims += 1;
