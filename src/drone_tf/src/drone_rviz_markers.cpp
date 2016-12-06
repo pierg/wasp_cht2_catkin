@@ -2,7 +2,6 @@
 
 #include <ros/ros.h>
 //ROS Messages
-#include "wasp_custom_msgs/object_loc.h"
 #include <std_msgs/Float64.h>
 #include <std_msgs/Bool.h>
 #include <geometry_msgs/Pose2D.h>
