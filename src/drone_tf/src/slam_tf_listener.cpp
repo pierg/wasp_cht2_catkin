@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
 			nav_msgs::Odometry globpos;
 			globpos.pose.pose.position.x = transform.getOrigin().x();
 			globpos.pose.pose.position.y = transform.getOrigin().y();
+			globpos.pose.pose.position.z = transform.getOrigin().z();
 			tf::Quaternion qt = tf::Quaternion();
 			qt.setRPY(0,0,tf::getYaw(transform.getRotation()));
 			globpos.pose.pose.orientation.x = qt.x();

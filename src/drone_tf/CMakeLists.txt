@@ -63,13 +63,9 @@ include_directories(
 #install(PROGRAMS pynodes/voice_feedback.py
 #  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-add_executable(apriltag_tf_broadcaster src/apriltag_tf_broadcaster.cpp)
-target_link_libraries(apriltag_tf_broadcaster ${catkin_LIBRARIES})
-add_dependencies(apriltag_tf_broadcaster apriltag_tf_broadcaster ${${PROJECT_NAME}_EXPORTED_TARGETS})
-
-add_executable(apriltag_tf_listener src/apriltag_tf_listener.cpp)
-target_link_libraries(apriltag_tf_listener ${catkin_LIBRARIES})
-add_dependencies(apriltag_tf_listener apriltag_tf_listener ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_executable(apriltag_victim src/apriltag_victim.cpp)
+target_link_libraries(apriltag_victim ${catkin_LIBRARIES})
+add_dependencies(apriltag_victim apriltag_victim ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 add_executable(slam_tf_broadcaster src/slam_tf_broadcaster.cpp)
 target_link_libraries(slam_tf_broadcaster ${catkin_LIBRARIES})

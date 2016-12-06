@@ -107,7 +107,7 @@ if __name__=='__main__':
 		id = str(sys.argv[1])
 
 	# Start node 
-	rospy.init_node('drone'+id+'plant2pid')
+	rospy.init_node('drone'+id+'/plant2pid')
 
 	# Listen to the GLOBAL topic to get our position estimates
 	rospy.Subscriber('drone'+id+'/global/pos',Odometry,ExtractOdometry)
