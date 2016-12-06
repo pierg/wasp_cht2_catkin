@@ -25,7 +25,7 @@
 			<remap from="control_effort" to="control_effort_slam_x"/>
 			<param name="Kp" value="0.075" />
 			<param name="Ki" value="0.00" />
-			<param name="Kd" value="0.1" />
+			<param name="Kd" value="0.05" />
 			<param name="upper_limit" value="0.5" />
 			<param name="lower_limit" value="-0.5" />
 			<param name="windup_limit" value="1" />
@@ -40,7 +40,7 @@
 			<remap from="control_effort" to="control_effort_slam_y"/>
 			<param name="Kp" value="0.075" />
 			<param name="Ki" value="0.00" />
-			<param name="Kd" value="0.1" />
+			<param name="Kd" value="0.05" />
 			<param name="upper_limit" value="1" />
 			<param name="lower_limit" value="-1" />
 			<param name="windup_limit" value="1" />
@@ -53,7 +53,7 @@
 			<remap from="state" to="state_slam_z"/>
 			<remap from="setpoint" to="setpoint_slam_z"/>
 			<remap from="control_effort" to="control_effort_slam_z"/>
-			<param name="Kp" value="0.2" />
+			<param name="Kp" value="0.75" />
 			<param name="Ki" value="0.00" />
 			<param name="Kd" value="0.05" />
 			<param name="upper_limit" value="1" />
