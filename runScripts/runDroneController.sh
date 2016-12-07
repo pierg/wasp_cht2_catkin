@@ -34,7 +34,7 @@ xterm -geometry 90x40+1200+0 -e rosrun drone plant2pid.py $1 &
 
 # Start the planner for drone
 #xterm  -e rosrun planner drone.py $1 &
-xterm -geometry 90x40+0+600 -e rosrun planner drone.py $2 &
+xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 $2 &
 
 clear
 echo "Write 'takeoff' to takeoff"
