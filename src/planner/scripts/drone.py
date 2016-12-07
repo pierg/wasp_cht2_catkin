@@ -188,7 +188,7 @@ if __name__=='__main__':
 
     # Send an 'idle' message to declare that drone is ready
     msg = drone_command();
-    msg.drone_id = 'drone'+droneId;
+    msg.drone_id = 'drone'+dronePlannerId;
     msg.command = 'idle';
     publishDroneStatus.publish(msg)
     print('Launched Planner Drone for drone'+droneId)
