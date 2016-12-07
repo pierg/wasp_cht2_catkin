@@ -61,6 +61,7 @@ targetPoint = Odometry()
 def SetTarget(data):
   global idleBefore
   global droneId
+  global dronePlannerId
 
   # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
@@ -77,7 +78,18 @@ def SetTarget(data):
     # send idle command to the scheduler
     droneMessage = drone_command()
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+droneId
+    droneMessage.drone_id = 'drone'+dronePlannerId
+    publishDroneStatus.publish(droneMessage)
+
+  elif data.command == 'scan':
+    value = Bool()
+    value.data = True
+    publishDroneScan.publish(value)
+    # send idle command to the scheduler after 5 seconds
+    time.sleep(5)
+    droneMessage = drone_command()
+    droneMessage.command = 'idle'
+    droneMessage.drone_id = 'drone'+dronePlannerId
     publishDroneStatus.publish(droneMessage)
 
   elif data.command != 'idle':
@@ -89,17 +101,6 @@ def SetTarget(data):
     targetPoint.pose.pose.position.z = data.posZ
     publishTargetData.publish(targetPoint)
 
-  elif data.command == 'scan':
-    value = Bool()
-    value.data = True
-    publishDroneScan.publish(value)
-    # send idle command to the scheduler after 5 seconds
-    time.sleep(5)
-    droneMessage = drone_command()
-    droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+droneId
-    publishDroneStatus.publish(droneMessage)
-
 
 
 # This method listens to the drone position to see if it has reached the target position
@@ -107,6 +108,7 @@ def SetTarget(data):
 # to the scheduler that it is ready for a new command
 def ListenTo(data):
   global droneId
+  global dronePlannerId
 
   global idleBefore
 
@@ -130,7 +132,7 @@ def ListenTo(data):
   # Publish to the scheduler that the drone is finished and awaiting next task
   if ((distanceToTarget < distanceThreshold) and (idleBefore == False)):
     droneMessage.command = 'idle'
-    droneMessage.drone_id = 'drone'+droneId
+    droneMessage.drone_id = 'drone'+dronePlannerId
     droneMessage.posX = currentX
     droneMessage.posY = currentY
     droneMessage.posZ = data.pose.pose.position.z
@@ -144,6 +146,7 @@ if __name__=='__main__':
 
   # Need the droneId to be global since we need the variable in the methods above
   global droneId
+  global dronePlannerId
 
   # Make sure an input is given for the drone id
   if len(sys.argv) < 3:
