@@ -146,8 +146,8 @@ if __name__=='__main__':
   global droneId
 
   # Make sure an input is given for the drone id
-  if len(sys.argv) < 2:
-    print("usage: rosrun planner drone.py <id#>")
+  if len(sys.argv) < 3:
+    print("usage: rosrun planner drone.py <physicalId#> <plannerId#>")
   else:
 
     # Default settings
@@ -155,6 +155,7 @@ if __name__=='__main__':
 
     # Assign drone id
     droneId = str(sys.argv[1])
+    dronePlannerId = str(sys.argv[2])
 
     # Start drone+id node
     rospy.init_node('plannerDrone'+ droneId)
@@ -164,10 +165,7 @@ if __name__=='__main__':
     rospy.Subscriber(odometryTopic,Odometry,ListenTo)
 
     # Subscribe to the scheduling topic to know the target position
-    schedulerTopic = 'drone'+droneId
-    
-    # --------------------- THIS NEEDS TO BE REMOVED #
-    schedulerTopic = 'drone0' # This is an ugly hack to get Samuels "drone1" to be the scheduler's "drone0"
+    schedulerTopic = 'drone'+dronePlannerId
 
     rospy.Subscriber(schedulerTopic,drone_command,SetTarget)
     publishDroneStatus = rospy.Publisher(schedulerTopic,drone_command,queue_size=1)

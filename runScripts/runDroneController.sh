@@ -1,6 +1,7 @@
 #!/bin/bash
 
 droneId=$1
+dronePlannerId=$2
 # CTRL+C trap
 trap ctrl_c INT
 
@@ -33,7 +34,7 @@ xterm -geometry 90x40+1200+0 -e rosrun drone plant2pid.py $1 &
 
 # Start the planner for drone
 #xterm  -e rosrun planner drone.py $1 &
-xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 &
+xterm -geometry 90x40+0+600 -e rosrun planner drone.py $2 &
 
 clear
 echo "Write 'takeoff' to takeoff"
