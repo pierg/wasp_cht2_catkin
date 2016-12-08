@@ -81,7 +81,7 @@ def incomingCommand(data):
         generateProblem.emergency_areas += 1; # because I don't have the same instance.....
         locations.append(name)
         positions[name] = [int(d[1]), int(d[2])]
-        print "Incomming emergency_area"
+        print "Incoming emergency_area"
         print "Initiate re-planning"
         rePlan(); # run the planner
     elif d[0] == "start":
