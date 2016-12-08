@@ -16,62 +16,84 @@ from geometry_msgs.msg import Twist  	 # for sending commands to the drone
 from std_msgs.msg import Float64	 # for the control_effort
 from nav_msgs.msg import Odometry
 import tf
+import math
+
 # Global variable for the cmd/vel publisher command
+
+global command
 command = Twist()
 
+global ce_pitch
+global ce_roll
+ce_pitch = 0
+ce_roll = 0
 global curr_angle
 curr_angle = 0
 
 # Method that applies the yaw signal (theta)
 def ApplyControlEffort_Yaw(controlEffort):
-	global command
+	#global command
 	yaw_velocity=controlEffort.data
 	command.angular.z = yaw_velocity
-	pubCmdTo_drone.publish(command)
-	PrintCommands()
+	#pubCmdTo_drone.publish(command)
+	#PrintCommands()
 
 # Method that applies the pitch signal (x)
 def ApplyControlEffort_Pitch(controlEffort):
-	global command
+	#global command
+	global ce_pitch	
+	#pitch =  controlEffort.data
+	#command.linear.x  = pitch
 	
-	pitch =  controlEffort.data
-	command.linear.x  = pitch
+	#pubCmdTo_drone.publish(command)
+	#PrintCommands()
+	ce_pitch = controlEffort.data
 
-	pubCmdTo_drone.publish(command)
-	PrintCommands()
+
 # Method that applies the roll signal (y)
 def ApplyControlEffort_Roll(controlEffort):
-	global command
-	
+	#global command
+	global ce_roll
 	# The negative roll is applied because of the coordinate system
-	roll =  controlEffort.data	
-	command.linear.y  = -roll
-	pubCmdTo_drone.publish(command)
-	PrintCommands()
+	#roll =  controlEffort.data	
+	#command.linear.y  = -roll
+	#pubCmdTo_drone.publish(command)
+	#PrintCommands()
+
+	ce_roll = controlEffort.data
 
 # Method that applies the altitude signal (z)
 def ApplyControlEffort_Altitude(controlEffort):
-	global command
+	#global command
 
 	alt = controlEffort.data
 	command.linear.z = alt
-	pubCmdTo_drone.publish(command)
-	PrintCommands()
+	#pubCmdTo_drone.publish(command)
+	#PrintCommands()
 
 # Print the applied signals
 def PrintCommands():
+	global curr_angle
 	print("Applying Control Effort \n\tX \t\tY \t\tZ \t\tYaw")
 	print(str("{:10.4f}".format(command.linear.x)) + " \t" + str("{:10.4f}".format(command.linear.y)) +"\t" + str("{:10.4f}".format(command.linear.z)) +"\t" + str("{:10.4f}".format(command.angular.z)) + "\n")
+	print "Curr angle: "+ str(curr_angle)
 		  
 	
 
 def UpdateAngle(pos):
+	global curr_angle
+	pose = pos.pose.pose
 
-	relativeEulearAngles = euler = tf.transformations.euler_from_quaternion(pos.pose.pose.orientation)
+	quaternion = (
+		pose.orientation.x,
+    		pose.orientation.y,
+    		pose.orientation.z,
+    		pose.orientation.w)
 
-	curr_angle = relativeEulerAngles[0]
+	euler = tf.transformations.euler_from_quaternion(quaternion)
 
-	print "Curr angle: "+curr_angle
+	curr_angle = euler[2]
+
 
 # Setup the application
 if __name__=='__main__':
@@ -105,4 +127,17 @@ if __name__=='__main__':
 
 	print "Launched pid2plant for drone"+id
 	#This keeps the function active till node are shurdown.
-	rospy.spin()
+	
+	r = rospy.Rate(100)
+	while not rospy.is_shutdown():
+		command.linear.x = (ce_pitch*math.cos(curr_angle)-ce_roll*math.sin(curr_angle))
+		command.linear.y = -(ce_roll*math.cos(curr_angle)+ce_pitch*math.sin(curr_angle))
+
+		#command.linear.x = ce_pitch
+		#command.linear.y = -ce_roll
+		pubCmdTo_drone.publish(command)
+		PrintCommands()
+		r.sleep()
+
+	
+	#rospy.spin()

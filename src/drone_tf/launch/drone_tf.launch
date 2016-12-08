@@ -16,8 +16,9 @@
 	</node>
 
 	<node name="drone_rviz_markers" pkg="drone_tf" type="drone_rviz_markers"/>
-
+	<!--
 	<node name="apriltag_victim" pkg="drone_tf" type="apriltag_victim" launch-prefix="xterm -e"/>
 
 	<node name="april_tags" pkg="task3_opencv" type="april_tags"/>
+	-->
 </launch>

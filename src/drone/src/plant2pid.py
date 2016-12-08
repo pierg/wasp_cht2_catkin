@@ -80,15 +80,17 @@ def ExtractOdometry(data):
 	targetQuaternion = PyKDL.Rotation.Quaternion(qT[0],qT[1],qT[2],qT[3])
 
 	# Calculate the relative quaternion
-	relativeQuaternion = currentQuaternion * targetQuaternion.Inverse()
+	relativeQuaternion = currentQuaternion #* targetQuaternion.Inverse()
 
 	# Convert it into angels
 	relativeEulerAngels = relativeQuaternion.GetEulerZYX()
 
+	yaw_error = relativeEulerAngels[0]
+
 	# Yaw value is obtained by relativeEulerAngels[0]
-	publishStateToPID_yaw.publish(Float64(relativeEulerAngels[0]))
+	publishStateToPID_yaw.publish(Float64(yaw_error))
 	pubSetpointTo_PID_yaw.publish(0)
-	print("Publishing the YAW Angle (Error): " + str(Float64(relativeEulerAngels[0])))
+	print("Publishing the YAW Angle (Error): " + str(Float64(yaw_error)))
 
 
 	# --- TESTING HERE ----
