@@ -13,8 +13,8 @@ rospy.init_node('odometry_publisher')
 odom_pub = rospy.Publisher("/drone1/planner/targetPosition", Odometry, queue_size=0)
 odom_broadcaster = tf.TransformBroadcaster()
 
-x=2.8
-y=2.8
+x=2.2
+y=2.2
 
 #x = 5
 #y = -2
