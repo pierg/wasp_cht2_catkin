@@ -14,10 +14,13 @@ roslib.load_manifest('drone')
 # Import the messages we're interested in sending and receiving
 from geometry_msgs.msg import Twist  	 # for sending commands to the drone
 from std_msgs.msg import Float64	 # for the control_effort
-
-
+from nav_msgs.msg import Odometry
+import tf
 # Global variable for the cmd/vel publisher command
 command = Twist()
+
+global curr_angle
+curr_angle = 0
 
 # Method that applies the yaw signal (theta)
 def ApplyControlEffort_Yaw(controlEffort):
@@ -60,6 +63,15 @@ def PrintCommands():
 	print("Applying Control Effort \n\tX \t\tY \t\tZ \t\tYaw")
 	print(str("{:10.4f}".format(command.linear.x)) + " \t" + str("{:10.4f}".format(command.linear.y)) +"\t" + str("{:10.4f}".format(command.linear.z)) +"\t" + str("{:10.4f}".format(command.angular.z)) + "\n")
 		  
+	
+
+def UpdateAngle(pos):
+
+	relativeEulearAngles = euler = tf.transformations.euler_from_quaternion(pos.pose.pose.orientation)
+
+	curr_angle = relativeEulerAngles[0]
+
+	print "Curr angle: "+curr_angle
 
 # Setup the application
 if __name__=='__main__':
@@ -84,6 +96,9 @@ if __name__=='__main__':
 	# Topic that listens to the desired applied z signal (altitude)
 	rospy.Subscriber('/drone'+id+'/control_effort_slam_z/',Float64,ApplyControlEffort_Altitude)
 	
+
+	rospy.Subscriber('/drone'+id+'/global/pos', Odometry, UpdateAngle)
+
 	# Topic that we publish to the drone for control
 	global pubCmdTo_drone
 	pubCmdTo_drone = rospy.Publisher('drone'+id+'/cmd_vel', Twist, queue_size=1)

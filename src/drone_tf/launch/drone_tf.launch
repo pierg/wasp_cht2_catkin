@@ -5,8 +5,8 @@
 		<param name="apriltag_initial_y" value="-0.4889"/>
 		<param name="apriltag_initial_z" value="-0.1935"/>
 		<param name="apriltag_initial_qw" value="0.6769"/>
-		<param name="apriltag_initial_qx" value="-0.0034"/>
-		<param name="apriltag_initial_qy" value="-0.3696"/>
+		<param name="apriltag_initial_qx" value="-0.003431"/>
+		<param name="apriltag_initial_qy" value="-0.03696"/>
 		<param name="apriltag_initial_qz" value="0.7350"/>
 	</node>
 	<node name="slam_tf_listener" pkg="drone_tf" type="slam_tf_listener" launch-prefix="xterm -e"/>

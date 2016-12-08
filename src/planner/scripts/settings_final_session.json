@@ -1,7 +1,7 @@
 {
 	"drones": 1,
 	"turtles": 1,
-	"persons": 1,
+	"victims": 1,
 
 	"flyingSpeed": 0.1,
 	"drivingSpeed": 0.1,
@@ -20,6 +20,6 @@
 	"initLocations": {
 		"drones": ["drone_init"],
 		"turtles": ["turtle_init"],
-		"persons": ["victim"]
+		"victims": ["victim"]
 	}
 }

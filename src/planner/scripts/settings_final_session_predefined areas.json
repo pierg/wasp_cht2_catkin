@@ -13,7 +13,9 @@
 		"drone1_init": [2,0]
 	},
 
-	"emergency_areas": [],
+	"emergency_areas": [
+		[2,2]
+	],
 	
 	"initLocations": {
 		"drones": ["drone0_init","drone1_init"],

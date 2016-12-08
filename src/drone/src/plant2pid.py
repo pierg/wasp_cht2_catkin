@@ -47,6 +47,7 @@ def SetTarget(data):
 	targetPOS.pose.pose.position.x = data.pose.pose.position.x
 	targetPOS.pose.pose.position.y = data.pose.pose.position.y
 	targetPOS.pose.pose.position.z = 1.5
+	print(data)
 
 # This method extract the position from slam and sends the errors to the PID controller
 def ExtractOdometry(data):
