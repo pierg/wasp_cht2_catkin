@@ -41,7 +41,7 @@ def updateProblem():
 
         ''.join(["\t\t(at crate" + `i` + " " + at[getCI(i)] + ")\n" for i in CRATES if at[getCI(i)] != -1]), ("\n" if CRATES else ""),
 
-        ' '.join(["\t\t(at victim" + `i` + " victimLocation" + `i` + ")\n"
+        ' '.join(["\t\t(at victim" + `i` + " victimlocation" + `i` + ")\n"
             for i in range(victims)]), ("\n" if victims > 0 else ""),
 
         ' '.join(["\t\t(treated victim" + `i` + ")\n" for i in treated]), ("\n" if treated else ""),

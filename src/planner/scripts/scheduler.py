@@ -50,7 +50,7 @@ def incomingVictim(data):
 
     # Add the new victim
     victims += 1;
-    name = "victimLocation"+`id`
+    name = "victimlocation"+`id`
     generateProblem.victims += 1; # because I don't have the same instance.....
     locations.append(name)
     positions[name] = [int(round(float(d[0]))), int(round(float(d[1])))]
