@@ -3,8 +3,8 @@
 	"turtles": 1,
 	"victims": 0,
 
-	"flyingSpeed": 0.1,
-	"drivingSpeed": 0.1,
+	"flyingSpeed": 1,
+	"drivingSpeed": 1,
 
 	"locations": {
 		"depot": [2,2],
