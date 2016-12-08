@@ -89,14 +89,24 @@ def ExtractOdometry(data):
 	pubSetpointTo_PID_yaw.publish(0)
 	print("Publishing the YAW Angle (Error): " + str(Float64(relativeEulerAngels[0])))
 
-	
-	# Transformation
+
+	# --- TESTING HERE ----
+	# Transformation to arbitrary reference angle frame
 	#theta = relativeEulerAngels[0]
 	#X = data.pose.pose.position.x
 	#Y = data.pose.pose.position.y
 
 	#xTransf = X*np.cos(theta)+Y*np.sin(theta)
 	#yTransf = Y*np.sin(theta)+X*np.cos(theta)
+
+	# Xtransf target position and state
+	#publishStateToPID_x.publish(xTransf)
+	#pubSetpointTo_PID_X.publish(targetPOS.pose.pose.position.x)
+    
+	# Ytransf target position and state
+	#publishStateToPID_y.publish(yTransf)
+	#pubSetpointTo_PID_Y.publish(targetPOS.pose.pose.position.y)
+	# --- END TESTING ----
 
 	# X target position and state
 	publishStateToPID_x.publish(data.pose.pose.position.x)
