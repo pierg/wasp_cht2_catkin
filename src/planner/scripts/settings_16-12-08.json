@@ -1,0 +1,24 @@
+{
+	"drones": 1,
+	"turtles": 1,
+	"victims": 0,
+
+	"flyingSpeed": 0.1,
+	"drivingSpeed": 0.1,
+
+	"locations": {
+		"depot": [2,2],
+		"turtle_init": [0,0],
+		"drone0_init": [1,0],
+		"drone1_init": [2,0]
+	},
+
+	"emergency_areas": [
+		[2,2]
+	],
+	
+	"initLocations": {
+		"drones": ["drone0_init"],
+		"turtles": ["turtle_init"]
+	}
+}
