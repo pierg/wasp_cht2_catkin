@@ -63,6 +63,8 @@ def SetTarget(data):
   global droneId
   global dronePlannerId
 
+  print("From planner")
+  print(data)
   # If the command is to fly - set new target position and publish it to the topic the drone listens to
   if (data.command == 'fly'):
     targetPoint.pose.pose.position.x = data.posX
@@ -126,8 +128,7 @@ def ListenTo(data):
 
   # Drone message container
   droneMessage = drone_command()
-  print(distanceToTarget,idleBefore)
-
+  
   # Check if the distance is within a threshold distance and that the drone is currently performing a task
   # Publish to the scheduler that the drone is finished and awaiting next task
   if ((distanceToTarget < distanceThreshold) and (idleBefore == False)):
@@ -190,6 +191,7 @@ if __name__=='__main__':
     msg = drone_command();
     msg.drone_id = 'drone'+dronePlannerId;
     msg.command = 'idle';
+    msg.posX = 1337
     publishDroneStatus.publish(msg)
     print('Launched Planner Drone for drone'+droneId)
 
