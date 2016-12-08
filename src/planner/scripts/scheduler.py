@@ -20,6 +20,7 @@ from os.path import expanduser
 import generateProblem
 
 def rePlan():
+    global SCHEDULER_ACTIVE;
     SCHEDULER_ACTIVE = False;
     updatePlan();
     #for i in ROBOTS:

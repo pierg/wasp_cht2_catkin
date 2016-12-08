@@ -32,9 +32,7 @@ xterm -geometry 90x40+600+0 -e rosrun drone pid2plant.py $1 &
 #xterm  -e rosrun drone plant2pid.py $1 &
 xterm -geometry 90x40+1200+0 -e rosrun drone plant2pid.py $1 &
 
-# Start the planner for drone
-#xterm  -e rosrun planner drone.py $1 &
-xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 $2 &
+
 
 clear
 echo "Write 'takeoff' to takeoff"
@@ -48,8 +46,14 @@ do
 	
 	if [ "$input" == "takeoff" ]
 	then
-		echo "Pubslishing takeoff"
+		echo "Publishing takeoff"
 		rostopic pub -1 /drone$droneId/ardrone/takeoff std_msgs/Empty
+        elif [ "$input" == "connect" ]
+        then
+		echo "Connecting to scheduler"
+ 		# Start the planner for drone
+		#xterm  -e rosrun planner drone.py $1 &
+		xterm -geometry 90x40+0+600 -e rosrun planner drone.py $1 $2 &
 	elif [ "$input" == "reset" ]
 	then	
 		echo "Publishing reset"
