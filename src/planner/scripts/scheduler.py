@@ -145,8 +145,6 @@ def finishAction(r):
         elif p[0] == 'scan':
             scanned.append(p[1]);
 
-        print scanned;
-
         actions[plan[r][0]][1] = True;
         print "finish: ", r, p, holds, at;
         plan[r] = plan[r][1:]
