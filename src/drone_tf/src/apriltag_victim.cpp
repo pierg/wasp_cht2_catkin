@@ -45,8 +45,10 @@ void transform_callback(const wasp_custom_msgs::object_loc &msg)
         if(victimsDetected == 1){
             std::cout<<"Victim Detected"<<std::endl;
             double x,y;
-            x = apriltag_position.x;
-            y = apriltag_position.y;
+//            x = apriltag_position.x;
+//            y = apriltag_position.y;
+            x = 2.1;
+            y = 2.0;
             std::string s = std::to_string(x) + " " +std::to_string(y) +  " " + std::to_string(id);
             std::cout<< "Position: " << s <<std::endl;
             std_msgs::String pubmsg;
