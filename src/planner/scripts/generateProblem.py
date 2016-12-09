@@ -6,8 +6,31 @@ from planningProperties import *
 # updateProblem(): creates an updated version of problem.pddl based on current state
 def updateProblem():
 
+    for r in ROBOTS:
+        p = actions[plan[r][0]][0];
+        if p[0] == 'pickup':
+            holds[r].append(p[1]);
+            at[getCI(p[1])] = -1;
+        elif p[0] == 'putdown':
+            holds[r].remove(p[1]);
+            at[getCI(p[1])] = at[r];
+        elif p[0] == 'load':
+            holds[r].remove(p[1]);
+            holds[getTI(p[2])].append(p[1]);
+            booked[p[2]] = False;
+        elif p[0] == 'unload':
+            holds[r].append(p[1]);
+            holds[getTI(p[2])].remove(p[1]);
+            booked[p[2]] = False;
+        elif p[0] in ['fly', 'drive']:
+            at[r] = p[1];
+        elif p[0] == 'deliver':
+            has[p[3]].append(p[2]);
+            holds[r].remove(p[1]);
+        elif p[0] == 'scan':
+            scanned.append(p[1]);
 
-    print positions, locations, emergency_areas
+
 
     p = ["(define (problem challenge)\n",
         "\t(:domain challenge-control)\n\n"];
