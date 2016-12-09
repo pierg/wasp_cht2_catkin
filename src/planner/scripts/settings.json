@@ -1,22 +1,23 @@
 {
-	"drones": 2,
-	"turtles": 2,
-	"crates": 4,
-	"persons": 2,
+	"drones": 1,
+	"turtles": 1,
+	"victims": 0,
 
-	"flyingSpeed": 10,
+	"flyingSpeed": 1,
 	"drivingSpeed": 1,
 
 	"locations": {
-		"depot": [0,0],
-		"l0": [1,1],
-		"l1": [1,-1]
+		"depot": [2.04,1.79],
+		"turtle_init": [2.1,3.91],
+		"drone0_init": [3.91,0.36],
+		"drone1_init": [2,0]
 	},
+
+	"emergency_areas": [
+	],
 	
 	"initLocations": {
-		"drones": ["depot", "depot"],
-		"turtles": ["depot", "depot"],
-		"crates": ["depot", "depot", "depot", "depot"],
-		"persons": ["l0", "l1"]
+		"drones": ["drone0_init"],
+		"turtles": ["turtle_init"]
 	}
 }

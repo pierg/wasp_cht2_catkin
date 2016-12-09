@@ -191,7 +191,6 @@ if __name__=='__main__':
     msg = drone_command();
     msg.drone_id = 'drone'+dronePlannerId;
     msg.command = 'idle';
-    msg.posX = 1337
     publishDroneStatus.publish(msg)
     print('Launched Planner Drone for drone'+droneId)
 

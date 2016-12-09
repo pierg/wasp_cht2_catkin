@@ -168,13 +168,12 @@ def updateWeb():
 def publish(robot, state):
     global topic
     global idByRobot
-    rospy.loginfo("state to be published: ");
-    rospy.loginfo(state);
+    rospy.loginfo("state to be published: " + ' '.join(`state`));
     msg = drone_command();
     msg.drone_id = idByRobot[robot];
-    #TODO: split case to handle drones as well; currently only turtles
+    #TODO: split case to handle drones as well; currently +o''.join(nly) turtles
     msg.command = state[0];
-    if msg.command == 'drive':
+    if msg.command in ['drive','fly']:
         location = state[1];
         position = positions[location];
         msg.posX = position[0];

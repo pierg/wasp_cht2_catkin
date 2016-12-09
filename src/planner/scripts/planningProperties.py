@@ -3,7 +3,7 @@
 
 import os
 script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, 'settings_16-12-08.json')
+file_path = os.path.join(script_dir, 'settings.json')
 import json
 with open(file_path, 'r') as settingsFile:
 	settings = json.load(settingsFile)
