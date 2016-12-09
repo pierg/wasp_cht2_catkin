@@ -1,0 +1,7 @@
+<launch>
+	<!-- DRONE 2 - IP: 192.168.1.1 with namespace drone1 -->
+	<group ns="drone1">
+		<!-- Launching the filter tag detection node -->
+		<include file = "$(find drone_tf)/launch/drone_tags.launch"/>
+	</group>
+</launch>

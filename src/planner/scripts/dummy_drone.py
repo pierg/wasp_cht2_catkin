@@ -39,50 +39,80 @@ from __future__ import print_function
 import rospy
 import sys
 import getopt
+import time
 from std_msgs.msg import String
 from planner.msg import drone_command
-
+from std_msgs.msg import Bool
 
 
 
 def takeAction(data):
-    global topic
+    global schedulerTopic
+    global publishDroneScan
+    global idNbr
+    global dronePlannerId
     if (data.command != 'idle'):
-        cdata = data._connection_header
-        rospy.loginfo('%s now initiates %s', id, data.command)
-        rate.sleep()
-        msg = drone_command();
-        msg.drone_id = id;
-        msg.command = 'idle';
-        topic.publish(msg)
+
+        if data.command == 'scan':
+            value = Bool()
+            value.data = True
+            publishDroneScan.publish(value)
+            # send idle command to the scheduler after 5 seconds
+            time.sleep(5)
+            droneMessage = drone_command()
+            droneMessage.command = 'idle'
+            droneMessage.drone_id = dronePlannerId
+            schedulerTopic.publish(droneMessage)
+
+        else:
+            cdata = data._connection_header
+            rospy.loginfo('%s now initiates %s', dronePlannerId, data.command)
+            rate.sleep()
+            msg = drone_command();
+            msg.drone_id = dronePlannerId;
+            msg.command = 'idle';
+            schedulerTopic.publish(msg)
 
 
 def drone(args):
+
+    global droneId
+    global dronePlannerId
+    global idNbr
+
     global rate
-    global id
-    global topic
+    global schedulerTopic
+    global publishDroneScan
     #global idRequestTopic
     #TODO: data validation of arg
 
-    arg = getopt.getopt(args, '')[1][0]
-    id = 'drone'+arg
-    rospy.init_node(id, anonymous=True)
-    rospy.loginfo('started '+id)
-    topic = rospy.Publisher(id, drone_command, queue_size=10)
-    rospy.Subscriber(id, drone_command, takeAction)
+
+    # Assign drone id
+    droneId = 'drone'+str(sys.argv[1])
+    dronePlannerId = 'drone'+str(sys.argv[2])
+    idNbr = str(sys.argv[2])
+    rospy.init_node(dronePlannerId, anonymous=True)
+    rospy.loginfo('started '+droneId+' as drone no. '+dronePlannerId)
+    schedulerTopic = rospy.Publisher(dronePlannerId, drone_command, queue_size=10)
+    rospy.Subscriber(dronePlannerId, drone_command, takeAction)
+
+    # Publisher to dronex/scan
+    droneScanTopic = droneId+'/scan'
+    publishDroneScan = rospy.Publisher(droneScanTopic, Bool, queue_size=1)
+
     rate = rospy.Rate(1)
     rate.sleep() #has to sleep after subscribing to a new topic
 
     msg = drone_command();
-    msg.drone_id = id;
+    msg.drone_id = dronePlannerId;
     msg.command = 'idle';
-    topic.publish(msg)
+    schedulerTopic.publish(msg)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print("usage: rosrun planner drone.py <id#>")
     else:
         drone(sys.argv[1:])
