@@ -21,11 +21,12 @@ import generateProblem
 
 def rePlan():
     global SCHEDULER_ACTIVE;
+    old_value = SCHEDULER_ACTIVE;
     SCHEDULER_ACTIVE = False;
     updatePlan();
     #for i in ROBOTS:
     #current[i] = {'index': 1, 'running': False};
-    SCHEDULER_ACTIVE = True;
+    SCHEDULER_ACTIVE = old_value;
     idleMessage(-1);
 #updateWeb();
 
