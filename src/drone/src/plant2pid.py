@@ -30,7 +30,7 @@ global targetPOS
 targetPOS = Odometry()
 targetPOS.pose.pose.position.x = 2.3
 targetPOS.pose.pose.position.y = -3.9
-targetPOS.pose.pose.position.z = 1.5
+targetPOS.pose.pose.position.z = 1
 
 # Command holder for publication
 command = Twist()
@@ -46,7 +46,7 @@ def SetTarget(data):
 	targetPOS = data
 	targetPOS.pose.pose.position.x = data.pose.pose.position.x
 	targetPOS.pose.pose.position.y = data.pose.pose.position.y
-	targetPOS.pose.pose.position.z = 1.5
+	targetPOS.pose.pose.position.z = 1
 	print(data)
 
 # This method extract the position from slam and sends the errors to the PID controller
@@ -66,7 +66,7 @@ def ExtractOdometry(data):
 	if setInitialPosition == True:
 		targetPOS.pose.pose.position.x = data.pose.pose.position.x
 		targetPOS.pose.pose.position.y = data.pose.pose.position.y
-		targetPOS.pose.pose.position.z = 1.5
+		targetPOS.pose.pose.position.z = 1
 		setInitialPosition = False
 
 	# Our current quaternion
@@ -85,7 +85,7 @@ def ExtractOdometry(data):
 	# Convert it into angels
 	relativeEulerAngels = relativeQuaternion.GetEulerZYX()
 
-	yaw_error = relativeEulerAngels[0]
+	yaw_error = relativeEulerAngels[0]-np.pi/2
 
 	# Yaw value is obtained by relativeEulerAngels[0]
 	publishStateToPID_yaw.publish(Float64(yaw_error))

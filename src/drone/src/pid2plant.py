@@ -32,7 +32,7 @@ curr_angle = 0
 
 # Method that applies the yaw signal (theta)
 def ApplyControlEffort_Yaw(controlEffort):
-	#global command
+	global command
 	yaw_velocity=controlEffort.data
 	command.angular.z = yaw_velocity
 	#pubCmdTo_drone.publish(command)
@@ -64,7 +64,7 @@ def ApplyControlEffort_Roll(controlEffort):
 
 # Method that applies the altitude signal (z)
 def ApplyControlEffort_Altitude(controlEffort):
-	#global command
+	global command
 
 	alt = controlEffort.data
 	command.linear.z = alt
@@ -73,6 +73,7 @@ def ApplyControlEffort_Altitude(controlEffort):
 
 # Print the applied signals
 def PrintCommands():
+	global command
 	global curr_angle
 	print("Applying Control Effort \n\tX \t\tY \t\tZ \t\tYaw")
 	print(str("{:10.4f}".format(command.linear.x)) + " \t" + str("{:10.4f}".format(command.linear.y)) +"\t" + str("{:10.4f}".format(command.linear.z)) +"\t" + str("{:10.4f}".format(command.angular.z)) + "\n")
@@ -97,6 +98,7 @@ def UpdateAngle(pos):
 
 # Setup the application
 if __name__=='__main__':
+	global command
 	# Drone id in order to set up topics
 	if (len(sys.argv)<=1):
 		id = '0'
