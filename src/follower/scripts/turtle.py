@@ -41,84 +41,45 @@ import sys
 import getopt
 from std_msgs.msg import String
 from std_msgs.msg import Int16
-from planner.msg import drone_command # NB: turtle uses drone_command as well!
-from geometry_msgs.msg import PoseArray
-from geometry_msgs.msg import PoseStamped
-from actionlib_msgs.msg import GoalStatusArray
+from turtlesim.Pose.msg import Pose
 
-goal_flag = True
+from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Vector3
 
-goto_to_publish = PoseStamped()
-goto_to_publish.header.frame_id = "/map"
-goto_to_publish.pose.orientation.z = 1
 
-def goto(x, y, w):
+def goto():
 	global actuatorTopic
-	#goto_to_publish.header.frame_id = "/map"
-	goto_to_publish.pose.position.x = x
-	goto_to_publish.pose.position.y = y
-	#goto_to_publish.pose.orientation.z = 1
-	goto_to_publish.pose.orientation.w = w
-
-	actuatorTopic.publish(goto_to_publish)
+	linear = Vector3(1,0,0)
+        angular = Vector3(0,0,1)
+	actuatorTopic.publish(Twist(linear, angular))
 
 
 def takeAction(data):
-    if (data.command != 'idle'):
-        cdata = data._connection_header
-        #rospy.loginfo('%s now initiates %s', id, data.command)
-        #rospy.loginfo('Driving to: %f %f', data.posX, data.posY)
-        goto(data.posX, data.posY, data.angle)
+        goto()
 
 
-        
-
-
-
-#This callback is called everytime this node receives the status message of Robot
-#The Status message is published frequently from node, always has the last goal
-# status if no new goals are published.
-#Goal status information : http://docs.ros.org/api/actionlib_msgs/html/msg/GoalStatus.html
-#status = 1 -> Active
-#status = 4 -> failed
-#status = 3 -> completed
-# def goal_status_callback(data):
-# 	global goal_flag, schedulerTopic
-#         if len(data.status_list)!=0:
-# 		#print(data.status_list[0].status)
-# 		if data.status_list[0].status == 1:
-# 			goal_flag = False
-# 			if data.status_list[0].status == 3:
-# 				if (not goal_flag):
-# 					print("completed goal");
-# 					goal_flag = true
-# 					msg = drone_command();
-# 					msg.drone_id = id;
-# 					msg.command = 'idle';
-# 					schedulerTopic.publish(msg)
-
-
-
-def turtle():
+def turtle(args):
     global rate
-    global actuatorTopic
-
-    rospy.init_node('turtlebot', anonymous=True)
-    rospy.loginfo('started turtle')
+    global id
+    global schedulerTopic, actuatorTopic
+    id = 'turtle'
+    #global idRequestTopic
+    #TODO: data validation of arg
+    rospy.init_node(id, anonymous=True)
+    rospy.loginfo('started '+id)
     #Assign Publisher that publishes the goal to the robot to move
-    actuatorTopic = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=10)
+    actuatorTopic = rospy.Publisher(id+'/cmd_vel', Twist, queue_size=10)
     #subscribe to goal status from mobile base
-    # rospy.Subscriber("/move_base/status", GoalStatusArray, goal_status_callback)
+    rospy.Subscriber("/sim_sensor/", Vector3, goal_status_callback)
 
     rate = rospy.Rate(1)
     rate.sleep() #has to sleep after subscribing to a new topic
 
-    goto(1, 1, 4)
     rospy.spin()
 
 
 if __name__ == "__main__":
-    turtle()
+        turtle()
 
 
 
