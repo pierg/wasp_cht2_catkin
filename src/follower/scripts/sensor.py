@@ -16,7 +16,7 @@ def updatePersonPose(personPose):
     personReceived = True
 
     person_pose = personPose
-    if(turtleReceived && personReceived):
+    if(turtleReceived and personReceived):
         compute_distance()
 
     rospy.spin()
@@ -29,7 +29,7 @@ def updateTurtlePose(turtlePose):
     turtleReceived = True
 
     turtle_pose = turtlePose
-    if(turtleReceived && personReceived):
+    if(turtleReceived and personReceived):
         compute_distance()
 
     rospy.spin()
@@ -59,15 +59,18 @@ if __name__ == "__main__":
     global person_pose
     global turtle_pose
 
+    # Start drone+id node
+    rospy.init_node('sensor')
+
     print("Node started")
     personReceived = False
     turtleReceived = False
 
     # Subscribe to the person location
-    rospy.Subscriber("/person/pose", Pose, updatePersonPose())
+    rospy.Subscriber("/person/pose", Pose, updatePersonPose)
 
     # Subscribe to the person location
-    rospy.Subscriber("/turtle/pose", Pose, updateTurtlePose())
+    rospy.Subscriber("/turtle/pose", Pose, updateTurtlePose)
 
     # Publishing the position of the person in relation to the position and heading of the turtle
     publishPolarCoordinates = rospy.Publisher("/turtle/sim_sensor", polar_coordinates, queue_size=1)
