@@ -53,7 +53,6 @@ def follow():
     global following_r, following_theta
     global has_active_target
     global actuatorTopic
-    rospy.loginfo("test")
     if has_active_target:
         acc = (following_r - opt_distance)
         linear = Vector3(acc,0,0)
