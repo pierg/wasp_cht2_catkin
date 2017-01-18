@@ -48,6 +48,8 @@ from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 
 opt_distance = 0.5
+r_threshold = 0.1
+theta_threshold = 0.1
 
 def follow():
     global following_r, following_theta
@@ -67,7 +69,8 @@ def new_sensor_info(data):
     global has_active_target
     following_r = data.r
     following_theta = data.theta
-    has_active_target = True;
+    r_diff = (following_r - opt_distance)
+    has_active_target = (r_diff > r_threshold) and (following_theta > theta_threshold)
     #rospy.loginfo(following_r)
     
 
@@ -78,8 +81,6 @@ def main_loop():
         rate.sleep()
 
 def turtle():
-    global rate
-    global id
     global schedulerTopic, actuatorTopic
     global following_r, following_theta
     global has_active_target
