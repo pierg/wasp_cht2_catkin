@@ -92,7 +92,7 @@ def turtle():
     #Assign Publisher that publishes the goal to the robot to move
     actuatorTopic = rospy.Publisher(id+'/cmd_vel', Twist, queue_size=10)
     #subscribe to goal status from mobile base
-    rospy.Subscriber("/sim_sensor", polar_coordinates, new_sensor_info)
+    rospy.Subscriber(id+"/sim_sensor", polar_coordinates, new_sensor_info)
 
     has_active_target = False
 
