@@ -70,7 +70,7 @@ if __name__ == "__main__":
     rospy.Subscriber("/person/pose", Pose, updatePersonPose)
 
     # Subscribe to the person location
-    rospy.Subscriber("/turtle/pose", Pose, updateTurtlePose)
+    rospy.Subscriber("/turtle1/pose", Pose, updateTurtlePose)
 
     # Publishing the position of the person in relation to the position and heading of the turtle
     publishPolarCoordinates = rospy.Publisher("/turtle/sim_sensor", polar_coordinates, queue_size=1)
