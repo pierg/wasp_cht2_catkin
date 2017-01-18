@@ -41,28 +41,50 @@ import sys
 import getopt
 from std_msgs.msg import String
 from std_msgs.msg import Int16
-from turtlesim.Pose.msg import Pose
+from turtlesim.msg import Pose
+from follower.msg import polar_coordinates
 
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 
+opt_distance = 0.5
 
-def goto():
-	global actuatorTopic
-	linear = Vector3(1,0,0)
-        angular = Vector3(0,0,1)
-	actuatorTopic.publish(Twist(linear, angular))
+def follow():
+    global following_r, following_theta
+    global has_active_target
+    global actuatorTopic
+    rospy.loginfo("test")
+    if has_active_target:
+        acc = (following_r - opt_distance)
+        linear = Vector3(acc,0,0)
+        angular = Vector3(0,0,following_theta)
+        actuatorTopic.publish(Twist(linear, angular))
 
 
-def takeAction(data):
-        goto()
 
 
-def turtle(args):
+def new_sensor_info(data):
+    global following_r, following_theta
+    global has_active_target
+    following_r = data.r
+    following_theta = data.theta
+    has_active_target = True;
+    #rospy.loginfo(following_r)
+    
+
+def main_loop():
+    rate = rospy.Rate(1)
+    while not rospy.is_shutdown():
+        follow()
+        rate.sleep()
+
+def turtle():
     global rate
     global id
     global schedulerTopic, actuatorTopic
-    id = 'turtle'
+    global following_r, following_theta
+    global has_active_target
+    id = 'turtle1'
     #global idRequestTopic
     #TODO: data validation of arg
     rospy.init_node(id, anonymous=True)
@@ -70,16 +92,17 @@ def turtle(args):
     #Assign Publisher that publishes the goal to the robot to move
     actuatorTopic = rospy.Publisher(id+'/cmd_vel', Twist, queue_size=10)
     #subscribe to goal status from mobile base
-    rospy.Subscriber("/sim_sensor/", Vector3, goal_status_callback)
+    rospy.Subscriber("/sim_sensor", polar_coordinates, new_sensor_info)
+
+    has_active_target = False
 
     rate = rospy.Rate(1)
     rate.sleep() #has to sleep after subscribing to a new topic
-
-    rospy.spin()
+    main_loop()
 
 
 if __name__ == "__main__":
-        turtle()
+    turtle()
 
 
 
