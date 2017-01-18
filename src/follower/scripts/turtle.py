@@ -83,7 +83,7 @@ def turtle():
     global schedulerTopic, actuatorTopic
     global following_r, following_theta
     global has_active_target
-    id = 'turtle1'
+    id = 'follower'
     #global idRequestTopic
     #TODO: data validation of arg
     rospy.init_node(id, anonymous=True)
