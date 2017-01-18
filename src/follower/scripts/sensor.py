@@ -15,6 +15,8 @@ def updatePersonPose(personPose):
 
     personReceived = True
 
+    print("personPose received")
+
     person_pose = personPose
     if(turtleReceived and personReceived):
         compute_distance()
@@ -27,6 +29,8 @@ def updateTurtlePose(turtlePose):
     global turtle_pose
 
     turtleReceived = True
+
+    print("turtlePose received")
 
     turtle_pose = turtlePose
     if(turtleReceived and personReceived):
@@ -50,6 +54,7 @@ def compute_distance():
     coordinates.r =  c
     coordinates.theta = theta
 
+    print("publishing coordinates: " + coordinates.x + ", " + coordinates.theta)
     publishPolarCoordinates.publish(coordinates)
 
 
@@ -73,7 +78,7 @@ if __name__ == "__main__":
     rospy.Subscriber("/turtle1/pose", Pose, updateTurtlePose)
 
     # Publishing the position of the person in relation to the position and heading of the turtle
-    publishPolarCoordinates = rospy.Publisher("/turtle/sim_sensor", polar_coordinates, queue_size=1)
+    publishPolarCoordinates = rospy.Publisher("/turtle1/sim_sensor", polar_coordinates, queue_size=1)
 
     rospy.spin()
 
