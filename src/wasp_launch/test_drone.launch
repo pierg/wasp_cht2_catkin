@@ -1,9 +1,0 @@
-<launch>
-	<!-- DRONE 2 - IP: 192.168.1.11 with namespace drone1 -->
-	<group ns="drone2">		
-		<!-- Launching the filter tag detection node -->
-		<node name="tag_filter" pkg="task3_opencv" type="tag_filter" output="screen">
-			<param name="id_ref" value="0" />
-		</node>
-	</group>
-</launch>

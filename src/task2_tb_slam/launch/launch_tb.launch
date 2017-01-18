@@ -1,6 +1,0 @@
-<launch>
-  <include file = "$(find turtlebot_bringup)/launch/minimal.launch" />
-  <include file = "$(find task2_tb_slam)/launch/tb_amcl_depth.launch" />
-  <node name = "PCL_subsampler" pkg = "task3_pcl" type = "PCL_subsampler" />
-  <node name = "PCL_transform" pkg = "task3_pcl" type = "PCL_transform" />
-</launch>

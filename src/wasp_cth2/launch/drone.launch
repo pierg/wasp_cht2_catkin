@@ -1,3 +1,0 @@
-<launch>
-	<include file="$(find tum_ardrone)/launch/ardrone_drive.launch1" />
-</launch>

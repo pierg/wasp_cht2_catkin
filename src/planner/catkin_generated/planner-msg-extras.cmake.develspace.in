@@ -1,2 +1,0 @@
-set(planner_MESSAGE_FILES "/home/wasp_vb/catkin_ws/src/planner/msg/drone_command.msg")
-set(planner_SERVICE_FILES "")

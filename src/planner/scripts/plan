@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# ALTERNATIVE 1 - GIVES OPTIMAL PLAN
-./yahsp3 -K 0.01,0.01 -o domain.pddl -f problem.pddl -out output
-
-
-# ALTERNATIVE 2 - ONLY USE WHEN OPTIMAL PLAN DOES NOT CONVERGE
-#./yahsp3 -y 1 -N -K 0.01,0.01 -o domain.pddl -f problem.pddl -out output 
-
