@@ -44,13 +44,25 @@ def compute_distance():
     global turtle_pose
     global follower_pose
     t = turtle_pose
-    p = follower_pose
+    f = follower_pose
     coordinates = polar_coordinates()
 
-    a = (p.x-t.x)*(p.x-t.x)
-    b = (t.y-t.y)*(t.y-t.y)
-    c = math.sqrt(a + b)
-    theta = math.asin(b/c)
+    a = (t.x - f.x)
+    b = (t.y - f.y)
+    c = math.sqrt((a*a) + (b*b))
+    theta_1 = math.asin(b/c)
+
+    # Trigonometry
+    if (a<0):
+        theta_t = math.pi - theta_1
+    else:
+        theta_t = theta_1
+
+    print("b: " + str(b) + ", " + str(c))
+
+    theta_2 = f.theta - theta_t
+
+    theta = math.atan2(math.sin(theta_2), math.cos(theta_2))
 
     coordinates.r =  c
     coordinates.theta = theta

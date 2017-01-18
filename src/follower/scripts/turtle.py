@@ -47,9 +47,7 @@ from follower.msg import polar_coordinates
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
 
-opt_distance = 0.5
-r_threshold = 0.1
-theta_threshold = 0.1
+opt_distance = 1.2
 
 def follow():
     global following_r, following_theta
@@ -57,8 +55,8 @@ def follow():
     global actuatorTopic
     if has_active_target:
         acc = (following_r - opt_distance)
-        linear = Vector3(acc,0,0)
-        angular = Vector3(0,0,following_theta)
+        linear = Vector3(acc/5,0,0)
+        angular = Vector3(0,0,-following_theta)
         actuatorTopic.publish(Twist(linear, angular))
 
 
@@ -69,8 +67,7 @@ def new_sensor_info(data):
     global has_active_target
     following_r = data.r
     following_theta = data.theta
-    r_diff = (following_r - opt_distance)
-    has_active_target = (r_diff > r_threshold) and (following_theta > theta_threshold)
+    has_active_target = True;
     #rospy.loginfo(following_r)
     
 
