@@ -1,8 +1,0 @@
-prefix=/home/wasp_vb/wasp_cht2_catkin/install
-
-Name: wasp_launch
-Description: Description of wasp_launch
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/wasp_vb/wasp_cht2_catkin/install/lib 
-Requires: 

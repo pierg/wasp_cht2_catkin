@@ -1,8 +1,0 @@
-prefix=/home/wasp_vb/wasp_cht2_catkin/install
-
-Name: wasp_custom_msgs
-Description: Description of wasp_custom_msgs
-Version: 0.0.0
-Cflags: -I/home/wasp_vb/wasp_cht2_catkin/install/include
-Libs: -L/home/wasp_vb/wasp_cht2_catkin/install/lib 
-Requires: 

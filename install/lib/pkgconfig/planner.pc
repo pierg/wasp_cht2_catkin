@@ -1,8 +1,0 @@
-prefix=/home/wasp_vb/wasp_cht2_catkin/install
-
-Name: planner
-Description: Description of planner
-Version: 0.0.0
-Cflags: -I/home/wasp_vb/wasp_cht2_catkin/install/include
-Libs: -L/home/wasp_vb/wasp_cht2_catkin/install/lib 
-Requires: message_runtime

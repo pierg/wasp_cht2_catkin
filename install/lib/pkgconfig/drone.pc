@@ -1,8 +1,0 @@
-prefix=/home/frehage/wasp_cht2_catkin/install
-
-Name: drone
-Description: Description of drone
-Version: 1.0.0
-Cflags: 
-Libs: -L/home/frehage/wasp_cht2_catkin/install/lib 
-Requires: 
