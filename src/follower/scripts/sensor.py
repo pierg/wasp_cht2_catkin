@@ -9,41 +9,42 @@ from follower.msg import polar_coordinates
 
 
 
-def updatePersonPose(turtle1Pose):
-    global turtle1Received
-    global turtle1_pose
-
-    turtle1Received = True
-
-    print("turtle1Pose received")
-
-    turtle1_pose = turtle1Pose
-    if(turtleReceived and turtle1Received):
-        compute_distance()
-
-    rospy.spin()
-
 
 def updateTurtlePose(turtlePose):
     global turtleReceived
+    global followerReceived
     global turtle_pose
 
     turtleReceived = True
 
-    print("turtlePose received")
-
     turtle_pose = turtlePose
-    if(turtleReceived and turtle1Received):
+
+    print("turtle_pose received and updated")
+
+    if(turtleReceived and followerReceived):
         compute_distance()
 
-    rospy.spin()
+
+def updateFollowerPose(followerPose):
+    global turtleReceived
+    global followerReceived
+    global follower_pose
+
+    followerReceived = True
+
+    follower_pose = followerPose
+
+    print("follower_pose received and updated")
+
+    if(turtleReceived and followerReceived):
+        compute_distance()
 
 
 def compute_distance():
     global turtle_pose
-    global turtle1_pose
+    global follower_pose
     t = turtle_pose
-    p = turtle1_pose
+    p = follower_pose
     coordinates = polar_coordinates()
 
     a = (p.x-t.x)*(p.x-t.x)
@@ -54,28 +55,28 @@ def compute_distance():
     coordinates.r =  c
     coordinates.theta = theta
 
-    print("publishing coordinates: " + coordinates.x + ", " + coordinates.theta)
+    print("publishing coordinates: " + str(coordinates.r) + ", " + str(coordinates.theta))
     publishPolarCoordinates.publish(coordinates)
 
 
 if __name__ == "__main__":
     global turtleReceived
-    global turtle1Received
-    global turtle1_pose
+    global followerReceived
     global turtle_pose
+    global follower_pose
 
     # Start drone+id node
     rospy.init_node('sensor')
 
     print("Node started")
-    turtle1Received = False
     turtleReceived = False
+    followerReceived = False
 
     # Subscribe to the turtle1 location
-    rospy.Subscriber("/turtle1/pose", Pose, updatePersonPose)
+    rospy.Subscriber("/turtle1/pose", Pose, updateTurtlePose)
 
     # Subscribe to the turtle1 location
-    rospy.Subscriber("/follower/pose", Pose, updateTurtlePose)
+    rospy.Subscriber("/follower/pose", Pose, updateFollowerPose)
 
     # Publishing the position of the turtle1 in relation to the position and heading of the turtle
     publishPolarCoordinates = rospy.Publisher("/follower/sim_sensor", polar_coordinates, queue_size=1)
