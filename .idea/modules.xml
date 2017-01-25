@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/catkin_ws.iml" filepath="$PROJECT_DIR$/catkin_ws.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wasp_cht2_catkin.iml" filepath="$PROJECT_DIR$/wasp_cht2_catkin.iml" />
     </modules>
   </component>
 </project>
