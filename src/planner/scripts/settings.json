@@ -7,7 +7,7 @@
 	"drivingSpeed": 1,
 
 	"locations": {
-		"depot": [2.04,1.79],
+		"depot": [3,3.5],
 		"turtle_init": [2.1,3.91],
 		"drone0_init": [3.91,0.36],
 		"drone1_init": [2,0]

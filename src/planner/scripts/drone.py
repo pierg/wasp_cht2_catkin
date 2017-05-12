@@ -84,9 +84,9 @@ def SetTarget(data):
     publishDroneStatus.publish(droneMessage)
 
   elif data.command == 'scan':
-    value = Bool()
-    value.data = True
-    publishDroneScan.publish(value)
+    #value = Bool()
+    #value.data = True
+    #publishDroneScan.publish(value)
     # send idle command to the scheduler after 5 seconds
     time.sleep(5)
     droneMessage = drone_command()
